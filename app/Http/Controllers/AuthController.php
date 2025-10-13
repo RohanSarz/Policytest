@@ -11,6 +11,7 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
+        dd($request->input('avatars'));
         sleep(2);
 
         // validate

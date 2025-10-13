@@ -8,7 +8,7 @@ import FlashMesg from "./Pertials/FlashMesg.vue";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/src/js";
 
 createInertiaApp({
-    title: (title) => `Renovate/${title} `,
+    title: (title) => `Teachlabs > ${title} `,
     resolve: (name) => {
         const pages = import.meta.glob("./Pages/**/*.vue", { eager: true });
         let page = pages[`./Pages/${name}.vue`];

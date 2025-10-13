@@ -9,7 +9,7 @@ const page = usePage();
     <div class="w-full flex flex-col">
         <header class=""><Navigation /></header>
 
-        <main class="flex-grow grid col-span-1 px-6 mt-4">
+        <main class="grid col-span-1 px-3 mt-4">
             <transition
                 enter-active-class="transition duration-400 ease-out transform"
                 enter-from-class="translate-y-10 opacity-0"
