@@ -11,7 +11,6 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        dd($request->input('avatars'));
         sleep(2);
 
         // validate
@@ -27,9 +26,10 @@ class AuthController extends Controller
 
         $fields['password'] = bcrypt($fields['password']);
 
-        if ($request->hasFile('avatar')) {
-            $fields['avatar'] = Storage::disk('public')->put('avatars', $request->avatar);
-        }
+        $fields['avatar'] =
+            $request->hasFile('avatar')
+            ? Storage::disk('public')->put('avatars', $request->avatar)
+            : Storage::disk('public')->put('avatars', 'def.jpg');
         // register
 
         $user = User::create($fields);
