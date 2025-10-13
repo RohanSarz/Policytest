@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { usePage } from "@inertiajs/vue3";
+import { computed, onMounted } from "vue";
 import {
     Home,
     LayoutDashboard,
@@ -20,20 +21,27 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-const navlinks = [
-    {
-        id: 1,
-        name: "Home",
-        icon: Home,
-        path: "/",
-    },
-    {
-        id: 2,
-        name: "Dashboard",
-        icon: LayoutDashboard,
-        path: "/dashboard",
-    },
-];
+let navlinks = computed(() => {
+    const baseLinks = [
+        {
+            id: 1,
+            name: "Home",
+            icon: Home,
+            path: "/",
+        },
+    ];
+    if (page.props.auth.user) {
+        baseLinks.push({
+            id: 2,
+            name: "Dashboard",
+            icon: LayoutDashboard,
+            path: "/dashboard",
+        });
+    }
+    return baseLinks;
+});
+
+const page = usePage();
 
 // Function to close mobile menu after navigation
 const closeMobileMenu = () => {

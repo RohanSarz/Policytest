@@ -1,6 +1,6 @@
 <script setup>
 import { Form } from "@inertiajs/vue3";
-import TextInput from "../Components/TextInput.vue";
+
 import Input from "@/components/ui/input/Input.vue";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card";
 import Button from "@/components/ui/button/Button.vue";
 import Label from "@/components/ui/label/Label.vue";
-import { onMounted, onUnmounted, ref } from "vue";
+import { onBeforeMount, onMounted, onUnmounted, ref } from "vue";
 
 // holding the url
 const previewImage = ref(null);
@@ -39,6 +39,9 @@ const handleFile = (e) => {
     console.log(previewImage.value);
 };
 
+onBeforeMount(() => {
+    console.log(previewImage.value, "Before Mounted ");
+});
 // clearing and logging
 onMounted(() => {
     console.log(previewImage.value, "Mounted ");
@@ -59,40 +62,59 @@ onUnmounted(() => {
             method="post"
             #default="{ processing, errors }"
         >
-            <Card class="w-[350px] px-2">
+            <Card class="w-6/6 lg:w-[600px] px-6">
                 <CardHeader>
                     <CardTitle class="text-2xl">Register</CardTitle>
                     <CardDescription>Register a new account.</CardDescription>
                 </CardHeader>
                 <CardContent class="space-y-4">
-                    <Label for="avatar"
-                        >Avatar
-                        <Avatar>
+                    <Label class="form-label text" for="avatar">
+                        <div class="grid place-items-center gap-2">
+                            Avatar
                             <Input
-                            class="hidden"
+                                class="hidden"
+                                id="avatar"
                                 @change="handleFile"
                                 type="file"
                                 name="avatar"
                                 :disabled="processing"
                             />
-                            <!-- v-if="previewImage" -->
-                            <AvatarImage
-                                v-if="previewImage"
-                                :src="previewImage"
-                                alt="Avatar"
-                            />
-                            <AvatarFallback>No Image</AvatarFallback>
-                        </Avatar>
+                            <Avatar class="size-16 border-2 border-black">
+                                <!-- v-if="previewImage" -->
+                                <AvatarImage
+                                    class="object-cover w-full h-full"
+                                    v-if="previewImage"
+                                    :src="previewImage"
+                                    alt="Avatar"
+                                />
+                                <AvatarFallback
+                                    v-else-if="$page.props.auth.user"
+                                >
+                                    {{ $page.props.auth.user.name[0] }}
+                                </AvatarFallback>
+                                <AvatarFallback v-else> ? </AvatarFallback>
+                            </Avatar>
+                        </div>
                     </Label>
-                    <Label for="name">Name</Label>
+                    <Label class="form-label" for="name">Name</Label>
                     <Input name="name" type="text" placeholder="name" />
-                    <div v-if="errors.name"></div>
-                    <Label for="email">Email</Label>
+                    <div v-if="errors.name">
+                        {{ errors.name }}
+                    </div>
+                    <Label class="form-label" for="email">Email</Label>
                     <Input name="email" placeholder="eg@mail.com" />
-                    <Label for="password">Password</Label>
+                    <div v-if="errors.email">
+                        {{ errors.email }}
+                    </div>
+                    <Label class="form-label" for="password">Password</Label>
                     <Input name="password" placeholder="* * * * * * * *" />
+                    <div v-if="errors.name">
+                        {{ errors.password }}
+                    </div>
 
-                    <Label for="password_confirmation">Confirm Password</Label>
+                    <Label class="form-label" for="password_confirmation"
+                        >Confirm Password</Label
+                    >
                     <Input
                         name="password_confirmation"
                         placeholder="Confirm your Passcode"

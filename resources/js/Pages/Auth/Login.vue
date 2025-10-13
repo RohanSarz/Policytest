@@ -38,17 +38,17 @@ const submit = () => {
                     >
                 </CardHeader>
                 <CardContent class="space-y-4">
-                    <Label for="name">Name</Label>
+                    <Label class="form-label" for="name">Name</Label>
                     <Input name="name" placeholder="name" />
-                    <Label for="email">Email</Label>
+                    <Label class="form-label" for="email">Email</Label>
                     <Input name="email" placeholder="eg@mail.com" />
-                    <Label for="password">Password</Label>
+                    <Label class="form-label" for="password">Password</Label>
                     <Input name="password" placeholder="* * * * * *" />
 
                     <Button class="w-full" :disabled="form.processing">
                         Login
                     </Button>
-                </CardContent>
+                </CardContent> 
                 <CardFooter class="flex justify-between px-6 pb-6">
                     <div>
                         <p class="text-slate-600 mb-2">

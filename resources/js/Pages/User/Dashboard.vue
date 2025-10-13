@@ -1,34 +1,29 @@
 <script setup>
-import { Head } from '@inertiajs/vue3'
+import { Head, usePage } from '@inertiajs/vue3'
+import { computed } from 'vue'
 
-// Fake user data
-const user = {
-  name: 'Alex Johnson',
-  email: 'alex.johnson@example.com',
-  avatar: 'https://ui-avatars.com/api/?name=Alex+Johnson&background=random',
-  role: 'Premium Member',
-  joinDate: 'January 15, 2023',
-  status: 'Active'
-}
+const page = usePage()
+const user = computed(() => page.props.auth.user)
 
+// Fake data - to be replaced with real data from your backend
 const stats = [
-  { name: 'Total Policies', value: '12', icon: '📋' },
-  { name: 'Claims Filed', value: '3', icon: '理赔' },
-  { name: 'Active Coverage', value: '8', icon: '🛡️' },
-  { name: 'Savings', value: '$2,450', icon: '💰' }
+    { name: 'Total Policies', value: '12', icon: '📋' },
+    { name: 'Claims Filed', value: '3', icon: '理赔' },
+    { name: 'Active Coverage', value: '8', icon: '🛡️' },
+    { name: 'Savings', value: '$2,450', icon: '💰' }
 ]
 
 const recentActivity = [
-  { id: 1, action: 'Policy Renewed', policy: 'Auto Insurance', date: 'Oct 10, 2025', status: 'Completed' },
-  { id: 2, action: 'Claim Submitted', policy: 'Health Insurance', date: 'Oct 5, 2025', status: 'Processing' },
-  { id: 3, action: 'Payment Made', policy: 'Home Insurance', date: 'Sep 28, 2025', status: 'Completed' },
-  { id: 4, action: 'Policy Updated', policy: 'Life Insurance', date: 'Sep 15, 2025', status: 'Completed' }
+    { id: 1, action: 'Policy Renewed', policy: 'Auto Insurance', date: 'Oct 10, 2025', status: 'Completed' },
+    { id: 2, action: 'Claim Submitted', policy: 'Health Insurance', date: 'Oct 5, 2025', status: 'Processing' },
+    { id: 3, action: 'Payment Made', policy: 'Home Insurance', date: 'Sep 28, 2025', status: 'Completed' },
+    { id: 4, action: 'Policy Updated', policy: 'Life Insurance', date: 'Sep 15, 2025', status: 'Completed' }
 ]
 
 const policies = [
-  { id: 1, name: 'Auto Insurance', provider: 'ABC Insurance', premium: '$120/mo', expiry: 'Dec 15, 2025', status: 'Active' },
-  { id: 2, name: 'Health Insurance', provider: 'XYZ Health', premium: '$250/mo', expiry: 'Nov 30, 2025', status: 'Active' },
-  { id: 3, name: 'Home Insurance', provider: 'Secure Home', premium: '$85/mo', expiry: 'Jan 20, 2026', status: 'Active' }
+    { id: 1, name: 'Auto Insurance', provider: 'ABC Insurance', premium: '$120/mo', expiry: 'Dec 15, 2025', status: 'Active' },
+    { id: 2, name: 'Health Insurance', provider: 'XYZ Health', premium: '$250/mo', expiry: 'Nov 30, 2025', status: 'Active' },
+    { id: 3, name: 'Home Insurance', provider: 'Secure Home', premium: '$85/mo', expiry: 'Jan 20, 2026', status: 'Active' }
 ]
 </script>
 

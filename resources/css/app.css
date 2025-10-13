@@ -165,3 +165,7 @@
         --sidebar-ring: 217.2 91.2% 59.8%;
     }
 }
+
+.form-label {
+    @apply block text-sm font-semibold leading-6 text-foreground;
+}
