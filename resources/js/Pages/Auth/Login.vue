@@ -16,11 +16,11 @@ import Button from "@/components/ui/button/Button.vue";
 
 <template>
     <Head title="Login" />
-    <div class="relative">
+    <div class="grid place-items-center">
         <Form action="/login" method="post" #default="{ processing, errors }">
             <Card class="w-[350px] px-2">
                 <CardHeader>
-                    <CardTitle class="text-2xl">Log In</CardTitle>
+                    <CardTitle>Log In</CardTitle>
                     <CardDescription
                         >Login with your credintials.</CardDescription
                     >

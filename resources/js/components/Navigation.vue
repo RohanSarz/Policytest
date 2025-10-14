@@ -21,7 +21,11 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-let navlinks = computed(() => {
+// User Reactive Data
+const page = usePage();
+const user = computed(() => page.props.auth.user);
+
+const navlinks = computed(() => {
     const baseLinks = [
         {
             id: 1,
@@ -32,7 +36,7 @@ let navlinks = computed(() => {
     ];
 
     // links to exclude if user is not logged
-    if (page.props.auth.user) {
+    if (user.value) {
         baseLinks.push({
             id: 2,
             name: "Dashboard",
@@ -42,8 +46,6 @@ let navlinks = computed(() => {
     }
     return baseLinks;
 });
-
-const page = usePage();
 
 // Function to close mobile menu after navigation
 const closeMobileMenu = () => {
@@ -156,7 +158,7 @@ const isActiveLink = (path: string) => {
             <!-- For Logged User -->
             <div v-if="$page.props.auth.user" class="flex-1 text-gray-400">
                 Welcome,
-                <span class="text-gray-600"> {{ }} </span>!
+                <UserNamerUpper :name="user.name" />!
             </div>
 
             <Sheet>
