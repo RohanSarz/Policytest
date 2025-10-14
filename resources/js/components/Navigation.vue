@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { usePage } from "@inertiajs/vue3";
-import { computed, onMounted } from "vue";
+import { usePage, Form } from "@inertiajs/vue3";
+import { computed } from "vue";
 import {
     Home,
     LayoutDashboard,
     Menu,
-    Settings,
     User,
     UserRound,
+    Key,
 } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -30,6 +30,8 @@ let navlinks = computed(() => {
             path: "/",
         },
     ];
+
+    // links to exclude if user is not logged
     if (page.props.auth.user) {
         baseLinks.push({
             id: 2,
@@ -76,7 +78,7 @@ const isActiveLink = (path: string) => {
             </li>
             <li v-if="$page.props.auth.user" class="flex-1 text-gray-400">
                 Welcome,
-                <span class="text-gray-600">
+                <span class="text-gray-600 uppercase">
                     {{ $page.props.auth.user.name }} </span
                 >!
             </li>
@@ -103,7 +105,7 @@ const isActiveLink = (path: string) => {
                         class="hover:bg-accent flex items-center"
                         href="/login"
                     >
-                        <Settings class="w-4 h-4 mr-2" />
+                        <Key class="w-4 h-4 mr-2" />
                         Login
                     </Link>
                 </Button>
@@ -126,11 +128,9 @@ const isActiveLink = (path: string) => {
                         >Profile</Link
                     >
                 </Button>
-                <Button variant="ghost">
-                    <Link method="post" class="hover:bg-accent" href="/logout"
-                        >Logout</Link
-                    >
-                </Button>
+                <Form class="inline" :action="route('logout')" method="post">
+                    <Button variant="ghost"> Logout </Button>
+                </Form>
             </li>
         </ul>
 
@@ -232,18 +232,18 @@ const isActiveLink = (path: string) => {
                                     Profile
                                 </Link>
                             </Button>
-                            <Button
-                                variant="ghost"
-                                class="w-full justify-start hover:bg-accent"
+                            <Form
+                                method="post"
+                                action="{{ route('logout') }}"
+                                class="flex items-center w-full"
                             >
-                                <Link
-                                    method="post"
-                                    href="/logout"
-                                    class="flex items-center w-full"
+                                <Button
+                                    variant="ghost"
+                                    class="w-full justify-start hover:bg-accent"
                                 >
                                     Logout
-                                </Link>
-                            </Button>
+                                </Button>
+                            </Form>
                         </div>
                     </div>
                 </SheetContent>

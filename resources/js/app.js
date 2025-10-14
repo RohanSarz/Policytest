@@ -5,7 +5,7 @@ import { createInertiaApp, Head, Link } from "@inertiajs/vue3";
 
 import Layout from "./Layouts/Layout.vue";
 import FlashMesg from "./Pertials/FlashMesg.vue";
-import { ZiggyVue } from "../../vendor/tightenco/ziggy/src/js";
+import { ZiggyVue, route } from "../../vendor/tightenco/ziggy/src/js";
 
 createInertiaApp({
     title: (title) => `Teachlabs > ${title} `,
@@ -18,7 +18,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
-            .use(ZiggyVue)
+            .use(ZiggyVue, Ziggy)
 
             .component("Head", Head)
             .component("Link", Link)

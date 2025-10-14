@@ -9,6 +9,7 @@ Route::inertia('/', 'Home')->name('home');
 
 Route::middleware(['auth'])->group(function () {
     Route::inertia('/dashboard', 'User/Dashboard')->name('dashboard');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 Route::middleware(['guest'])->group(function () {
@@ -19,6 +20,4 @@ Route::middleware(['guest'])->group(function () {
         'defUrl' => Storage::url('avatars/def.jpg'),
     ])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register');
-
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
