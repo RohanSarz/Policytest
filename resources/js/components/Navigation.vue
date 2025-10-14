@@ -138,6 +138,7 @@ const isActiveLink = (path: string) => {
         <div
             class="md:hidden flex justify-between items-center bg-secondary-foreground text-white dark:bg-primary px-3 py-3"
         >
+            <!-- For Guest User -->
             <div v-if="!$page.props.auth.user" class="flex-1 text-gray-400">
                 Please
                 <Link class="hover:underline hover:text-gray-700" href="/login"
@@ -152,10 +153,10 @@ const isActiveLink = (path: string) => {
                 >
                 to continue.
             </div>
+            <!-- For Logged User -->
             <div v-if="$page.props.auth.user" class="flex-1 text-gray-400">
                 Welcome,
-                <span class="text-gray-600"> {{ $page.props.auth.user }} </span
-                >!
+                <span class="text-gray-600"> {{ }} </span>!
             </div>
 
             <Sheet>
