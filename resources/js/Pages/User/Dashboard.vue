@@ -1,9 +1,9 @@
 <script setup>
-import UserNameUpper from "@/components/UserNameUpper.vue";
+import { UserNameUpper, UserCard } from "@/components/userDataComponents/";
 import { usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
+import UserTable from "@/components/UserTable.vue";
 // Get the current page and user information from Inertia
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -42,50 +42,18 @@ const stats = {
 
         <main>
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 sm:dark">
-                <!-- User Profile Card with Stats - combines user info with key metrics -->
+                <!-- User Profile Card with Stats  -->
                 <div class="bg-white rounded-lg border p-6 shadow-sm">
                     <div class="flex flex-col md:flex-row gap-6">
                         <!-- Left side: User profile information including avatar, name, email and role -->
-                        <div class="flex flex-col items-center text-center">
-                            <Avatar class="size-16 ring-1">
-                                <AvatarImage
-                                    class="border"
-                                    :src="`storage/${user.avatar}`"
-                                    alt="@radix-vue"
-                                />
-                                <AvatarFallback v-if="!user.avatar">{{
-                                    user.name[0].toUpperCase()
-                                }}</AvatarFallback>
-                            </Avatar>
-                            <h2 class="text-lg font-medium text-gray-900 mt-3">
-                                {{ user.name }}
-                            </h2>
-                            <p class="text-gray-600 text-sm">
-                                {{ user.email }}
-                            </p>
-                            <div
-                                class="mt-2 flex flex-wrap justify-center gap-2"
-                            >
-                                <span
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
-                                >
-                                    {{ user.role }} Admin
-                                </span>
-                            </div>
-                        </div>
+
+                        <UserCard :user="user" />
 
                         <!-- Right side: Stats grid showing user metrics -->
                         <div class="flex-1">
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                            <div class="grid grid-cols-2 gap-4">
                                 <!-- Total Posts stat -->
-                                <div class="bg-gray-50 rounded-lg p-4">
-                                    <div class="text-sm text-gray-500">
-                                        Total Posts
-                                    </div>
-                                    <div class="text-xl font-semibold">
-                                        {{ stats.posts }}
-                                    </div>
-                                </div>
+
                                 <!-- Followers stat -->
                                 <div class="bg-gray-50 rounded-lg p-4">
                                     <div class="text-sm text-gray-500">
@@ -104,26 +72,21 @@ const stats = {
                                         {{ stats.following }}
                                     </div>
                                 </div>
-                                <!-- Online Status stat -->
                                 <div class="bg-gray-50 rounded-lg p-4">
                                     <div class="text-sm text-gray-500">
-                                        Status
+                                        Total Posts
                                     </div>
                                     <div class="text-xl font-semibold">
-                                        <span
-                                            class="text-green-600"
-                                            v-if="stats.online"
-                                            >Active</span
-                                        >
-                                        <span class="text-gray-400" v-else
-                                            >Offline</span
-                                        >
+                                        {{ stats.posts }}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="px-4">
+                <UserTable />
             </div>
         </main>
     </div>

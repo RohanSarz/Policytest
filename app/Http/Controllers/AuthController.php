@@ -34,7 +34,7 @@ class AuthController extends Controller
         Auth::login($user);
 
         // redirect
-        return redirect()->route('dashboard')->with('message', 'User created successfully!');
+        return redirect()->route('home')->with('message', 'User created successfully!');
     }
     public function login(Request $request)
     {

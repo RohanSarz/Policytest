@@ -25,6 +25,7 @@ const clearUrl = () => {
         previewImage.value = null;
     }
 };
+
 // handle the file and create the url
 const handleFile = (e) => {
     const file = e.target.files[0];
@@ -56,7 +57,7 @@ onUnmounted(() => {
 <template>
     <Head title="Register" />
 
-    <Transition name="page" mode="out-in">
+    <div class="grid place-items-center mx-auto h-screen">
         <Form
             action="/register"
             method="post"
@@ -111,7 +112,6 @@ onUnmounted(() => {
                     <div v-if="errors.name">
                         {{ errors.password }}
                     </div>
-
                     <Label class="form-label" for="password_confirmation"
                         >Confirm Password</Label
                     >
@@ -135,5 +135,5 @@ onUnmounted(() => {
                 </CardFooter>
             </Card>
         </Form>
-    </Transition>
+    </div>
 </template>

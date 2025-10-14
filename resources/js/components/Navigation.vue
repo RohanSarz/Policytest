@@ -20,6 +20,7 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import LoginOrRegister from "@/components/userDataComponents/LoginOrRegister.vue";
 
 // User Reactive Data
 const page = usePage();
@@ -64,20 +65,7 @@ const isActiveLink = (path: string) => {
         <ul
             class="hidden md:flex justify-end items-center bg-secondary-foreground text-white dark:bg-primary space-x-6 px-3 py-3"
         >
-            <li v-if="!$page.props.auth.user" class="flex-1 text-gray-400">
-                Please
-                <Link class="hover:underline hover:text-gray-700" href="/login"
-                    >Login</Link
-                >
-                or
-                <Link
-                    class="hover:underline hover:text-gray-700"
-                    href="/register"
-                >
-                    Register</Link
-                >
-                to continue.
-            </li>
+            <LoginOrRegister />
             <li v-if="$page.props.auth.user" class="flex-1 text-gray-400">
                 Welcome,
                 <span class="text-gray-600 uppercase">
@@ -101,6 +89,7 @@ const isActiveLink = (path: string) => {
                 </Button>
             </li>
 
+            <!-- Login and Register -->
             <li v-if="!$page.props.auth.user" class="space-x-6">
                 <Button variant="ghost">
                     <Link
@@ -121,14 +110,10 @@ const isActiveLink = (path: string) => {
                     </Link>
                 </Button>
             </li>
-
+            <!-- Profile and Logout -->
             <li v-else class="space-x-6">
                 <Button variant="ghost">
-                    <Link
-                        class="hover:bg-accent"
-                        :href="'/users/' + $page.props.auth.user.id"
-                        >Profile</Link
-                    >
+                    <Link class="hover:bg-accent" href="/profile">Profile</Link>
                 </Button>
                 <Form class="inline" :action="route('logout')" method="post">
                     <Button variant="ghost"> Logout </Button>
@@ -158,7 +143,7 @@ const isActiveLink = (path: string) => {
             <!-- For Logged User -->
             <div v-if="$page.props.auth.user" class="flex-1 text-gray-400">
                 Welcome,
-                <UserNamerUpper :name="user.name" />!
+                <UserNameUpper :name="user.name" />!
             </div>
 
             <Sheet>

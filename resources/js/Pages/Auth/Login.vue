@@ -16,7 +16,7 @@ import Button from "@/components/ui/button/Button.vue";
 
 <template>
     <Head title="Login" />
-    <div class="grid place-items-center">
+    <div class="grid place-items-center mx-auto h-screen">
         <Form action="/login" method="post" #default="{ processing, errors }">
             <Card class="w-[350px] px-2">
                 <CardHeader>
@@ -32,12 +32,16 @@ import Button from "@/components/ui/button/Button.vue";
                         {{ errors.email }}
                     </div>
                     <Label class="form-label" for="password">Password</Label>
-                    <Input name="password" placeholder="* * * * * * * *" />
+                    <Input
+                        name="password"
+                        type="password"
+                        placeholder="* * * * * * * *"
+                    />
                     <div v-if="errors.name">
                         {{ errors.password }}
                     </div>
 
-                    <Button :as="Link" class="w-full" :disabled="processing">
+                    <Button class="w-full" :disabled="processing">
                         Login
                     </Button>
                 </CardContent>
