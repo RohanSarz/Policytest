@@ -65,8 +65,9 @@ const isActiveLink = (path: string) => {
         <ul
             class="hidden md:flex justify-end items-center bg-secondary-foreground text-white dark:bg-primary space-x-6 px-3 py-3"
         >
-            <LoginOrRegister />
-            <li v-if="$page.props.auth.user" class="flex-1 text-gray-400">
+            <!-- Guest Message -->
+            <LoginOrRegister class="flex-1 text-gray-400 " data-aos="fade-down"/>
+            <li v-if="$page.props.auth.user" class="flex-1 text-gray-300">
                 Welcome,
                 <span class="text-gray-600 uppercase">
                     {{ $page.props.auth.user.name }} </span
