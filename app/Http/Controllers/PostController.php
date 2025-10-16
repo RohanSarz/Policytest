@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+=======
+use Illuminate\Http\Request;
+>>>>>>> 2a79c7e3c0681e4b9c4e00c23d755f56846b1f8b
 
 class PostController extends Controller
 {
@@ -29,6 +33,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+<<<<<<< HEAD
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'body' => ['required', 'string'],
@@ -41,6 +46,28 @@ class PostController extends Controller
         ]);
 
         return redirect()->route('home')->with('message', 'Post created successfully!');
+=======
+        $fields = $request->validate(
+            rules: [
+                'title' => ['string', 'max:255', 'required'],
+                'body' => ['required', 'string'],
+            ],
+        );
+
+        $fields['password'] = bcrypt($fields['password']);
+
+        $fields['avatar'] = $request->hasFile('avatar') ? Storage::disk('public')->put('avatars', $request->avatar) : Storage::disk('public')->put('avatars', 'def.jpg');
+        // register
+
+        $user = User::create($fields);
+
+        // login
+
+        Auth::login($user);
+
+        // redirect
+        return redirect()->route('home')->with('message', 'User created successfully!');
+>>>>>>> 2a79c7e3c0681e4b9c4e00c23d755f56846b1f8b
     }
 
     /**

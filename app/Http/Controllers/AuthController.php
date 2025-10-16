@@ -61,6 +61,10 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 2a79c7e3c0681e4b9c4e00c23d755f56846b1f8b
         Auth::logout();
 
         $request->session()->invalidate();

@@ -18,7 +18,11 @@ class UserDataController extends Controller
     // Method post update profile data
     public function store(Request $request)
     {
+<<<<<<< HEAD
         sleep(2);
+=======
+        sleep(3);
+>>>>>>> 2a79c7e3c0681e4b9c4e00c23d755f56846b1f8b
         $user = Auth::user();
         $request->validate([
             'name' => 'required|string|max:255',
