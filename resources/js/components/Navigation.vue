@@ -10,6 +10,7 @@ import {
     Key,
 } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
+import UserNameUpper from "@/components/userDataComponents/UserNameUpper.vue";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 import {
