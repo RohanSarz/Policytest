@@ -1,5 +1,6 @@
 <script setup>
 import { Form } from "@inertiajs/vue3";
+import Error from "@/components/Error.vue";
 
 import Input from "@/components/ui/input/Input.vue";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -96,25 +97,23 @@ onUnmounted(() => {
                                 <AvatarFallback v-else> ? </AvatarFallback>
                             </Avatar>
                         </div>
+                        <Error
+                            class="text-center py-2 text-xs font-mono"
+                            errorName="avatar"
+                        />
                     </Label>
                     <Label class="form-label" for="name">Name</Label>
                     <Input name="name" type="text" placeholder="name" />
-                    <div v-if="errors.name">
-                        {{ errors.name }}
-                    </div>
+                    <Error errorName="name" />
                     <Label class="form-label" for="email">Email</Label>
                     <Input name="email" placeholder="eg@mail.com" />
-                    <div v-if="errors.email">
-                        {{ errors.email }}
-                    </div>
+                    <Error errorName="email" />
                     <Label class="form-label" for="password">Password</Label>
                     <Input name="password" placeholder="* * * * * * * *" />
-                    <div v-if="errors.name">
-                        {{ errors.password }}
-                    </div>
-                    <Label class="form-label" for="password_confirmation"
-                        >Confirm Password</Label
-                    >
+                    <Error errorName="password" />
+                    <Label class="form-label" for="password_confirmation">
+                        Confirm Password
+                    </Label>
                     <Input
                         name="password_confirmation"
                         placeholder="Confirm your Passcode"

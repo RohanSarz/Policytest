@@ -1,12 +1,28 @@
 <script setup lang="ts">
-import { usePage } from "@inertiajs/vue3";
+import { usePage, Form } from "@inertiajs/vue3";
 import { computed } from "vue";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Camera, Calendar, Mail, MapPin } from "lucide-vue-next";
-
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import UserNameUpper from "../userDataComponents/UserNameUpper.vue";
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 </script>
@@ -31,6 +47,7 @@ const user = computed(() => page.props.auth.user);
                     </Avatar>
                     <Button
                         size="icon"
+                        as=""
                         variant="outline"
                         class="absolute -right-2 -bottom-2 h-8 w-8 rounded-full"
                     >
@@ -42,7 +59,7 @@ const user = computed(() => page.props.auth.user);
                         class="flex flex-col gap-2 md:flex-row md:items-center"
                     >
                         <h1 class="text-2xl font-bold">
-                            {{ user?.name }}
+                            <UserNameUpper :name="user.name" />
                         </h1>
                         <Badge variant="secondary">{{
                             user?.role || "MemberT  "
@@ -78,7 +95,76 @@ const user = computed(() => page.props.auth.user);
                         </div>
                     </div>
                 </div>
-                <Button variant="default">Edit Profile</Button>
+                <Dialog>
+                    <DialogTrigger
+                        ><Button variant="default"
+                            >Edit Profile</Button
+                        ></DialogTrigger
+                    >
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Make changes on profile </DialogTitle>
+                            <DialogDescription>
+                                Note: Changes will be reflected everywhere,
+                                Currently the Email is disabled for editing.
+                            </DialogDescription>
+
+                            <Form
+                                :action="route('profile.store')"
+                                method="post"
+                            >
+                                <div
+                                    class="grid grid-cols-1 gap-6 md:grid-cols-2"
+                                >
+                                    <div class="space-y-2">
+                                        <Label for="name">Name</Label>
+                                        <Input
+                                            id="name"
+                                            name="name"
+                                            :default-value="
+                                                user?.name?.split(' ')[0] || ''
+                                            "
+                                        />
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <Label for="email">Email</Label>
+                                        <Input
+                                            id="email"
+                                            name="email"
+                                            type="email"
+                                            :default-value="user?.email || ''"
+                                        />
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <Label for="jobTitle">Job Title</Label>
+                                        <Input
+                                            id="jobTitle"
+                                            name="jobTitle"
+                                            default-value="Software Engineer"
+                                            disabled
+                                        />
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <Label for="company">Company</Label>
+                                        <Input
+                                            id="company"
+                                            name="company"
+                                            default-value="Your Company"
+                                            disabled
+                                        />
+                                    </div>
+                                </div>
+
+                                <Button type="submit" class="mt-4"
+                                    >Save Changes</Button
+                                >
+                            </Form>
+                        </DialogHeader>
+                    </DialogContent>
+                </Dialog>
             </div>
         </CardContent>
     </Card>

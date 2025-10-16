@@ -3,8 +3,8 @@ import { ProfileHeader, ProfileContent } from "@/components/profile";
 </script>
 
 <template>
-  <div class="mx-auto max-w-4xl space-y-6 px-4 py-10">
-    <ProfileHeader />
-    <ProfileContent />
-  </div>
+    <div class="px-10 py-10 space-y-6">
+        <ProfileHeader />
+        <ProfileContent />
+    </div>
 </template>

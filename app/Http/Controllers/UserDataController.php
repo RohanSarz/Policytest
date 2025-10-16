@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -14,32 +15,21 @@ class UserDataController extends Controller
         return inertia('User/Profile');
     }
 
-    public function updateProfile(Request $request)
+    // Method post update profile data
+    public function store(Request $request)
     {
+        sleep(2);
         $user = Auth::user();
-
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:500',
-            'date_of_birth' => 'nullable|date|before:today',
+            'email' => ['required', 'email'],
         ]);
 
         $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'date_of_birth' => $request->date_of_birth,
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
         ]);
 
-        return response()->json(
-            [
-                'message' => 'Profile updated successfully',
-                'user' => $user->fresh(),
-            ],
-            200,
-        );
+        return redirect()->route('profile');
     }
 }

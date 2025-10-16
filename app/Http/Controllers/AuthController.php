@@ -15,7 +15,7 @@ class AuthController extends Controller
 
         $fields = $request->validate(
             rules: [
-                'avatar' => ['file', 'image', 'max:3000', 'nullable'],
+                'avatar' => ['file', 'image', 'max:2000', 'nullable'],
                 'name' => ['required', 'max:255'],
                 'email' => ['required', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'confirmed'],
@@ -61,7 +61,6 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        //dd(Auth::user());
         Auth::logout();
 
         $request->session()->invalidate();

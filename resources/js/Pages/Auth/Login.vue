@@ -12,12 +12,13 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import Button from "@/components/ui/button/Button.vue";
+import Error from "@/components/Error.vue";
 </script>
 
 <template>
     <Head title="Login" />
     <div class="grid place-items-center mx-auto h-screen">
-        <Form action="/login" method="post" #default="{ processing, errors }">
+        <Form action="/login" method="post" #default="{ processing }">
             <Card class="w-[350px] px-2">
                 <CardHeader>
                     <CardTitle>Log In</CardTitle>
@@ -25,23 +26,19 @@ import Button from "@/components/ui/button/Button.vue";
                         >Login with your credintials.</CardDescription
                     >
                 </CardHeader>
-                <CardContent class="space-y-4">
+                <CardContent class="space-y-2">
                     <Label class="form-label" for="email">Email</Label>
                     <Input name="email" placeholder="eg@mail.com" />
-                    <div v-if="errors.email">
-                        {{ errors.email }}
-                    </div>
+                    <Error errorName="email" />
                     <Label class="form-label" for="password">Password</Label>
                     <Input
                         name="password"
                         type="password"
                         placeholder="* * * * * * * *"
                     />
-                    <div v-if="errors.name">
-                        {{ errors.password }}
-                    </div>
+                    <Error errorName="password" />
 
-                    <Button class="w-full" :disabled="processing">
+                    <Button class="w-full my-2" :disabled="processing">
                         Login
                     </Button>
                 </CardContent>
