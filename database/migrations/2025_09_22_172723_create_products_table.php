@@ -17,9 +17,7 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->decimal('price', 15, 2);
             $table->integer('quantity')->default(0);
-
             $table->timestamps();
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

@@ -9,10 +9,12 @@ defineProps({
 // Capitalize the first letter of the user's name
 const capitalizeName = (name) => {
     if (!name) return "";
-    return name.charAt(0).toUpperCase() + name.slice(1);
+    const big = name.charAt(0).toUpperCase();
+    const rest = name.slice(1).toLowerCase();
+    return big + rest;
 };
 </script>
 
 <template>
-    <span>{{ name.charAt(0).toUpperCase() + name.slice(1) }}</span>
+    <span>{{ capitalizeName(name) }}</span>
 </template>

@@ -23,323 +23,264 @@ const user = computed(() => page.props.auth.user);
 </script>
 
 <template>
-    <Tabs defaultValue="personal" class="space-y-6">
-        <TabsList class="grid w-full grid-cols-4">
-            <TabsTrigger value="personal">Personal</TabsTrigger>
-            <TabsTrigger value="account">Account</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-        </TabsList>
+    <div >
+        <Tabs defaultValue="account" class="space-y-4">
+            <TabsList class="grid w-full grid-cols-4">
+                <TabsTrigger value="account">Account</TabsTrigger>
+                <TabsTrigger value="security">Security</TabsTrigger>
+                <TabsTrigger value="notifications">Notifications</TabsTrigger>
+            </TabsList>
 
-        <!-- Personal Information -->
-        <TabsContent value="personal" class="space-y-6">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Personal Information</CardTitle>
-                    <CardDescription
-                        >Update your personal details and profile
-                        information.</CardDescription
-                    >
-                </CardHeader>
-                <CardContent class="space-y-6">
-                    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                        <div class="space-y-2">
-                            <Label for="firstName">First Name</Label>
-                            <Input
-                                id="firstName"
-                                :defaultValue="user?.name?.split(' ')[0] || ''"
-                            />
-                        </div>
-                        <div class="space-y-2">
-                            <Label for="lastName">Last Name</Label>
-                            <Input
-                                id="lastName"
-                                :defaultValue="
-                                    user?.name?.split(' ').slice(1).join(' ') ||
-                                    ''
-                                "
-                            />
-                        </div>
-                        <div class="space-y-2">
-                            <Label for="email">Email</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                :defaultValue="user?.email || ''"
-                            />
-                        </div>
-                        <div class="space-y-2">
-                            <Label for="phone">Phone</Label>
-                            <Input
-                                id="phone"
-                                :defaultValue="user?.phone || ''"
-                            />
-                        </div>
-                        <div class="space-y-2">
-                            <Label for="jobTitle">Job Title</Label>
-                            <Input
-                                id="jobTitle"
-                                :defaultValue="user?.role || ''"
-                            />
-                        </div>
-                        <div class="space-y-2">
-                            <Label for="company">Company</Label>
-                            <Input id="company" defaultValue="Your Company" />
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <Label for="bio">Bio</Label>
-                        <Textarea
-                            id="bio"
-                            placeholder="Tell us about yourself..."
-                            defaultValue="Passionate developer with 8+ years of experience creating user-centered digital experiences. I love solving complex problems and turning ideas into beautiful, functional products."
-                            rows="4"
-                        />
-                    </div>
-                    <div class="space-y-2">
-                        <Label for="location">Location</Label>
-                        <Input
-                            id="location"
-                            :defaultValue="user?.address || ''"
-                        />
-                    </div>
-                </CardContent>
-            </Card>
-        </TabsContent>
-
-        <!-- Account Settings -->
-        <TabsContent value="account" class="space-y-6">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Account Settings</CardTitle>
-                    <CardDescription
-                        >Manage your account preferences and
-                        subscription.</CardDescription
-                    >
-                </CardHeader>
-                <CardContent class="space-y-6">
-                    <div class="flex items-center justify-between">
-                        <div class="space-y-1">
-                            <Label class="text-base">Account Status</Label>
-                            <p class="text-muted-foreground text-sm">
-                                Your account is currently active
-                            </p>
-                        </div>
-                        <Badge
-                            variant="outline"
-                            class="border-green-200 bg-green-50 text-green-700"
+            <!-- Account Settings -->
+            <TabsContent value="account" class="space-y-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Account Settings</CardTitle>
+                        <CardDescription
+                            >Manage your account preferences and
+                            subscription.</CardDescription
                         >
-                            Active
-                        </Badge>
-                    </div>
-                    <Separator />
-                    <div class="flex items-center justify-between">
-                        <div class="space-y-1">
-                            <Label class="text-base">Subscription Plan</Label>
-                            <p class="text-muted-foreground text-sm">
-                                Pro Plan - $29/month
-                            </p>
-                        </div>
-                        <Button variant="outline">Manage Subscription</Button>
-                    </div>
-                    <Separator />
-                    <div class="flex items-center justify-between">
-                        <div class="space-y-1">
-                            <Label class="text-base">Account Visibility</Label>
-                            <p class="text-muted-foreground text-sm">
-                                Make your profile visible to other users
-                            </p>
-                        </div>
-                        <Switch defaultChecked />
-                    </div>
-                    <Separator />
-                    <div class="flex items-center justify-between">
-                        <div class="space-y-1">
-                            <Label class="text-base">Data Export</Label>
-                            <p class="text-muted-foreground text-sm">
-                                Download a copy of your data
-                            </p>
-                        </div>
-                        <Button variant="outline">Export Data</Button>
-                    </div>
-                </CardContent>
-            </Card>
-
-            <Card class="border-destructive/50">
-                <CardHeader>
-                    <CardTitle class="text-destructive">Danger Zone</CardTitle>
-                    <CardDescription
-                        >Irreversible and destructive actions</CardDescription
-                    >
-                </CardHeader>
-                <CardContent>
-                    <div class="flex items-center justify-between">
-                        <div class="space-y-1">
-                            <Label class="text-base">Delete Account</Label>
-                            <p class="text-muted-foreground text-sm">
-                                Permanently delete your account and all data
-                            </p>
-                        </div>
-                        <Button variant="destructive">
-                            <Trash2 class="mr-2 h-4 w-4" />
-                            Delete Account
-                        </Button>
-                    </div>
-                </CardContent>
-            </Card>
-        </TabsContent>
-
-        <!-- Security Settings -->
-        <TabsContent value="security" class="space-y-6">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Security Settings</CardTitle>
-                    <CardDescription
-                        >Manage your account security and
-                        authentication.</CardDescription
-                    >
-                </CardHeader>
-                <CardContent class="space-y-6">
-                    <div class="space-y-4">
+                    </CardHeader>
+                    <CardContent class="space-y-6">
                         <div class="flex items-center justify-between">
                             <div class="space-y-1">
-                                <Label class="text-base">Password</Label>
+                                <Label class="text-base">Account Status</Label>
                                 <p class="text-muted-foreground text-sm">
-                                    Last changed 3 months ago
+                                    Your account is currently active
                                 </p>
                             </div>
-                            <Button variant="outline">
-                                <Key class="mr-2 h-4 w-4" />
-                                Change Password
-                            </Button>
+                            <Badge
+                                variant="outline"
+                                class="border-green-200 bg-green-50 text-green-700"
+                            >
+                                Active
+                            </Badge>
                         </div>
                         <Separator />
                         <div class="flex items-center justify-between">
                             <div class="space-y-1">
                                 <Label class="text-base"
-                                    >Two-Factor Authentication</Label
+                                    >Subscription Plan</Label
                                 >
                                 <p class="text-muted-foreground text-sm">
-                                    Add an extra layer of security to your
-                                    account
+                                    Pro Plan - $29/month
                                 </p>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <Badge
-                                    variant="outline"
-                                    class="border-green-200 bg-green-50 text-green-700"
+                            <Button variant="outline"
+                                >Manage Subscription</Button
+                            >
+                        </div>
+                        <Separator />
+                        <div class="flex items-center justify-between">
+                            <div class="space-y-1">
+                                <Label class="text-base"
+                                    >Account Visibility</Label
                                 >
-                                    Enabled
-                                </Badge>
-                                <Button variant="outline" size="sm">
-                                    Configure
+                                <p class="text-muted-foreground text-sm">
+                                    Make your profile visible to other users
+                                </p>
+                            </div>
+                            <Switch defaultChecked />
+                        </div>
+                        <Separator />
+                        <div class="flex items-center justify-between">
+                            <div class="space-y-1">
+                                <Label class="text-base">Data Export</Label>
+                                <p class="text-muted-foreground text-sm">
+                                    Download a copy of your data
+                                </p>
+                            </div>
+                            <Button variant="outline">Export Data</Button>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                <Card class="border-destructive/50">
+                    <CardHeader>
+                        <CardTitle class="text-destructive"
+                            >Danger Zone</CardTitle
+                        >
+                        <CardDescription
+                            >Irreversible and destructive
+                            actions</CardDescription
+                        >
+                    </CardHeader>
+                    <CardContent>
+                        <div class="flex items-center justify-between">
+                            <div class="space-y-1">
+                                <Label class="text-base">Delete Account</Label>
+                                <p class="text-muted-foreground text-sm">
+                                    Permanently delete your account and all data
+                                </p>
+                            </div>
+                            <Button variant="destructive">
+                                <Trash2 class="mr-2 h-4 w-4" />
+                                Delete Account
+                            </Button>
+                        </div>
+                    </CardContent>
+                </Card>
+            </TabsContent>
+
+            <!-- Security Settings -->
+            <TabsContent value="security" class="space-y-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Security Settings</CardTitle>
+                        <CardDescription
+                            >Manage your account security and
+                            authentication.</CardDescription
+                        >
+                    </CardHeader>
+                    <CardContent class="space-y-6">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div class="space-y-1">
+                                    <Label class="text-base">Password</Label>
+                                    <p class="text-muted-foreground text-sm">
+                                        Last changed 3 months ago
+                                    </p>
+                                </div>
+                                <Button variant="outline">
+                                    <Key class="mr-2 h-4 w-4" />
+                                    Change Password
+                                </Button>
+                            </div>
+                            <Separator />
+                            <div class="flex items-center justify-between">
+                                <div class="space-y-1">
+                                    <Label class="text-base"
+                                        >Two-Factor Authentication</Label
+                                    >
+                                    <p class="text-muted-foreground text-sm">
+                                        Add an extra layer of security to your
+                                        account
+                                    </p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <Badge
+                                        variant="outline"
+                                        class="border-green-200 bg-green-50 text-green-700"
+                                    >
+                                        Enabled
+                                    </Badge>
+                                    <Button variant="outline" size="sm">
+                                        Configure
+                                    </Button>
+                                </div>
+                            </div>
+                            <Separator />
+                            <div class="flex items-center justify-between">
+                                <div class="space-y-1">
+                                    <Label class="text-base"
+                                        >Login Notifications</Label
+                                    >
+                                    <p class="text-muted-foreground text-sm">
+                                        Get notified when someone logs into your
+                                        account
+                                    </p>
+                                </div>
+                                <Switch defaultChecked />
+                            </div>
+                            <Separator />
+                            <div class="flex items-center justify-between">
+                                <div class="space-y-1">
+                                    <Label class="text-base"
+                                        >Active Sessions</Label
+                                    >
+                                    <p class="text-muted-foreground text-sm">
+                                        Manage devices that are logged into your
+                                        account
+                                    </p>
+                                </div>
+                                <Button variant="outline">
+                                    <Shield class="mr-2 h-4 w-4" />
+                                    View Sessions
                                 </Button>
                             </div>
                         </div>
-                        <Separator />
-                        <div class="flex items-center justify-between">
-                            <div class="space-y-1">
-                                <Label class="text-base"
-                                    >Login Notifications</Label
-                                >
-                                <p class="text-muted-foreground text-sm">
-                                    Get notified when someone logs into your
-                                    account
-                                </p>
-                            </div>
-                            <Switch defaultChecked />
-                        </div>
-                        <Separator />
-                        <div class="flex items-center justify-between">
-                            <div class="space-y-1">
-                                <Label class="text-base">Active Sessions</Label>
-                                <p class="text-muted-foreground text-sm">
-                                    Manage devices that are logged into your
-                                    account
-                                </p>
-                            </div>
-                            <Button variant="outline">
-                                <Shield class="mr-2 h-4 w-4" />
-                                View Sessions
-                            </Button>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-        </TabsContent>
+                    </CardContent>
+                </Card>
+            </TabsContent>
 
-        <!-- Notification Settings -->
-        <TabsContent value="notifications" class="space-y-6">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Notification Preferences</CardTitle>
-                    <CardDescription
-                        >Choose what notifications you want to
-                        receive.</CardDescription
-                    >
-                </CardHeader>
-                <CardContent class="space-y-6">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <div class="space-y-1">
-                                <Label class="text-base"
-                                    >Email Notifications</Label
-                                >
-                                <p class="text-muted-foreground text-sm">
-                                    Receive notifications via email
-                                </p>
+            <!-- Notification Settings -->
+            <TabsContent value="notifications" class="space-y-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Notification Preferences</CardTitle>
+                        <CardDescription
+                            >Choose what notifications you want to
+                            receive.</CardDescription
+                        >
+                    </CardHeader>
+                    <CardContent class="space-y-6">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div class="space-y-1">
+                                    <Label class="text-base"
+                                        >Email Notifications</Label
+                                    >
+                                    <p class="text-muted-foreground text-sm">
+                                        Receive notifications via email
+                                    </p>
+                                </div>
+                                <Switch defaultChecked />
                             </div>
-                            <Switch defaultChecked />
-                        </div>
-                        <Separator />
-                        <div class="flex items-center justify-between">
-                            <div class="space-y-1">
-                                <Label class="text-base"
-                                    >Push Notifications</Label
-                                >
-                                <p class="text-muted-foreground text-sm">
-                                    Receive push notifications in your browser
-                                </p>
+                            <Separator />
+                            <div class="flex items-center justify-between">
+                                <div class="space-y-1">
+                                    <Label class="text-base"
+                                        >Push Notifications</Label
+                                    >
+                                    <p class="text-muted-foreground text-sm">
+                                        Receive push notifications in your
+                                        browser
+                                    </p>
+                                </div>
+                                <Switch />
                             </div>
-                            <Switch />
-                        </div>
-                        <Separator />
-                        <div class="flex items-center justify-between">
-                            <div class="space-y-1">
-                                <Label class="text-base"
-                                    >Marketing Emails</Label
-                                >
-                                <p class="text-muted-foreground text-sm">
-                                    Receive emails about new features and
-                                    updates
-                                </p>
+                            <Separator />
+                            <div class="flex items-center justify-between">
+                                <div class="space-y-1">
+                                    <Label class="text-base"
+                                        >Marketing Emails</Label
+                                    >
+                                    <p class="text-muted-foreground text-sm">
+                                        Receive emails about new features and
+                                        updates
+                                    </p>
+                                </div>
+                                <Switch defaultChecked />
                             </div>
-                            <Switch defaultChecked />
-                        </div>
-                        <Separator />
-                        <div class="flex items-center justify-between">
-                            <div class="space-y-1">
-                                <Label class="text-base">Weekly Summary</Label>
-                                <p class="text-muted-foreground text-sm">
-                                    Get a weekly summary of your activity
-                                </p>
+                            <Separator />
+                            <div class="flex items-center justify-between">
+                                <div class="space-y-1">
+                                    <Label class="text-base"
+                                        >Weekly Summary</Label
+                                    >
+                                    <p class="text-muted-foreground text-sm">
+                                        Get a weekly summary of your activity
+                                    </p>
+                                </div>
+                                <Switch defaultChecked />
                             </div>
-                            <Switch defaultChecked />
-                        </div>
-                        <Separator />
-                        <div class="flex items-center justify-between">
-                            <div class="space-y-1">
-                                <Label class="text-base">Security Alerts</Label>
-                                <p class="text-muted-foreground text-sm">
-                                    Important security notifications (always
-                                    enabled)
-                                </p>
+                            <Separator />
+                            <div class="flex items-center justify-between">
+                                <div class="space-y-1">
+                                    <Label class="text-base"
+                                        >Security Alerts</Label
+                                    >
+                                    <p class="text-muted-foreground text-sm">
+                                        Important security notifications (always
+                                        enabled)
+                                    </p>
+                                </div>
+                                <Switch :checked="true" disabled />
                             </div>
-                            <Switch :checked="true" disabled />
                         </div>
-                    </div>
-                </CardContent>
-            </Card>
-        </TabsContent>
-    </Tabs>
+                    </CardContent>
+                </Card>
+            </TabsContent>
+        </Tabs>
+    </div>
 </template>
