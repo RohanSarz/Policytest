@@ -169,3 +169,21 @@
 .form-label {
     @apply block text-sm  leading-7;
 }
+
+.post-list-enter-active,
+.post-list-leave-active {
+    transition: all 0.5s ease;
+}
+.post-list-enter-from {
+    opacity: 0;
+    transform: translateX(30px); /* Start slightly to the right */
+}
+.post-list-leave-to {
+    opacity: 0;
+    transform: translateX(-30px); /* End slightly to the left */
+}
+
+/* Optional: prevent layout jump during animation */
+.post-list-move {
+    transition: transform 0.5s ease;
+}

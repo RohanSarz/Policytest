@@ -58,7 +58,7 @@ onUnmounted(() => {
 <template>
     <Head title="Register" />
 
-    <div class="grid place-items-center mx-auto h-screen">
+    <div class="grid place-items-center mx-auto h-fit my-24">
         <Form action="/register" method="post" #default="{ processing }">
             <Card
                 class="w-[350px] px-2"
@@ -164,12 +164,8 @@ onUnmounted(() => {
                         Register
                     </Button>
                 </CardContent>
-                <CardFooter>
-                    <div
-                        class="flex justify-start text-xs"
-                        data-aos="fade-right"
-                        data-aos-duration="300"
-                    >
+                <CardFooter data-aos="zoom-in-left" data-aos-duration="1200">
+                    <div class="flex justify-start text-xs">
                         <p class="text-slate-600 mb-2">
                             Already a user?
                             <Link :href="route('login')" class="text-link"

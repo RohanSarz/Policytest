@@ -17,7 +17,7 @@ import Error from "@/components/Error.vue";
 
 <template>
     <Head title="Login" />
-    <div class="grid place-items-center mx-auto h-screen">
+    <div class="grid place-items-center mx-auto h-fit my-24">
         <Form action="/login" method="post" #default="{ processing }">
             <Card
                 class="w-[350px] px-2"
@@ -80,12 +80,8 @@ import Error from "@/components/Error.vue";
                         Login
                     </Button>
                 </CardContent>
-                <CardFooter>
-                    <div
-                        class="flex justify-start text-xs"
-                        data-aos="fade-right"
-                        data-aos-duration="300"
-                    >
+                <CardFooter data-aos="zoom-in-left" data-aos-duration="1200">
+                    <div class="flex justify-start text-xs">
                         <p class="text-slate-600 mb-2">
                             Already have a account?
                             <Link :href="route('register')" class="">

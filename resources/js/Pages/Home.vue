@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PostCard from "@/components/post/PostCard.vue";
 import {
     ToastAction,
     ToastClose,
@@ -8,6 +9,7 @@ import {
     ToastTitle,
     ToastViewport,
 } from "radix-vue";
+import { TransitionGroup } from "vue";
 interface User {
     id: number;
     name: string;
@@ -226,5 +228,19 @@ const fakePosts: Post[] = [
 <template>
     <Head :title="$page.component" />
 
-    <div class="h-screen"></div>
+    <div class="min-h-screen">
+        <!-- TransitionGroup directly wraps the PostCard list -->
+        <TransitionGroup
+            name="post-list"
+            tag="div"
+            class="grid grid-cols-1 lg:grid-cols-2 place-items-center px-2 py-6 gap-4"
+        >
+            <PostCard
+                v-for="post in fakePosts"
+                :key="post.id"
+                :post="post"
+                class="post-item"
+            />
+        </TransitionGroup>
+    </div>
 </template>

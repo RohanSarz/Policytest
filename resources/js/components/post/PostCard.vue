@@ -70,7 +70,7 @@ defineProps<{
             </CardHeader>
             <CardContent class="pb-3">
                 <p class="line-clamp-3 text-sm text-muted-foreground">
-                    {{ post.content }}
+                    {{ post.content.slice(0, 100) + "..." }}
                 </p>
             </CardContent>
             <CardFooter class="flex justify-between">
