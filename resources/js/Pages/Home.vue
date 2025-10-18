@@ -228,19 +228,16 @@ const fakePosts: Post[] = [
 <template>
     <Head :title="$page.component" />
 
-    <div class="min-h-screen">
+    <div class="grid grid-cols-2 place-items-center space-y-4 py-4">
         <!-- TransitionGroup directly wraps the PostCard list -->
-        <TransitionGroup
-            name="post-list"
-            tag="div"
-            class="grid grid-cols-1 lg:grid-cols-2 place-items-center px-2 py-6 gap-4"
-        >
-            <PostCard
-                v-for="post in fakePosts"
-                :key="post.id"
-                :post="post"
-                class="post-item"
-            />
-        </TransitionGroup>
+
+        <PostCard
+            v-for="post in fakePosts"
+            :key="post.id"
+            :post="post"
+            class="post-item"
+            data-aos="zoom-in-up"
+            data-aos-duration="500"
+        />
     </div>
 </template>
