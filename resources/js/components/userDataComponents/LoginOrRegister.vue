@@ -14,7 +14,11 @@ const page = usePage();
             >Login</Link
         >
         or
-        <Link class="hover:underline hover:text-blue-300" href="/register">
+        <Link
+            class="hover:underline hover:text-blue-300"
+            :class="{ 'text-blue-300': $page.url === '/register' }"
+            href="/register"
+        >
             Register</Link
         >
         to continue.

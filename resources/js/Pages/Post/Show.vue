@@ -26,19 +26,20 @@ const post: Post = {
     user: {
         id: 1,
         name: "Jane Smith",
-        avatar: "avatars/jane.jpg"
+        avatar: "avatars/jane.jpg",
     },
     title: "Breaking: Major Policy Change Announced",
-    content: "In a surprise move today, the administration announced a comprehensive policy overhaul that will reshape the economic landscape. The changes include new tax regulations, healthcare provisions, and infrastructure investments worth billions of dollars. Experts predict this will have long-term implications for various sectors of the economy.\n\nThe announcement was made during a joint session of Congress, where the President outlined the key components of the new policy framework. The changes are expected to take effect starting next month, with implementation phases continuing through the end of the year.\n\nAccording to the Secretary of Economic Development, these changes will create an estimated 500,000 new jobs over the next two years while reducing the national deficit. The policy focuses on three main pillars: sustainable energy, healthcare reform, and technology advancement.\n\nSeveral industry experts have already weighed in on the announcement. \"This represents the most significant policy shift in a generation,\" said Dr. Emily Johnson, an economist at the National Policy Institute. \"The ripple effects will likely be felt across multiple sectors for years to come.\"\n\nOpposition leaders have voiced concerns about the implementation timeline and potential short-term economic disruptions. A spokesperson for the minority party said they would be reviewing the details carefully before making a complete assessment.\n\nThe announcement has caused mixed reactions in the stock market, with infrastructure and renewable energy stocks seeing gains while some traditional energy companies experienced losses. Financial analysts expect continued volatility as markets digest the implications of the new policy direction.",
+    content:
+        'In a surprise move today, the administration announced a comprehensive policy overhaul that will reshape the economic landscape. The changes include new tax regulations, healthcare provisions, and infrastructure investments worth billions of dollars. Experts predict this will have long-term implications for various sectors of the economy.\n\nThe announcement was made during a joint session of Congress, where the President outlined the key components of the new policy framework. The changes are expected to take effect starting next month, with implementation phases continuing through the end of the year.\n\nAccording to the Secretary of Economic Development, these changes will create an estimated 500,000 new jobs over the next two years while reducing the national deficit. The policy focuses on three main pillars: sustainable energy, healthcare reform, and technology advancement.\n\nSeveral industry experts have already weighed in on the announcement. "This represents the most significant policy shift in a generation," said Dr. Emily Johnson, an economist at the National Policy Institute. "The ripple effects will likely be felt across multiple sectors for years to come."\n\nOpposition leaders have voiced concerns about the implementation timeline and potential short-term economic disruptions. A spokesperson for the minority party said they would be reviewing the details carefully before making a complete assessment.\n\nThe announcement has caused mixed reactions in the stock market, with infrastructure and renewable energy stocks seeing gains while some traditional energy companies experienced losses. Financial analysts expect continued volatility as markets digest the implications of the new policy direction.',
     created_at: "2025-10-15T09:30:00Z",
-    updated_at: "2025-10-15T09:30:00Z"
+    updated_at: "2025-10-15T09:30:00Z",
 };
 </script>
 
 <template>
     <div>
         <Head :title="post.title" />
-        
+
         <header class="bg-white shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <div class="flex items-center justify-between">
@@ -51,8 +52,8 @@ const post: Post = {
                         </p>
                     </div>
                     <div>
-                        <Link 
-                            :href="route('posts.index')" 
+                        <Link
+                            :href="route('posts.index')"
                             class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
                         >
                             Back to Posts
@@ -79,23 +80,44 @@ const post: Post = {
                             </Avatar>
                         </Link>
                         <div class="flex-1 min-w-0">
-                            <Link :href="`/users/${post.user.id}`" class="hover:underline">
-                                <h4 class="text-sm font-semibold truncate">{{ post.user.name }}</h4>
+                            <Link
+                                :href="`/users/${post.user.id}`"
+                                class="hover:underline"
+                            >
+                                <h4 class="text-sm font-semibold truncate">
+                                    {{ post.user.name }}
+                                </h4>
                             </Link>
                             <p class="text-xs text-muted-foreground">
-                                Published: {{ new Date(post.created_at).toLocaleDateString() }}
-                                <span v-if="post.updated_at !== post.created_at">
-                                    (Updated: {{ new Date(post.updated_at).toLocaleDateString() }})
+                                Published:
+                                {{
+                                    new Date(
+                                        post.created_at
+                                    ).toLocaleDateString()
+                                }}
+                                <span
+                                    v-if="post.updated_at !== post.created_at"
+                                >
+                                    (Updated:
+                                    {{
+                                        new Date(
+                                            post.updated_at
+                                        ).toLocaleDateString()
+                                    }})
                                 </span>
                             </p>
                         </div>
                     </div>
-                    
-                    <CardTitle class="mt-4 text-3xl">{{ post.title }}</CardTitle>
+
+                    <CardTitle class="mt-4 text-3xl">{{
+                        post.title
+                    }}</CardTitle>
                 </CardHeader>
-                
+
                 <CardContent class="prose prose-gray max-w-none">
-                    <div class="text-muted-foreground whitespace-pre-line text-lg">
+                    <div
+                        class="text-muted-foreground whitespace-pre-line text-lg"
+                    >
                         {{ post.content }}
                     </div>
                 </CardContent>
@@ -111,12 +133,20 @@ const post: Post = {
                     </Button>
                 </div>
                 <div>
-                    <form @submit.prevent="() => {
-                        if (confirm('Are you sure you want to delete this post?')) {
-                            // In a real app, this would be an actual delete request
-                            console.log('Deleting post', post.id);
-                        }
-                    }">
+                    <form
+                        @submit.prevent="
+                            () => {
+                                if (
+                                    confirm(
+                                        'Are you sure you want to delete this post?'
+                                    )
+                                ) {
+                                    // In a real app, this would be an actual delete request
+                                    console.log('Deleting post', post.id);
+                                }
+                            }
+                        "
+                    >
                         <Button type="submit" variant="destructive">
                             Delete
                         </Button>

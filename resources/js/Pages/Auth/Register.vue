@@ -59,18 +59,23 @@ onUnmounted(() => {
     <Head title="Register" />
 
     <div class="grid place-items-center mx-auto h-screen">
-        <Form
-            action="/register"
-            method="post"
-            #default="{ processing, errors }"
-        >
-            <Card class="w-6/6 lg:w-[600px] px-6">
-                <CardHeader>
-                    <CardTitle class="text-2xl">Register</CardTitle>
+        <Form action="/register" method="post" #default="{ processing }">
+            <Card
+                class="w-[350px] px-2"
+                data-aos="fade-left"
+                data-aos-duration="500"
+            >
+                <CardHeader data-aos="fade-left" data-aos-duration="300">
+                    <CardTitle>Register</CardTitle>
                     <CardDescription>Register a new account.</CardDescription>
                 </CardHeader>
-                <CardContent class="space-y-4">
-                    <Label class="form-label text" for="avatar">
+                <CardContent class="space-y-3">
+                    <Label
+                        class="form-label"
+                        for="avatar"
+                        data-aos="zoom-in-left"
+                        data-aos-duration="500"
+                    >
                         <div class="grid place-items-center gap-2">
                             Avatar
                             <Input
@@ -82,7 +87,6 @@ onUnmounted(() => {
                                 :disabled="processing"
                             />
                             <Avatar class="size-16 border-2 border-black">
-                                <!-- v-if="previewImage" -->
                                 <AvatarImage
                                     class="object-cover w-full h-full"
                                     v-if="previewImage"
@@ -102,28 +106,70 @@ onUnmounted(() => {
                             errorName="avatar"
                         />
                     </Label>
-                    <Label class="form-label" for="name">Name</Label>
-                    <Input name="name" type="text" placeholder="name" />
-                    <Error errorName="name" />
-                    <Label class="form-label" for="email">Email</Label>
-                    <Input name="email" placeholder="eg@mail.com" />
-                    <Error errorName="email" />
-                    <Label class="form-label" for="password">Password</Label>
-                    <Input name="password" placeholder="* * * * * * * *" />
-                    <Error errorName="password" />
-                    <Label class="form-label" for="password_confirmation">
-                        Confirm Password
+                    <Label
+                        class="form-label"
+                        for="name"
+                        data-aos="zoom-in-left"
+                        data-aos-duration="600"
+                    >
+                        Name
+                        <Input name="name" type="text" placeholder="name" />
+                        <Error errorName="name" />
                     </Label>
-                    <Input
-                        name="password_confirmation"
-                        placeholder="Confirm your Passcode"
-                    />
-                    <Button class="w-full" type="submit" :disabled="processing">
+                    <Label
+                        class="form-label"
+                        for="email"
+                        data-aos="zoom-in-left"
+                        data-aos-duration="700"
+                    >
+                        Email
+                        <Input name="email" placeholder="eg@mail.com" />
+                        <Error errorName="email" />
+                    </Label>
+                    <Label
+                        class="form-label"
+                        for="password"
+                        data-aos="zoom-in-left"
+                        data-aos-duration="800"
+                    >
+                        Password
+                        <Input
+                            name="password"
+                            type="password"
+                            placeholder="* * * * * * * *"
+                        />
+                        <Error errorName="password" />
+                    </Label>
+                    <Label
+                        class="form-label"
+                        for="password_confirmation"
+                        data-aos="zoom-in-left"
+                        data-aos-duration="900"
+                    >
+                        Confirm Password
+                        <Input
+                            name="password_confirmation"
+                            type="password"
+                            placeholder="Confirm your Passcode"
+                        />
+                        <Error errorName="password_confirmation" />
+                    </Label>
+                    <Button
+                        class="w-full my-2"
+                        type="submit"
+                        :disabled="processing"
+                        data-aos="zoom-in-left"
+                        data-aos-duration="1000"
+                    >
                         Register
                     </Button>
                 </CardContent>
-                <CardFooter class="flex justify-between px-6 pb-6">
-                    <div>
+                <CardFooter>
+                    <div
+                        class="flex justify-start text-xs"
+                        data-aos="fade-right"
+                        data-aos-duration="300"
+                    >
                         <p class="text-slate-600 mb-2">
                             Already a user?
                             <Link :href="route('login')" class="text-link"

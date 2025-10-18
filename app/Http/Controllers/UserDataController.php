@@ -18,7 +18,6 @@ class UserDataController extends Controller
     // Method post update profile data
     public function store(Request $request)
     {
-        sleep(2);
         $user = Auth::user();
         $request->validate([
             'name' => 'required|string|max:255',
@@ -30,6 +29,11 @@ class UserDataController extends Controller
             'email' => $request->input('email'),
         ]);
 
-        return redirect()->route('profile');
+        return redirect()
+            ->route('profile')
+            ->with([
+                'type' => 'success',
+                'message' => 'Profile updated successfully!',
+            ]);
     }
 }

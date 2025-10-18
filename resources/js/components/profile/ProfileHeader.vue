@@ -112,6 +112,7 @@ const user = computed(() => page.props.auth.user);
                             <Form
                                 :action="route('profile.store')"
                                 method="post"
+                                #default="{ processing }"
                             >
                                 <div
                                     class="grid grid-cols-1 gap-6 md:grid-cols-2"
@@ -124,6 +125,7 @@ const user = computed(() => page.props.auth.user);
                                             :default-value="
                                                 user?.name?.split(' ')[0] || ''
                                             "
+                                            :disabled="processing"
                                         />
                                     </div>
 
@@ -134,6 +136,7 @@ const user = computed(() => page.props.auth.user);
                                             name="email"
                                             type="email"
                                             :default-value="user?.email || ''"
+                                            :disabled="processing"
                                         />
                                     </div>
 
@@ -156,11 +159,13 @@ const user = computed(() => page.props.auth.user);
                                             disabled
                                         />
                                     </div>
-                                </div>
-
-                                <Button type="submit" class="mt-4"
-                                    >Save Changes</Button
+                                <DialogTrigger v-show="!processing"
+                                class="place-self-start"
+                                    ><Button 
+                                        >Save Changes</Button
+                                    ></DialogTrigger
                                 >
+                                </div>
                             </Form>
                         </DialogHeader>
                     </DialogContent>

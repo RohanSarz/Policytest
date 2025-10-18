@@ -67,7 +67,11 @@ const isActiveLink = (path: string) => {
             class="hidden md:flex justify-end items-center bg-secondary-foreground text-white dark:bg-primary space-x-6 px-3 py-3"
         >
             <!-- Guest Message -->
-            <LoginOrRegister class="flex-1 text-gray-400 " data-aos="fade-down"/>
+            <LoginOrRegister
+                class="flex-1 text-gray-400"
+                data-aos="fade-down"
+            />
+
             <li v-if="$page.props.auth.user" class="flex-1 text-gray-300">
                 Welcome,
                 <span class="text-gray-600 uppercase">
@@ -216,16 +220,16 @@ const isActiveLink = (path: string) => {
                                 class="w-full justify-start hover:bg-accent"
                             >
                                 <Link
-                                    :href="'/users/' + $page.props.auth.user.id"
+                                    href="/profile"
                                     class="flex items-center w-full"
                                 >
                                     Profile
                                 </Link>
                             </Button>
                             <Form
+                                :action="route('logout')"
                                 method="post"
-                                action="{{ route('logout') }}"
-                                class="flex items-center w-full"
+                                class="w-full"
                             >
                                 <Button
                                     variant="ghost"

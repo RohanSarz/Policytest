@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
-
-
 
 class PostController extends Controller
 {
@@ -17,7 +13,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return inertia('Home');
+        return inertia('Home')->with('flash.message', 'this is your home page');
     }
 
     /**
@@ -33,15 +29,16 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        dd($request->input());
+        $field = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'body' => ['required', 'string'],
         ]);
 
         $post = Post::create([
-            'user_id' => Auth::id(),
-            'title' => $validated['title'],
-            'body' => $validated['body'],
+            'user_id' => Auth::user()->id,
+            'title' => $field['title'],
+            'body' => $field['body'],
         ]);
 
         return redirect()->route('home')->with('message', 'Post created successfully!');
@@ -52,7 +49,7 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return inertia('Post/Show');
     }
 
     /**

@@ -19,35 +19,77 @@ import Error from "@/components/Error.vue";
     <Head title="Login" />
     <div class="grid place-items-center mx-auto h-screen">
         <Form action="/login" method="post" #default="{ processing }">
-            <Card class="w-[350px] px-2">
-                <CardHeader>
+            <Card
+                class="w-[350px] px-2"
+                data-aos="fade-left"
+                data-aos-duration="500"
+            >
+                <CardHeader data-aos="fade-left" data-aos-duration="300">
                     <CardTitle>Log In</CardTitle>
                     <CardDescription
                         >Login with your credintials.</CardDescription
                     >
                 </CardHeader>
-                <CardContent class="space-y-2">
-                    <Label class="form-label" for="email">Email</Label>
-                    <Input name="email" placeholder="eg@mail.com" />
-                    <Error errorName="email" />
-                    <Label class="form-label" for="password">Password</Label>
-                    <Input
-                        name="password"
-                        type="password"
-                        placeholder="* * * * * * * *"
-                    />
-                    <Error errorName="password" />
+                <CardContent class="space-y-3">
+                    <Label
+                        class="form-label"
+                        for="email"
+                        data-aos="zoom-in-left"
+                        data-aos-duration="500"
+                        >Email
+                        <Input name="email" placeholder="eg@mail.com" />
+                        <Error errorName="email" />
+                    </Label>
+                    <Label
+                        class="form-label"
+                        for="password"
+                        data-aos="zoom-in-left"
+                        data-aos-duration="700"
+                        >Password
 
-                    <Button class="w-full my-2" :disabled="processing">
+                        <Input
+                            name="password"
+                            type="password"
+                            placeholder="* * * * * * * *"
+                        />
+                        <Error errorName="password" />
+                    </Label>
+                    <div class="flex gap-2 items-center">
+                        <Label
+                            class="text-xs"
+                            for="remember"
+                            data-aos="zoom-in-left"
+                            data-aos-duration="600"
+                        >
+                            <Input
+                                class="size-3"
+                                id="remember"
+                                type="checkbox"
+                            />
+
+                            Remember Me
+                        </Label>
+                    </div>
+
+                    <Button
+                        class="w-full my-2"
+                        :disabled="processing"
+                        data-aos="zoom-in-left"
+                        data-aos-duration="800"
+                    >
                         Login
                     </Button>
                 </CardContent>
-                <CardFooter class="flex justify-between px-6 pb-6">
-                    <div>
+                <CardFooter>
+                    <div
+                        class="flex justify-start text-xs"
+                        data-aos="fade-right"
+                        data-aos-duration="300"
+                    >
                         <p class="text-slate-600 mb-2">
                             Already have a account?
-                            <Link :href="route('register')" class="text-link"
-                                >Register</Link
+                            <Link :href="route('register')" class="">
+                                Register</Link
                             >
                         </p>
                     </div>

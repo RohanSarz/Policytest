@@ -18,7 +18,8 @@ class AuthController extends Controller
                 'avatar' => ['file', 'image', 'max:2000', 'nullable'],
                 'name' => ['required', 'max:255'],
                 'email' => ['required', 'email', 'max:255', 'unique:users'],
-                'password' => ['required', 'confirmed'],
+                'password' => ['required', 'min:6', 'max:255', 'confirmed'],
+                'remember' => ['boolean'],
             ],
         );
 
@@ -34,7 +35,12 @@ class AuthController extends Controller
         Auth::login($user);
 
         // redirect
-        return redirect()->route('home')->with('message', 'User created successfully!');
+        return redirect()
+            ->route('home')
+            ->with([
+                'message' => 'Welcome to the fight club!',
+                'type' => 'success',
+            ]);
     }
     public function login(Request $request)
     {
@@ -42,14 +48,17 @@ class AuthController extends Controller
 
         $fields = $request->validate([
             'email' => ['required', 'email'],
-
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($fields, $request->remember)) {
+        $remember = $request->boolean('remember');
+
+        if (Auth::attempt($fields, $remember)) {
             $request->session()->regenerate();
 
-            return redirect()->back()->with('message', 'Welcome back!');
+            return redirect()
+                ->intended('profile')
+                ->with(['message' => 'Welcome back Commando!', 'type' => 'success']);
         }
 
         return back()
@@ -67,6 +76,11 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')->with('message', 'You have been logged out successfully!');
+        return redirect()
+            ->route('login')
+            ->with([
+                'message' => 'Sad to see you go!',
+                'type' => 'info',
+            ]);
     }
 }

@@ -23,7 +23,7 @@ const user = computed(() => page.props.auth.user);
 </script>
 
 <template>
-    <div >
+    <div>
         <Tabs defaultValue="account" class="space-y-4">
             <TabsList class="grid w-full grid-cols-4">
                 <TabsTrigger value="account">Account</TabsTrigger>
@@ -106,8 +106,10 @@ const user = computed(() => page.props.auth.user);
                         >
                     </CardHeader>
                     <CardContent>
-                        <div class="flex items-center justify-between">
-                            <div class="space-y-1">
+                        <div
+                            class="flex flex-col items-between justify-start gap-2"
+                        >
+                            <div class="space-y-2">
                                 <Label class="text-base">Delete Account</Label>
                                 <p class="text-muted-foreground text-sm">
                                     Permanently delete your account and all data

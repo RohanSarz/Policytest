@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import CreateButton from "@/components/post/CreateButton.vue";
-import PostCard from "@/components/post/PostCard.vue";
-import UserNameUpper from "@/components/userDataComponents/UserNameUpper.vue";
-
+import {
+    ToastAction,
+    ToastClose,
+    ToastDescription,
+    ToastProvider,
+    ToastRoot,
+    ToastTitle,
+    ToastViewport,
+} from "radix-vue";
 interface User {
     id: number;
     name: string;
@@ -220,21 +225,6 @@ const fakePosts: Post[] = [
 
 <template>
     <Head :title="$page.component" />
-    <header class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div
-                class="flex flex-col md:flex-row md:items-center md:justify-between"
-            >
-                <div>
-                    <h1 class="text-2xl font-semibold text-gray-900">Home,</h1>
-                    <p class="mt-1 text-sm text-gray-600">
-                        Latest News at the hand of your fingertips.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </header>
-    <div class="max-w-7xl mt-4 mx-auto grid grid-cols-2 space-x-4 space-y-4">
-        <PostCard v-for="post in fakePosts" :key="post.id" :post="post" />
-    </div>
+
+    <div class="h-screen"></div>
 </template>
