@@ -34,10 +34,10 @@ const user = computed(() => page.props.auth.user);
                 class="flex flex-col items-start gap-6 md:flex-row md:items-center"
             >
                 <div class="relative">
-                    <Avatar class="h-24 w-24">
+                    <Avatar class="h-24 w-24 border">
                         <AvatarImage
                             :src="`/storage/${
-                                user?.avatar ?? 'avatars/default.png'
+                                user?.avatar ?? 'avatars/def.jpg'
                             }`"
                             alt="Profile"
                         />
@@ -47,7 +47,6 @@ const user = computed(() => page.props.auth.user);
                     </Avatar>
                     <Button
                         size="icon"
-                        as=""
                         variant="outline"
                         class="absolute -right-2 -bottom-2 h-8 w-8 rounded-full"
                     >
@@ -159,12 +158,13 @@ const user = computed(() => page.props.auth.user);
                                             disabled
                                         />
                                     </div>
-                                <DialogTrigger v-show="!processing"
-                                class="place-self-start"
-                                    ><Button 
-                                        >Save Changes</Button
-                                    ></DialogTrigger
-                                >
+                                    <DialogTrigger
+                                        v-show="!processing"
+                                        class="place-self-start"
+                                        ><Button
+                                            >Save Changes</Button
+                                        ></DialogTrigger
+                                    >
                                 </div>
                             </Form>
                         </DialogHeader>

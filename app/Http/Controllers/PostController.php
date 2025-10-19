@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -13,7 +15,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        return inertia('Home')->with('flash.message', 'this is your home page');
+        return inertia('Home', [
+            'posts' => Post::with('user')->latest()->get(),
+        ])->with('flash.message', 'this is your home page');
     }
 
     /**
@@ -49,7 +53,11 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        return inertia('Post/Show');
+        $post = Post::with('user')->findOrFail($id);
+        
+        return inertia('Post/Show', [
+            'post' => $post,
+        ]);
     }
 
     /**

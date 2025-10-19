@@ -1,81 +1,97 @@
 <script setup lang="ts">
+import { PropType } from "vue";
+import { Link } from "@inertiajs/vue3";
 import {
     Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
+    CardDescription,
+    CardContent,
+    CardFooter,
 } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Link } from "@inertiajs/vue3";
-
-interface User {
-    id: number;
-    name: string;
-    avatar: string;
-}
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface Post {
     id: number;
-    user: User;
     title: string;
-    description: string;
-    content: string;
+    body: string;
     created_at: string;
-    updated_at: string;
+    user: {
+        id: number;
+        name: string;
+        avatar?: string | null;
+    };
 }
 
-defineProps<{
-    post: Post;
-}>();
+const props = defineProps({
+    post: {
+        type: Object as PropType<Post>,
+        required: true,
+    },
+});
 </script>
 
 <template>
-    <div class="max-w-lg min-w-md px-2">
+    <div class="max-w-lg min-w-[20rem] px-2">
         <Card>
             <CardHeader class="pb-3">
-                <div class="flex items-center space-x-4">
-                    <Link :href="`/users/${post.user.id}`">
+                <div class="flex items-center gap-4">
+                    <Link :href="`/users/${props.post.user.id}`">
                         <Avatar class="ring-1">
                             <AvatarImage
-                                class="border"
-                                :src="`storage/${post.user.avatar}`"
-                                :alt="post.user.name"
+                                :src="
+                                    props.post.user.avatar
+                                        ? `/storage/${props.post.user.avatar}`
+                                        : 'storage/avatars/def.jpg'
+                                "
+                                :alt="props.post.user.name"
                             />
-                            <AvatarFallback>
-                                {{ post.user.name.charAt(0).toUpperCase() }}
-                            </AvatarFallback>
+                            <AvatarFallback>{{
+                                props.post.user.name.charAt(0).toUpperCase()
+                            }}</AvatarFallback>
                         </Avatar>
                     </Link>
-                    <div class="flex-1 min-w-0">
+
+                    <div class="min-w-0 flex-1">
                         <Link
-                            :href="`/users/${post.user.id}`"
+                            :href="`/users/${props.post.user.id}`"
                             class="hover:underline"
                         >
                             <h4 class="text-sm font-semibold truncate">
-                                {{ post.user.name }}
+                                {{ props.post.user.name }}
                             </h4>
                         </Link>
                         <p class="text-xs text-muted-foreground">
-                            {{ new Date(post.created_at).toLocaleDateString() }}
+                            {{
+                                new Date(
+                                    props.post.created_at
+                                ).toLocaleDateString()
+                            }}
                         </p>
                     </div>
                 </div>
 
-                <CardTitle class="mt-2">{{ post.title }}</CardTitle>
-                <CardDescription class="line-clamp-2">{{
-                    post.description
-                }}</CardDescription>
+                <CardTitle class="mt-2">{{ props.post.title }}</CardTitle>
+                <CardDescription class="line-clamp-2">
+                    {{
+                        props.post.body.substring(0, 100) +
+                        (props.post.body.length > 100 ? "..." : "")
+                    }}
+                </CardDescription>
             </CardHeader>
+
             <CardContent class="pb-3">
                 <p class="line-clamp-3 text-sm text-muted-foreground">
-                    {{ post.content.slice(0, 100) + "..." }}
+                    {{
+                        props.post.body.substring(0, 150) +
+                        (props.post.body.length > 150 ? "..." : "")
+                    }}
                 </p>
             </CardContent>
-            <CardFooter class="flex justify-between">
+
+            <CardFooter>
                 <Link
-                    :href="`/posts/${post.id}`"
+                    :href="`/posts/${props.post.id}`"
                     class="text-sm font-medium hover:underline"
                 >
                     Read more

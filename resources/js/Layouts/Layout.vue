@@ -2,6 +2,9 @@
 import Footer from "@/components/Footer.vue";
 import Navigation from "@/components/Navigation.vue";
 import Toaster from "@/components/Toaster.vue";
+import Aos from "aos";
+
+Aos.init();
 </script>
 
 <template>

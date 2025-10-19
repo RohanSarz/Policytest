@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'Home')->name('home');
+Route::redirect('/', 'posts')->name('home');
+Route::resource('posts', PostController::class);
 
 // User routes
 Route::middleware(['auth'])->group(function () {
-    Route::resource('posts', PostController::class);
     Route::inertia('/dashboard', 'User/Dashboard')->name('dashboard');
     Route::get('/profile', [UserDataController::class, 'profileView'])->name('profile');
     Route::post('/profile', [UserDataController::class, 'store'])->name('profile.store');

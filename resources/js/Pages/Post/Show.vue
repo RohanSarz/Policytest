@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link } from "@inertiajs/vue3";
+import { usePage } from "@inertiajs/vue3";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -8,32 +8,21 @@ import UserNameUpper from "@/components/userDataComponents/UserNameUpper.vue";
 interface User {
     id: number;
     name: string;
-    avatar: string;
+    avatar: string | null;
 }
 
 interface Post {
     id: number;
+    user_id: number;
     user: User;
     title: string;
-    content: string;
+    body: string;
     created_at: string;
     updated_at: string;
 }
 
-// This would normally come from the server via props
-const post: Post = {
-    id: 1,
-    user: {
-        id: 1,
-        name: "Jane Smith",
-        avatar: "avatars/jane.jpg",
-    },
-    title: "Breaking: Major Policy Change Announced",
-    content:
-        'In a surprise move today, the administration announced a comprehensive policy overhaul that will reshape the economic landscape. The changes include new tax regulations, healthcare provisions, and infrastructure investments worth billions of dollars. Experts predict this will have long-term implications for various sectors of the economy.\n\nThe announcement was made during a joint session of Congress, where the President outlined the key components of the new policy framework. The changes are expected to take effect starting next month, with implementation phases continuing through the end of the year.\n\nAccording to the Secretary of Economic Development, these changes will create an estimated 500,000 new jobs over the next two years while reducing the national deficit. The policy focuses on three main pillars: sustainable energy, healthcare reform, and technology advancement.\n\nSeveral industry experts have already weighed in on the announcement. "This represents the most significant policy shift in a generation," said Dr. Emily Johnson, an economist at the National Policy Institute. "The ripple effects will likely be felt across multiple sectors for years to come."\n\nOpposition leaders have voiced concerns about the implementation timeline and potential short-term economic disruptions. A spokesperson for the minority party said they would be reviewing the details carefully before making a complete assessment.\n\nThe announcement has caused mixed reactions in the stock market, with infrastructure and renewable energy stocks seeing gains while some traditional energy companies experienced losses. Financial analysts expect continued volatility as markets digest the implications of the new policy direction.',
-    created_at: "2025-10-15T09:30:00Z",
-    updated_at: "2025-10-15T09:30:00Z",
-};
+const page = usePage();
+const post = page.props.post as Post;
 </script>
 
 <template>
@@ -71,7 +60,11 @@ const post: Post = {
                             <Avatar class="ring-1">
                                 <AvatarImage
                                     class="border"
-                                    :src="`storage/${post.user.avatar}`"
+                                    :src="
+                                        post.user.avatar
+                                            ? `/storage/${post.user.avatar}`
+                                            : '/storage/avatars/def.jpg'
+                                    "
                                     :alt="post.user.name"
                                 />
                                 <AvatarFallback>
@@ -118,7 +111,7 @@ const post: Post = {
                     <div
                         class="text-muted-foreground whitespace-pre-line text-lg"
                     >
-                        {{ post.content }}
+                        {{ post.body }}
                     </div>
                 </CardContent>
             </Card>
