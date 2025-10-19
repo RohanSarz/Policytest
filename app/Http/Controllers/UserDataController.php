@@ -14,6 +14,14 @@ class UserDataController extends Controller
         // user is passed globally in HandleInertiaRequests.php
         return inertia('User/Profile');
     }
+    public function dashboardView()
+    {
+        $posts = Auth::user()->posts()->latest()->get();
+        // user is passed globally in HandleInertiaRequests.php
+        return inertia('User/Dashboard', [
+            'posts' => $posts,
+        ]);
+    }
 
     // Method post update profile data
     public function store(Request $request)

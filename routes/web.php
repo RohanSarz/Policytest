@@ -12,7 +12,7 @@ Route::resource('posts', PostController::class);
 
 // User routes
 Route::middleware(['auth'])->group(function () {
-    Route::inertia('/dashboard', 'User/Dashboard')->name('dashboard');
+    Route::get('/dashboard', [UserDataController::class, 'dashboardView'])->name('dashboard');
     Route::get('/profile', [UserDataController::class, 'profileView'])->name('profile');
     Route::post('/profile', [UserDataController::class, 'store'])->name('profile.store');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

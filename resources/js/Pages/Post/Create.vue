@@ -21,7 +21,7 @@ import {
         data-aos="fade-down-left"
     >
         <Form action="/posts" method="post" #default="{ processing, errors }">
-            <Card class="w-[350px] px-2">
+            <Card class="min-w-4xl px-2">
                 <CardHeader>
                     <CardTitle>Create a post</CardTitle>
                     <CardDescription>Share your thoughts</CardDescription>

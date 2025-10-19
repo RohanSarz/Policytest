@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePage } from "@inertiajs/vue3";
+import { Form, usePage } from "@inertiajs/vue3";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -119,31 +119,24 @@ const post = page.props.post as Post;
             <!-- Actions -->
             <div class="flex justify-between">
                 <div>
-                    <Button variant="outline">
-                        <Link :href="route('posts.edit', { id: post.id })">
-                            Edit
-                        </Link>
+                    <Button
+                        as="Link"
+                        :href="route('posts.edit', post.id)"
+                        variant="outline"
+                    >
+                        Edit
                     </Button>
                 </div>
                 <div>
-                    <form
-                        @submit.prevent="
-                            () => {
-                                if (
-                                    confirm(
-                                        'Are you sure you want to delete this post?'
-                                    )
-                                ) {
-                                    // In a real app, this would be an actual delete request
-                                    console.log('Deleting post', post.id);
-                                }
-                            }
-                        "
+                    <Form
+                        :action="route('posts.destroy', post.id)"
+                        method="delete"
+                        :submitting="false"
                     >
-                        <Button type="submit" variant="destructive">
+                        <Button variant="destructive" type="submit">
                             Delete
                         </Button>
-                    </form>
+                    </Form>
                 </div>
             </div>
         </main>

@@ -4,14 +4,19 @@ import { usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import CreateButton from "@/components/post/CreateButton.vue";
+import PostCard from "@/components/post/PostCard.vue";
 
-// Get the current page and user information from Inertia
 const page = usePage();
-const user = computed(() => page.props.auth.user);
 
-// Fake data for stats - in a real app, this would come from the backend
+// Safely access user — fallback to empty object if missing
+const user = computed(() => page.props.auth?.user || {});
+
+// Only show posts if they exist
+const posts = page.props.posts || [];
+
+// Keep fake stats for now (replace with real data later)
 const stats = {
-    posts: 24,
+    posts: posts.length, // ✅ dynamic: use actual post count!
     followers: 128,
     following: 56,
     online: true,
@@ -21,8 +26,8 @@ const stats = {
 <template>
     <Head title="User Dashboard" />
 
-    <div class="min-w-full min-h-screen bg-gray-50">
-        <!-- Header section with dashboard title and user information -->
+    <div class="min-h-screen bg-gray-50">
+        <!-- Header -->
         <header class="bg-white shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <div
@@ -34,7 +39,7 @@ const stats = {
                         </h1>
                         <p class="mt-1 text-sm text-gray-600">
                             Welcome to the dashboard,
-                            <UserNameUpper :name="user.name" />
+                            <UserNameUpper :name="user.name || 'Guest'" />
                         </p>
                     </div>
                     <div>
@@ -45,32 +50,42 @@ const stats = {
         </header>
 
         <main>
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 sm:dark">
-                <!-- User Profile Card with Stats - combines user info with key metrics -->
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <!-- User Profile Card -->
                 <div class="bg-white rounded-lg border p-6 shadow-sm">
                     <div class="flex flex-col md:flex-row gap-6">
-                        <!-- Left side: User profile information including avatar, name, email and role -->
+                        <!-- User Info -->
                         <div class="flex flex-col items-center text-center">
                             <Avatar class="size-16 ring-1">
                                 <AvatarImage
-                                    class="border"
-                                    :src="`storage/${user.avatar}`"
-                                    alt="@radix-vue"
+                                    v-if="user.avatar"
+                                    :src="`/storage/${user.avatar}`"
+                                    :alt="user.name || 'User avatar'"
+                                    @error="
+                                        $event.target.src =
+                                            '/storage/avatars/def.jpg'
+                                    "
                                 />
-                                <AvatarFallback v-if="!user.avatar">{{
-                                    user.name[0].toUpperCase()
-                                }}</AvatarFallback>
+                                <AvatarFallback>
+                                    {{
+                                        user.name
+                                            ? user.name[0].toUpperCase()
+                                            : "U"
+                                    }}
+                                </AvatarFallback>
                             </Avatar>
+
                             <h2 class="text-lg font-medium text-gray-900 mt-3">
-                                {{ user.name }}
+                                {{ user.name || "Unknown User" }}
                             </h2>
                             <p class="text-gray-600 text-sm">
-                                {{ user.email }}
+                                {{ user.email || "No email" }}
                             </p>
                             <div
                                 class="mt-2 flex flex-wrap justify-center gap-2"
                             >
                                 <span
+                                    v-if="user.role"
                                     class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
                                 >
                                     {{ user.role }} Admin
@@ -78,10 +93,9 @@ const stats = {
                             </div>
                         </div>
 
-                        <!-- Right side: Stats grid showing user metrics -->
+                        <!-- Stats -->
                         <div class="flex-1">
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                <!-- Total Posts stat -->
                                 <div class="bg-gray-50 rounded-lg p-4">
                                     <div class="text-sm text-gray-500">
                                         Total Posts
@@ -90,7 +104,6 @@ const stats = {
                                         {{ stats.posts }}
                                     </div>
                                 </div>
-                                <!-- Followers stat -->
                                 <div class="bg-gray-50 rounded-lg p-4">
                                     <div class="text-sm text-gray-500">
                                         Followers
@@ -99,7 +112,6 @@ const stats = {
                                         {{ stats.followers }}
                                     </div>
                                 </div>
-                                <!-- Following stat -->
                                 <div class="bg-gray-50 rounded-lg p-4">
                                     <div class="text-sm text-gray-500">
                                         Following
@@ -108,18 +120,17 @@ const stats = {
                                         {{ stats.following }}
                                     </div>
                                 </div>
-                                <!-- Online Status stat -->
                                 <div class="bg-gray-50 rounded-lg p-4">
                                     <div class="text-sm text-gray-500">
                                         Status
                                     </div>
                                     <div class="text-xl font-semibold">
                                         <span
-                                            class="text-green-600"
                                             v-if="stats.online"
+                                            class="text-green-600"
                                             >Active</span
                                         >
-                                        <span class="text-gray-400" v-else
+                                        <span v-else class="text-gray-400"
                                             >Offline</span
                                         >
                                     </div>
@@ -127,6 +138,20 @@ const stats = {
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Posts Grid -->
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4"
+                >
+                    <PostCard
+                        v-for="post in posts"
+                        :key="post.id"
+                        :post="post"
+                        class="post-item"
+                        data-aos="zoom-in-up"
+                        data-aos-duration="500"
+                    />
                 </div>
             </div>
         </main>

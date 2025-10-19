@@ -22,7 +22,7 @@ console.log(posts);
 <template>
     <Head title="Home" />
 
-    <div class="grid grid-cols-2 place-items-center space-y-4 py-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
         <PostCard
             v-for="post in posts"
             :key="post.id"

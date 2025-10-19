@@ -17,7 +17,7 @@ class PostController extends Controller
     {
         return inertia('Home', [
             'posts' => Post::with('user')->latest()->get(),
-        ])->with('flash.message', 'this is your home page');
+        ]);
     }
 
     /**
@@ -33,7 +33,6 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->input());
         $field = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'body' => ['required', 'string'],
@@ -45,7 +44,12 @@ class PostController extends Controller
             'body' => $field['body'],
         ]);
 
-        return redirect()->route('home')->with('message', 'Post created successfully!');
+        return redirect()
+            ->intended('dashboard')
+            ->with([
+                'message' => 'Project created successfully!',
+                'type' => 'success',
+            ]);
     }
 
     /**
@@ -54,7 +58,7 @@ class PostController extends Controller
     public function show(string $id)
     {
         $post = Post::with('user')->findOrFail($id);
-        
+
         return inertia('Post/Show', [
             'post' => $post,
         ]);
@@ -94,7 +98,12 @@ class PostController extends Controller
         Auth::login($user);
 
         // redirect
-        return redirect()->route('home')->with('message', 'User created successfully!');
+        return redirect()
+            ->route('dashboard')
+            ->with([
+                'message' => 'Project Updated successfully!',
+                'type' => 'success',
+            ]);
     }
 
     /**
@@ -102,6 +111,15 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+
+        $post->delete();
+
+        return redirect()
+            ->route('dashboard')
+            ->with([
+                'message' => 'Project Deleted!',
+                'type' => 'success',
+            ]);
     }
 }
