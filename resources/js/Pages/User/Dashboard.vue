@@ -50,7 +50,7 @@ const stats = {
         </header>
 
         <main>
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 border">
                 <!-- User Profile Card -->
                 <div class="bg-white rounded-lg border p-6 shadow-sm">
                     <div class="flex flex-col md:flex-row gap-6">
@@ -59,12 +59,10 @@ const stats = {
                             <Avatar class="size-16 ring-1">
                                 <AvatarImage
                                     v-if="user.avatar"
-                                    :src="`/storage/${user.avatar}`"
+                                    :src="`/storage/${
+                                        user?.avatar ?? 'avatars/def.jpg'
+                                    }`"
                                     :alt="user.name || 'User avatar'"
-                                    @error="
-                                        $event.target.src =
-                                            '/storage/avatars/def.jpg'
-                                    "
                                 />
                                 <AvatarFallback>
                                     {{
@@ -141,14 +139,12 @@ const stats = {
                 </div>
 
                 <!-- Posts Grid -->
-                <div
-                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4"
-                >
+                <div class="grid grid-cols-2">
                     <PostCard
                         v-for="post in posts"
                         :key="post.id"
                         :post="post"
-                        class="post-item"
+                        class="mx-auto my-12"
                         data-aos="zoom-in-up"
                         data-aos-duration="500"
                     />

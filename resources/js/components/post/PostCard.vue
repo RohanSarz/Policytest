@@ -15,21 +15,11 @@ const props = defineProps({
         type: Object,
         required: false,
     },
-    isSingle: {
-        type: Boolean,
-        default: false,
-    },
 });
 </script>
 
 <template>
-    <Card
-        :class="[
-            props.isSingle
-                ? 'max-w-3xl mx-auto w-full shadow-lg'
-                : 'min-w-[280px] sm:min-w-[320px] max-w-lg w-full',
-        ]"
-    >
+    <Card :class="'min-w-[280px] sm:min-w-[320px] max-w-lg w-full'">
         <CardHeader class="pb-3">
             <div
                 v-if="props.post && props.post.user"
@@ -85,11 +75,9 @@ const props = defineProps({
                 </div>
             </div>
 
-            <!-- Larger title in single view -->
-            <CardTitle :class="isSingle ? 'text-3xl mt-4' : 'text-xl mt-2'">
+            <CardTitle class="text-xl mt-2">
                 {{ props.post?.title || "Loading..." }}
             </CardTitle>
-
             <!-- Hide description in single view (or show full body) -->
             <CardDescription v-if="!isSingle" class="line-clamp-2">
                 {{
@@ -101,24 +89,16 @@ const props = defineProps({
         </CardHeader>
 
         <CardContent class="pb-3">
-            <p
-                :class="[
-                    isSingle
-                        ? 'text-base text-gray-800 whitespace-pre-line'
-                        : 'line-clamp-3 text-sm text-muted-foreground',
-                ]"
-            >
+            <p class="line-clamp-3 text-sm text-muted-foreground">
                 {{
-                    isSingle
-                        ? props.post?.body || "Loading post content..."
-                        : props.post?.body?.substring(0, 150) +
-                              (props.post?.body?.length > 150 ? "..." : "") ||
-                          "Loading post content..."
+                    props.post?.body?.substring(0, 150) +
+                        (props.post?.body?.length > 150 ? "..." : "") ||
+                    "Loading post content..."
                 }}
             </p>
         </CardContent>
 
-        <CardFooter v-if="!isSingle">
+        <CardFooter>
             <Link
                 v-if="props.post"
                 :href="`/posts/${props.post.id}`"

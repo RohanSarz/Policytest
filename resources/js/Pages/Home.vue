@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import CreateButton from "@/components/post/CreateButton.vue";
 import PostCard from "@/components/post/PostCard.vue";
 import { usePage } from "@inertiajs/vue3";
 import { Head } from "@inertiajs/vue3";
@@ -31,5 +32,6 @@ console.log(posts);
             data-aos="zoom-in-up"
             data-aos-duration="500"
         />
+        <CreateButton />
     </div>
 </template>

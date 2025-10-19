@@ -8,8 +8,8 @@ import FlashMesg from "./Pertials/FlashMesg.vue";
 import { ZiggyVue, route } from "../../vendor/tightenco/ziggy/src/js";
 
 // Import AOS and its CSS
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+// import AOS from "aos";
+// import "aos/dist/aos.css";
 
 createInertiaApp({
     title: (title) => `Teachlabs > ${title} `,
@@ -32,12 +32,12 @@ createInertiaApp({
         AOS.init({
             duration: 800,
             once: false,
-            easing: 'ease-in-out',
+            easing: "ease-in-out",
             offset: 100,
         });
 
         // Refresh AOS on Inertia navigation
-        document.addEventListener('inertia:navigate', () => {
+        document.addEventListener("inertia:navigate", () => {
             setTimeout(() => {
                 AOS.refresh();
             }, 100);
