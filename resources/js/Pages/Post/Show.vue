@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
+import { Form, usePage } from "@inertiajs/vue3";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import UserNameUpper from "@/components/userDataComponents/UserNameUpper.vue";
 
 interface User {
     id: number;
@@ -22,103 +23,116 @@ interface Post {
 
 const page = usePage();
 const post = page.props.post as Post;
-const form = useForm({});
 </script>
 
 <template>
-    <div class="container mx-auto px-4 py-8">
+    <div>
         <Head :title="post.title" />
 
-        <header class="mb-6">
-            <Link
-                :href="route('posts.index')"
-                class="text-blue-600 hover:text-blue-800"
-            >
-                &larr; Back to Posts
-            </Link>
-        </header>
-
-        <Card class="mb-8">
-            <CardHeader class="pb-3">
-                <div class="flex items-center gap-4">
-                    <Link :href="`/users/${post.user.id}`">
-                        <Avatar class="ring-1">
-                            <AvatarImage
-                                :src="
-                                    post.user.avatar
-                                        ? `/storage/${post.user.avatar}`
-                                        : '/storage/avatars/def.jpg'
-                                "
-                                :alt="post.user.name"
-                                @error="
-                                    $event.target.src = '/storage/avatars/def.jpg'
-                                "
-                            />
-                            <AvatarFallback>{{
-                                post.user.name?.charAt(0).toUpperCase()
-                            }}</AvatarFallback>
-                        </Avatar>
-                    </Link>
-                    <div class="min-w-0 flex-1">
-                        <Link
-                            :href="`/users/${post.user.id}`"
-                            class="hover:underline"
-                        >
-                            <h4 class="text-sm font-semibold truncate">
-                                {{ post.user.name }}
-                            </h4>
-                        </Link>
-                        <p class="text-xs text-muted-foreground">
-                            Published:
-                            {{
-                                new Date(
-                                    post.created_at
-                                ).toLocaleDateString()
-                            }}
-                            <span
-                                v-if="post.updated_at !== post.created_at"
-                            >
-                                (Updated:
-                                {{
-                                    new Date(
-                                        post.updated_at
-                                    ).toLocaleDateString()
-                                }})
-                            </span>
+        <header class="bg-white shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-semibold text-gray-900">
+                            Post Details
+                        </h1>
+                        <p class="mt-1 text-sm text-gray-600">
+                            View and read the full post
                         </p>
                     </div>
+                    <div>
+                        <Link
+                            :href="route('posts.index')"
+                            class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                        >
+                            Back to Posts
+                        </Link>
+                    </div>
                 </div>
+            </div>
+        </header>
 
-                <CardTitle class="mt-4 text-3xl">{{
-                    post.title
-                }}</CardTitle>
-            </CardHeader>
+        <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <Card class="mb-8">
+                <CardHeader class="pb-3">
+                    <div class="flex items-center space-x-4">
+                        <Link :href="`/users/${post.user.id}`">
+                            <Avatar class="ring-1">
+                                <AvatarImage
+                                    class="border"
+                                    :src="
+                                        post.user.avatar
+                                            ? `/storage/${post.user.avatar}`
+                                            : '/storage/avatars/def.jpg'
+                                    "
+                                    :alt="post.user.name"
+                                />
+                                <AvatarFallback>
+                                    {{ post.user.name.charAt(0).toUpperCase() }}
+                                </AvatarFallback>
+                            </Avatar>
+                        </Link>
+                        <div class="flex-1 min-w-0">
+                            <Link
+                                :href="`/users/${post.user.id}`"
+                                class="hover:underline"
+                            >
+                                <h4 class="text-sm font-semibold truncate">
+                                    {{ post.user.name }}
+                                </h4>
+                            </Link>
+                            <p class="text-xs text-muted-foreground">
+                                Published:
+                                {{
+                                    new Date(
+                                        post.created_at
+                                    ).toLocaleDateString()
+                                }}
+                                <span
+                                    v-if="post.updated_at !== post.created_at"
+                                >
+                                    (Updated:
+                                    {{
+                                        new Date(
+                                            post.updated_at
+                                        ).toLocaleDateString()
+                                    }})
+                                </span>
+                            </p>
+                        </div>
+                    </div>
 
-            <CardContent class="prose prose-gray max-w-none">
-                <div
-                    class="text-muted-foreground whitespace-pre-line text-lg"
-                >
-                    {{ post.body }}
+                    <CardTitle class="mt-4 text-3xl">{{
+                        post.title
+                    }}</CardTitle>
+                </CardHeader>
+
+                <CardContent class="prose prose-gray max-w-none">
+                    <div class="text-muted-foreground whitespace-pre-wrap break-words text-lg">
+                        {{ post.body }}
+                    </div>
+                </CardContent>
+            </Card>
+
+            <!-- Actions -->
+            <div class="flex justify-between">
+                <div>
+                    <Button variant="outline">
+                        <Link :href="route('posts.edit', post.id)"> Edit </Link>
+                    </Button>
                 </div>
-            </CardContent>
-        </Card>
-
-        <!-- Actions -->
-        <div class="flex justify-between">
-            <Button
-                as="Link"
-                :href="route('posts.edit', post.id)"
-                variant="outline"
-            >
-                Edit
-            </Button>
-            <Button 
-                @click="form.delete(route('posts.destroy', post.id))"
-                variant="destructive"
-                :disabled="form.processing"
-            >
-                {{ form.processing ? 'Deleting...' : 'Delete' }}
-            </Button>
-        </div>
+                <div>
+                    <Form
+                        :action="route('posts.destroy', post.id)"
+                        method="delete"
+                        :submitting="false"
+                    >
+                        <Button variant="destructive" type="submit">
+                            Delete
+                        </Button>
+                    </Form>
+                </div>
+            </div>
+        </main>
     </div>
 </template>

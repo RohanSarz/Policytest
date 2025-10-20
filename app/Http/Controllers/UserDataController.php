@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,10 @@ class UserDataController extends Controller
     }
     public function dashboardView()
     {
-        $posts = Auth::user()->posts()->latest()->get();
+        $posts = Post::with('user')
+            ->where('user_id', Auth::user()->id)
+            ->latest()
+            ->get();
         // user is passed globally in HandleInertiaRequests.php
         return inertia('User/Dashboard', [
             'posts' => $posts,

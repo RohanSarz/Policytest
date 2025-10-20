@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDataController;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -16,6 +17,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [UserDataController::class, 'profileView'])->name('profile');
     Route::post('/profile', [UserDataController::class, 'store'])->name('profile.store');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    
+    // User profile route for viewing other users
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 });
 
 Route::middleware(['guest'])->group(function () {

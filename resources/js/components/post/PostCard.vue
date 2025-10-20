@@ -70,7 +70,7 @@ const props = defineProps({
                     <AvatarFallback>U</AvatarFallback>
                 </Avatar>
                 <div class="min-w-0 flex-1">
-                    <h4 class="text-sm font-semibold truncate">{{}}</h4>
+                    <h4 class="text-sm font-semibold truncate">Loading...</h4>
                     <p class="text-xs text-muted-foreground">Loading...</p>
                 </div>
             </div>
@@ -78,24 +78,21 @@ const props = defineProps({
             <CardTitle class="text-xl mt-2">
                 {{ props.post?.title || "Loading..." }}
             </CardTitle>
-            <!-- Hide description in single view (or show full body) -->
-            <CardDescription v-if="!isSingle" class="line-clamp-2">
-                {{
-                    props.post?.body?.substring(0, 100) +
-                        (props.post?.body?.length > 100 ? "..." : "") ||
-                    "Loading post content..."
-                }}
-            </CardDescription>
         </CardHeader>
 
         <CardContent class="pb-3">
-            <p class="line-clamp-3 text-sm text-muted-foreground">
-                {{
-                    props.post?.body?.substring(0, 150) +
-                        (props.post?.body?.length > 150 ? "..." : "") ||
-                    "Loading post content..."
-                }}
-            </p>
+            <div v-if="props.post">
+                <p
+                    class="text-sm text-muted-foreground whitespace-pre-wrap break-words overflow-hidden line-clamp-6"
+                >
+                    {{ props.post.body || "Loading post content..." }}
+                </p>
+            </div>
+            <div v-else>
+                <p class="text-sm text-muted-foreground">
+                    Loading post content...
+                </p>
+            </div>
         </CardContent>
 
         <CardFooter>

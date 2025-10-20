@@ -69,7 +69,9 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return inertia('Post/Edit', [
+            'post' => Post::findOrFail($id),
+        ]);
     }
 
     /**
@@ -77,31 +79,19 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $fields = $request->validate(
-            rules: [
-                'avatar' => ['file', 'image', 'max:3000', 'nullable'],
-                'name' => ['required', 'max:255'],
-                'email' => ['required', 'email', 'max:255', 'unique:users'],
-                'password' => ['required', 'confirmed'],
-            ],
-        );
+        $post = Post::findOrFail($id);
 
-        $fields['password'] = bcrypt($fields['password']);
+        $fields = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'body' => ['required', 'string'],
+        ]);
 
-        $fields['avatar'] = $request->hasFile('avatar') ? Storage::disk('public')->put('avatars', $request->avatar) : Storage::disk('public')->put('avatars', 'def.jpg');
-        // register
+        $post->update($fields);
 
-        $user = User::create($fields);
-
-        // login
-
-        Auth::login($user);
-
-        // redirect
         return redirect()
-            ->route('dashboard')
+            ->route('posts.show', $post->id)
             ->with([
-                'message' => 'Project Updated successfully!',
+                'message' => 'Post updated successfully!',
                 'type' => 'success',
             ]);
     }

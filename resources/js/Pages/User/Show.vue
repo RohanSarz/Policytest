@@ -1,22 +1,18 @@
 <script setup>
-import UserNameUpper from "@/components/userDataComponents/UserNameUpper.vue";
 import { usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import CreateButton from "@/components/post/CreateButton.vue";
 import PostCard from "@/components/post/PostCard.vue";
 
 const page = usePage();
 
-// Safely access user — fallback to empty object if missing
-const user = computed(() => page.props.auth?.user || {});
-
-// Only show posts if they exist
+// Get the user data from props
+const user = computed(() => page.props.user || {});
 const posts = page.props.posts || [];
 
-// Keep fake stats for now (replace with real data later)
+// Stats for the user
 const stats = {
-    posts: posts.length, // ✅ dynamic: use actual post count!
+    posts: posts.length,
     followers: 128,
     following: 56,
     online: true,
@@ -24,26 +20,25 @@ const stats = {
 </script>
 
 <template>
-    <Head title="User Dashboard" />
+    <Head :title="`${user.name || 'User'} Profile`" />
 
     <div class="min-h-screen bg-gray-50">
         <!-- Header -->
         <header class="bg-white shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                <div
-                    class="flex flex-col md:flex-row md:items-center gap-2 md:justify-between"
-                >
+                <div class="flex items-center justify-between">
                     <div>
                         <h1 class="text-2xl font-semibold text-gray-900">
-                            Dashboard
+                            {{ user.name || "Unknown User" }}'s profile
                         </h1>
-                        <p class="mt-1 text-sm text-gray-600">
-                            Welcome to the dashboard,
-                            <UserNameUpper :name="user.name || 'Guest'" />
-                        </p>
                     </div>
                     <div>
-                        <CreateButton />
+                        <Link
+                            :href="route('dashboard')"
+                            class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                        >
+                            Back to Dashboard
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -136,18 +131,32 @@ const stats = {
                     </div>
                 </div>
 
-                <!-- Posts Grid -->
-                <div
-                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4"
-                >
-                    <PostCard
-                        v-for="post in posts"
-                        :key="post.id"
-                        :post="post"
-                        class="post-item"
-                        data-aos="zoom-in-up"
-                        data-aos-duration="500"
-                    />
+                <!-- User's Posts -->
+                <div class="mt-8">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4">
+                        {{ user.name || "User" }}'s Posts
+                    </h2>
+
+                    <div
+                        v-if="posts.length > 0"
+                        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                    >
+                        <PostCard
+                            v-for="post in posts"
+                            :key="post.id"
+                            :post="post"
+                            class="post-item"
+                            data-aos="zoom-in-up"
+                            data-aos-duration="500"
+                        />
+                    </div>
+
+                    <div v-else class="text-center py-10 text-gray-500">
+                        <p>
+                            {{ user.name || "This user" }} hasn't created any
+                            posts yet.
+                        </p>
+                    </div>
                 </div>
             </div>
         </main>
