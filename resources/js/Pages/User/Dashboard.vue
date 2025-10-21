@@ -5,7 +5,7 @@ import { computed } from "vue";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import CreateButton from "@/components/post/CreateButton.vue";
 import PostCard from "@/components/post/PostCard.vue";
-
+import UserAvatar from "@/components/userDataComponents/UserAvatar.vue";
 const page = usePage();
 
 // Safely access user — fallback to empty object if missing
@@ -16,7 +16,7 @@ const posts = page.props.posts || [];
 
 // Keep fake stats for now (replace with real data later)
 const stats = {
-    posts: posts.length, // ✅ dynamic: use actual post count!
+    posts: posts.length,
     followers: 128,
     following: 56,
     online: true,
@@ -56,20 +56,7 @@ const stats = {
                     <div class="flex flex-col md:flex-row gap-6">
                         <!-- User Info -->
                         <div class="flex flex-col items-center text-center">
-                            <Avatar class="size-16 ring-1">
-                                <AvatarImage
-                                    v-if="user.avatar"
-                                    :src="`/storage/${user.avatar}`"
-                                    :alt="user.name || 'User avatar'"
-                                />
-                                <AvatarFallback>
-                                    {{
-                                        user.name
-                                            ? user.name[0].toUpperCase()
-                                            : "U"
-                                    }}
-                                </AvatarFallback>
-                            </Avatar>
+                            <UserAvatar :user="user.avatar" />
 
                             <h2 class="text-lg font-medium text-gray-900 mt-3">
                                 {{ user.name || "Unknown User" }}
