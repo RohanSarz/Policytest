@@ -61,7 +61,8 @@ import Error from "@/components/Error.vue";
                             data-aos="zoom-in-left"
                             data-aos-duration="600"
                         >
-                            <Input
+                            <input
+                                name="remember"
                                 class="size-3"
                                 id="remember"
                                 type="checkbox"
@@ -93,6 +94,4 @@ import Error from "@/components/Error.vue";
             </Card>
         </Form>
     </div>
-
-    
 </template>
