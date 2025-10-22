@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import CreateButton from "@/components/post/CreateButton.vue";
 import PostCard from "@/components/post/PostCard.vue";
 import { usePage } from "@inertiajs/vue3";
 import { Head } from "@inertiajs/vue3";
@@ -12,12 +11,9 @@ import {
     ToastTitle,
     ToastViewport,
 } from "radix-vue";
-import { TransitionGroup } from "vue";
+import { computed } from "vue";
 
-const page = usePage();
-
-const posts = page.props.posts;
-console.log(posts);
+const { posts } = usePage().props;
 </script>
 
 <template>
@@ -32,6 +28,5 @@ console.log(posts);
             data-aos="fade-up"
             data-aos-duration="500"
         />
-        <CreateButton />
     </div>
 </template>

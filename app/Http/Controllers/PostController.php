@@ -5,12 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
-class PostController extends Controller
+class PostController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [new Middleware('auth', except: ['index', 'show'])];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -85,6 +92,7 @@ class PostController extends Controller
                     'type' => 'warning',
                 ]);
         }
+
         return inertia('Post/Edit', [
             'post' => Post::findOrFail($id),
         ]);
@@ -93,9 +101,9 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Post $post)
     {
-        if (!Gate::allows('update', Post::findOrfail($id))) {
+        if (!Gate::allows('update', $post)) {
             return redirect()
                 ->back()
                 ->with([
@@ -103,8 +111,6 @@ class PostController extends Controller
                     'type' => 'warning',
                 ]);
         }
-
-        $post = Post::findOrFail($id);
 
         $fields = $request->validate([
             'title' => ['required', 'string', 'max:255'],

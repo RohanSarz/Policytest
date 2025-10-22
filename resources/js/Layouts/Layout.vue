@@ -2,10 +2,6 @@
 import Footer from "@/components/Footer.vue";
 import Navigation from "@/components/Navigation.vue";
 import Toaster from "@/components/Toaster.vue";
-import AOS from "aos";
-import "aos/dist/aos.css";
-
-AOS.init();
 </script>
 
 <template>
@@ -25,7 +21,7 @@ AOS.init();
             <slot />
         </main>
     </div>
-    <footer>
+    <!-- <footer>
         <Footer />
-    </footer>
+    </footer> -->
 </template>

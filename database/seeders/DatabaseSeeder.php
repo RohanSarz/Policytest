@@ -24,10 +24,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         // Post::factory(10)->create();
 
-
-
         $this->call(RoleSeeder::class);
         $this->call(AdminSeeder::class);
-
     }
 }

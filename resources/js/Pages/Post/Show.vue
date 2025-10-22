@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import UserNameUpper from "@/components/userDataComponents/UserNameUpper.vue";
+import { computed } from "vue";
 
 interface User {
     id: number;
@@ -23,6 +24,10 @@ interface Post {
 
 const page = usePage();
 const post = page.props.post as Post;
+const { can } = page.props;
+
+const canEdit = computed(() => can.includes("edit-posts"));
+const canDelete = computed(() => can.includes("delete-posts"));
 </script>
 
 <template>
@@ -33,12 +38,9 @@ const post = page.props.post as Post;
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h1 class="text-2xl font-semibold text-gray-900">
-                            Post Details
+                        <h1 class="text-2xl font-bold text-gray-800">
+                            {{ post.title.toUpperCase() }}
                         </h1>
-                        <p class="mt-1 text-sm text-gray-600">
-                            View and read the full post
-                        </p>
                     </div>
                     <div>
                         <Link
@@ -108,7 +110,9 @@ const post = page.props.post as Post;
                 </CardHeader>
 
                 <CardContent class="prose prose-gray max-w-none">
-                    <div class="text-muted-foreground whitespace-pre-wrap break-words text-lg">
+                    <div
+                        class="text-muted-foreground whitespace-pre-wrap break-words text-lg"
+                    >
                         {{ post.body }}
                     </div>
                 </CardContent>
@@ -116,12 +120,12 @@ const post = page.props.post as Post;
 
             <!-- Actions -->
             <div class="flex justify-between">
-                <div>
+                <div v-if="canEdit">
                     <Button variant="outline">
                         <Link :href="route('posts.edit', post.id)"> Edit </Link>
                     </Button>
                 </div>
-                <div>
+                <div v-if="canDelete">
                     <Form
                         :action="route('posts.destroy', post.id)"
                         method="delete"
