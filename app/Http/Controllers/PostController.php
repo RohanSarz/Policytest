@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -38,7 +39,7 @@ class PostController extends Controller
             'body' => ['required', 'string'],
         ]);
 
-        $post = Post::create([
+        Post::create([
             'user_id' => Auth::user()->id,
             'title' => $field['title'],
             'body' => $field['body'],
@@ -57,6 +58,13 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
+        // if (!Gate::allows('view', Post::findOrfail($id))) {
+        //     return back()->with([
+        //         'message' => 'You are not allowed to view this post!',
+        //         'type' => 'warning',
+        //     ]);
+        // }
+
         $post = Post::with('user')->findOrFail($id);
 
         return inertia('Post/Show', [
@@ -69,6 +77,14 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
+        if (!Gate::allows('view', Post::findOrfail($id))) {
+            return redirect()
+                ->back()
+                ->with([
+                    'message' => 'Not Your Post!',
+                    'type' => 'warning',
+                ]);
+        }
         return inertia('Post/Edit', [
             'post' => Post::findOrFail($id),
         ]);
@@ -79,6 +95,15 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if (!Gate::allows('update', Post::findOrfail($id))) {
+            return redirect()
+                ->back()
+                ->with([
+                    'message' => 'Not Your Post!',
+                    'type' => 'warning',
+                ]);
+        }
+
         $post = Post::findOrFail($id);
 
         $fields = $request->validate([
@@ -101,6 +126,15 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
+        if (!Gate::allows('delete', Post::findOrfail($id))) {
+            return redirect()
+                ->back()
+                ->with([
+                    'message' => 'Not Your Post!',
+                    'type' => 'warning',
+                ]);
+        }
+
         $post = Post::findOrFail($id);
 
         $post->delete();

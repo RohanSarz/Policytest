@@ -30,6 +30,8 @@ class AuthController extends Controller
 
         $user = User::create($fields);
 
+        $user->assignRole('user');
+
         // login
 
         Auth::login($user);
@@ -54,6 +56,11 @@ class AuthController extends Controller
 
         if (Auth::attempt($fields, $remember)) {
             $request->session()->regenerate();
+            $user = Auth::user();
+
+            if ($user->hasRole('admin')) {
+                return redirect()->route('admin.index');
+            }
 
             return redirect()
                 ->intended('profile')

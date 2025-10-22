@@ -29,7 +29,7 @@ console.log(posts);
             :key="post.id"
             :post="post"
             class="post-item"
-            data-aos="zoom-in-up"
+            data-aos="fade-up"
             data-aos-duration="500"
         />
         <CreateButton />

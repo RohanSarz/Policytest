@@ -8,8 +8,8 @@ import FlashMesg from "./Pertials/FlashMesg.vue";
 import { ZiggyVue, route } from "../../vendor/tightenco/ziggy/src/js";
 
 // Import AOS and its CSS
-// import AOS from "aos";
-// import "aos/dist/aos.css";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 createInertiaApp({
     title: (title) => `Teachlabs > ${title} `,
@@ -30,7 +30,7 @@ createInertiaApp({
 
         // Initialize AOS after the Vue app is mounted
         AOS.init({
-            duration: 800,
+            duration: 300,
             once: false,
             easing: "ease-in-out",
             offset: 100,

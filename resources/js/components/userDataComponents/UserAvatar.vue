@@ -1,5 +1,7 @@
 <script setup>
 import { usePage } from "@inertiajs/vue3";
+import { computed } from "vue";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 const page = usePage();
 
 // Safely access user — fallback to empty object if missing
@@ -10,11 +12,10 @@ const user = computed(() => page.props.auth?.user || {});
         <AvatarImage
             :src="
                 user.avatar
-                    ? `/storage/${props.post.user.avatar}`
+                    ? `/storage/${user.avatar}`
                     : '/storage/avatars/def.jpg'
             "
             :alt="user.name[0].toUpperCase()"
-            @error="$event.target.src = '/storage/avatars/def.jpg'"
         />
         <AvatarFallback>{{
             user.name?.charAt(0).toUpperCase()

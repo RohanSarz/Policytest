@@ -35,39 +35,48 @@ const iconComponent = computed(() => iconMap[type.value] || Bell);
 // Map type to Tailwind color classes
 const colorClasses = computed(() => {
     const colors = {
-        info: "text-blue-500 bg-blue-100 dark:bg-blue-800 dark:text-blue-200",
-        success:
-            "text-green-500 bg-green-100 dark:bg-green-800 dark:text-green-200",
-        warning:
-            "text-yellow-500 bg-yellow-100 dark:bg-yellow-800 dark:text-yellow-200",
-        error: "text-red-500 bg-red-100 dark:bg-red-800 dark:text-red-200",
-        default:
-            "text-gray-500 bg-gray-100 dark:bg-gray-700 dark:text-gray-200",
         neutral:
             "text-gray-500 bg-gray-100 dark:bg-gray-700 dark:text-gray-200",
+        default:
+            "text-gray-500 bg-gray-100 dark:bg-gray-700 dark:text-gray-200",
+        success:
+            "text-green-500 bg-green-100 dark:bg-green-800 dark:text-green-200",
+        error: "text-red-500 bg-red-100 dark:bg-red-800 dark:text-red-200",
+        warning:
+            "text-yellow-500 bg-yellow-100 dark:bg-yellow-800 dark:text-yellow-200",
+        info: "text-blue-500 bg-blue-100 dark:bg-blue-800 dark:text-blue-200",
     };
     return colors[type.value] || colors.default;
 });
 
-// Watch for message changes
+// Track the last flash data to detect changes
+const lastFlashData = ref({});
+
+// Watch for changes in flash data (any property change)
 watch(
-    () => message.value,
-    async (newMessage) => {
-        if (!newMessage) {
+    () => page.props.flash,
+    async (newFlash) => {
+        // Check if the flash data has actually changed
+        const currentFlash = newFlash || {};
+        if (JSON.stringify(currentFlash) !== JSON.stringify(lastFlashData.value)) {
+            lastFlashData.value = { ...currentFlash };
+            
+            if (!currentFlash.message) {
+                isVisible.value = false;
+                return;
+            }
+
+            clearTimeout(hideTimeout);
             isVisible.value = false;
-            return;
+            await nextTick();
+            isVisible.value = true;
+
+            hideTimeout = setTimeout(() => {
+                isVisible.value = false;
+            }, 5000);
         }
-
-        clearTimeout(hideTimeout);
-        isVisible.value = false;
-        await nextTick();
-        isVisible.value = true;
-
-        hideTimeout = setTimeout(() => {
-            isVisible.value = false;
-        }, 5000);
     },
-    { immediate: true }
+    { immediate: true, deep: true }
 );
 
 function closeToast() {

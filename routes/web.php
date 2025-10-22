@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
@@ -17,7 +18,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [UserDataController::class, 'profileView'])->name('profile');
     Route::post('/profile', [UserDataController::class, 'store'])->name('profile.store');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    
+
     // User profile route for viewing other users
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 });
@@ -31,4 +32,10 @@ Route::middleware(['guest'])->group(function () {
         'defUrl' => Storage::url('avatars/def.jpg'),
     ])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/admin/roles', [AdminController::class, 'getRoles'])->name('admin.roles');
+    Route::get('/admin/settings', [AdminController::class, 'settingsView'])->name('admin.roles');
 });
