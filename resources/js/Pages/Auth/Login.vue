@@ -24,7 +24,7 @@ import Error from "@/components/Error.vue";
                 data-aos="fade-left"
                 data-aos-duration="500"
             >
-                <CardHeader data-aos="fade-left" data-aos-duration="300">
+                <CardHeader data-aos="fade-left" data-aos-delay="100">
                     <CardTitle>Log In</CardTitle>
                     <CardDescription
                         >Login with your credintials.</CardDescription
@@ -35,7 +35,7 @@ import Error from "@/components/Error.vue";
                         class="form-label"
                         for="email"
                         data-aos="zoom-in-left"
-                        data-aos-duration="500"
+                        data-aos-delay="200"
                         >Email
                         <Input name="email" placeholder="eg@mail.com" />
                         <Error errorName="email" />
@@ -44,7 +44,7 @@ import Error from "@/components/Error.vue";
                         class="form-label"
                         for="password"
                         data-aos="zoom-in-left"
-                        data-aos-duration="700"
+                        data-aos-delay="300"
                         >Password
 
                         <Input
@@ -59,7 +59,7 @@ import Error from "@/components/Error.vue";
                             class="text-xs"
                             for="remember"
                             data-aos="zoom-in-left"
-                            data-aos-duration="600"
+                            data-aos-delay="400"
                         >
                             <input
                                 name="remember"
@@ -76,12 +76,12 @@ import Error from "@/components/Error.vue";
                         class="w-full my-2"
                         :disabled="processing"
                         data-aos="zoom-in-left"
-                        data-aos-duration="800"
+                        data-aos-delay="500"
                     >
                         Login
                     </Button>
                 </CardContent>
-                <CardFooter data-aos="zoom-in-left" data-aos-duration="1200">
+                <CardFooter data-aos="zoom-in-left" data-aos-delay="600">
                     <div class="flex justify-start text-xs">
                         <p class="text-slate-600 mb-2">
                             Already have a account?

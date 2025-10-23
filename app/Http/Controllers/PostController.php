@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -24,7 +25,9 @@ class PostController extends Controller implements HasMiddleware
     public function index()
     {
         return inertia('Home', [
-            'posts' => Post::with('user')->latest()->get(),
+            'posts' => Post::with(['user', 'category'])
+                ->latest()
+                ->get(),
         ]);
     }
 
@@ -33,7 +36,11 @@ class PostController extends Controller implements HasMiddleware
      */
     public function create()
     {
-        return inertia('Post/Create');
+        $categories = Category::all(['id', 'name']);
+
+        return inertia('Post/Create', [
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -44,18 +51,29 @@ class PostController extends Controller implements HasMiddleware
         $field = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'body' => ['required', 'string'],
+            'category_id' => ['required', 'exists:categories,id'],
+            'image' => ['nullable', 'string', 'max:255'],
         ]);
+
+        $imagePath = $field['image'] ?? 'post-images/newsDef.jpg';
+
+        // Handle file upload if an image file is provided
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('post-images', 'public');
+        }
 
         Post::create([
             'user_id' => Auth::user()->id,
+            'category_id' => $field['category_id'],
             'title' => $field['title'],
             'body' => $field['body'],
+            'image' => $imagePath,
         ]);
 
         return redirect()
             ->intended('dashboard')
             ->with([
-                'message' => 'Project created successfully!',
+                'message' => 'Post created successfully!',
                 'type' => 'success',
             ]);
     }
@@ -72,7 +90,7 @@ class PostController extends Controller implements HasMiddleware
         //     ]);
         // }
 
-        $post = Post::with('user')->findOrFail($id);
+        $post = Post::with(['user', 'category'])->findOrFail($id);
 
         return inertia('Post/Show', [
             'post' => $post,
@@ -94,7 +112,8 @@ class PostController extends Controller implements HasMiddleware
         }
 
         return inertia('Post/Edit', [
-            'post' => Post::findOrFail($id),
+            'post' => Post::with('category')->findOrFail($id),
+            'categories' => \App\Models\Category::all(['id', 'name']),
         ]);
     }
 
@@ -115,9 +134,29 @@ class PostController extends Controller implements HasMiddleware
         $fields = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'body' => ['required', 'string'],
+            'category_id' => ['required', 'exists:categories,id'],
+            'image' => ['nullable', 'string', 'max:255'],
         ]);
 
-        $post->update($fields);
+        $imagePath = $post->image; // Keep existing image if no new one is provided
+
+        // Handle file upload if an image file is provided
+        if ($request->hasFile('image')) {
+            // Delete old image if it's not the default
+            if ($post->image && $post->image !== 'post-images/newsDef.jpg') {
+                Storage::disk('public')->delete($post->image);
+            }
+            $imagePath = $request->file('image')->store('post-images', 'public');
+        } elseif (isset($fields['image'])) {
+            $imagePath = $fields['image'];
+        }
+
+        $post->update([
+            'title' => $fields['title'],
+            'body' => $fields['body'],
+            'category_id' => $fields['category_id'],
+            'image' => $imagePath,
+        ]);
 
         return redirect()
             ->route('posts.show', $post->id)

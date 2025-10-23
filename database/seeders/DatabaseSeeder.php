@@ -17,15 +17,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::create([
-        //     'name' => 'Ro',
-        //     'email' => 'r@mail.com',
-        //     'email_verified_at' => now(),
-        //     'password' => Hash::make('r@mail.com'),
-        // ]);
         // Post::factory(10)->create();
-        // $this->call(RoleSeeder::class);
-        // $this->call(AdminSeeder::class);
+        $this->call(RoleSeeder::class);
+        $this->call(AdminSeeder::class);
+        // Create a user
+        $user = User::create([
+            'name' => 'Ro',
+            'email' => 'r@mail.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('r@mail.com'),
+        ]);
 
         $categories = ['Technology', 'Sports', 'Politics', 'Lifestyle', 'Travel'];
         foreach ($categories as $category) {

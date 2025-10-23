@@ -30,7 +30,7 @@ createInertiaApp({
 
         // Initialize AOS after the Vue app is mounted
         AOS.init({
-            duration: 300,
+            duration: 400,
             once: false,
             easing: "ease-in-out",
             offset: 100,
