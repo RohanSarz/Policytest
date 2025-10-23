@@ -2,192 +2,88 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
-        return [new Middleware('auth', except: ['index', 'show'])];
+        return ['auth', new Middleware('can:create,App\Models\Post', only: ['create', 'store']), new Middleware('can:update,post', only: ['edit', 'update']), new Middleware('can:delete,post', only: ['destroy'])];
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return inertia('Home', [
-            'posts' => Post::with(['user', 'category'])
-                ->where('status', 'pending')
-                ->orderBy('created_at', 'desc')
-                ->latest()
-                ->get(),
-        ]);
+        $posts = Post::with(['user', 'category'])
+            ->orderBy('created_at', 'desc')
+            ->latest()
+            ->get();
+        return inertia('Home', compact('posts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        $categories = Category::all(['id', 'name']);
-
-        return inertia('Post/Create', [
-            'categories' => $categories,
-        ]);
+        return inertia('Posts/Create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //dd($request->input());
-        $field = $request->validate([
-            'image' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:3000'],
-            'title' => ['required', 'string', 'max:255'],
-            'body' => ['required', 'string'],
-            'category_id' => ['required', 'exists:categories,id'],
-            'status' => ['nullable', 'string', 'in:pending,approved,disapproved'],
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string',
+            'category_id' => 'nullable|exists:categories,id',
+            'image' => 'nullable|image|max:2048',
         ]);
 
-        $imagePath = $field['image'];
-
-        // Handle file upload if an image file is provided
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('post-images', 'public');
-        }
-
-        Post::create([
-            'user_id' => Auth::user()->id,
-            'category_id' => $field['category_id'],
-            'title' => $field['title'],
-            'body' => $field['body'],
-            'image' => $imagePath,
+        $post = Post::create([
+            'title' => $validated['title'],
+            'body' => $validated['body'],
+            'category_id' => $validated['category_id'] ?? null,
+            'user_id' => $request->user()->id,
+            'image' => $request->file('image')?->store('posts'),
         ]);
 
-        return redirect()
-            ->intended('dashboard')
-            ->with([
-                'message' => 'Post created successfully!',
-                'type' => 'success',
-            ]);
+        return redirect()->route('posts.index')->with('success', 'Post created!');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Post $post)
     {
-        $user = auth()->user();
+        // Eager load the 'user' and 'category' relationships
+        $post->load(['user', 'category']);
 
-        return inertia('Post/Show', [
-            'post' => $post,
-            'canEdit' => $user && ($user->id === $post->user_id || $user->can('edit-posts')),
-            'canDelete' => $user && ($user->id === $post->user_id || $user->can('delete-posts')),
-        ]);
+        // Pass the post along with its relationships to the Inertia view
+        return inertia('Posts/Show', compact('post'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
-        if (!Gate::allows('view', Post::findOrfail($id))) {
-            return redirect()
-                ->back()
-                ->with([
-                    'message' => 'Not Your Post!',
-                    'type' => 'warning',
-                ]);
-        }
-
-        return inertia('Post/Edit', [
-            'post' => Post::with('category')->findOrFail($id),
-            'categories' => \App\Models\Category::all(['id', 'name']),
-        ]);
+        return inertia('Posts/Edit', compact('post'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Post $post)
     {
-        if (!Gate::allows('update', $post)) {
-            return redirect()
-                ->back()
-                ->with([
-                    'message' => 'Not Your Post!',
-                    'type' => 'warning',
-                ]);
-        }
-
-        $fields = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'body' => ['required', 'string'],
-            'category_id' => ['required', 'exists:categories,id'],
-            'image' => ['nullable', 'string', 'max:255'],
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string',
+            'category_id' => 'nullable|exists:categories,id',
+            'image' => 'nullable|image|max:2048',
         ]);
-
-        $imagePath = $post->image; // Keep existing image if no new one is provided
-
-        // Handle file upload if an image file is provided
-        if ($request->hasFile('image')) {
-            // Delete old image if it's not the default
-            if ($post->image && $post->image !== 'post-images/newsDef.jpg') {
-                Storage::disk('public')->delete($post->image);
-            }
-            $imagePath = $request->file('image')->store('post-images', 'public');
-        } elseif (isset($fields['image'])) {
-            $imagePath = $fields['image'];
-        }
 
         $post->update([
-            'title' => $fields['title'],
-            'body' => $fields['body'],
-            'category_id' => $fields['category_id'],
-            'image' => $imagePath,
+            'title' => $validated['title'],
+            'body' => $validated['body'],
+            'category_id' => $validated['category_id'] ?? null,
+            'image' => $request->file('image')?->store('posts') ?? $post->image,
         ]);
 
-        return redirect()
-            ->route('posts.show', $post->id)
-            ->with([
-                'message' => 'Post updated successfully!',
-                'type' => 'success',
-            ]);
+        return redirect()->route('posts.index')->with('success', 'Post updated!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        if (!Gate::allows('delete', Post::findOrfail($id))) {
-            return redirect()
-                ->back()
-                ->with([
-                    'message' => 'Not Your Post!',
-                    'type' => 'warning',
-                ]);
-        }
-
-        $post = Post::findOrFail($id);
-
         $post->delete();
-
-        return redirect()
-            ->route('dashboard')
-            ->with([
-                'message' => 'Project Deleted!',
-                'type' => 'success',
-            ]);
+        return redirect()->route('posts.index')->with('success', 'Post deleted!');
     }
 }

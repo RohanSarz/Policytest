@@ -17,9 +17,9 @@ return new class extends Migration {
             $table->foreignId('category_id')->constrained('categories', 'id')->cascadeOnDelete();
             $table->string('image', 255);
             $table->string('title', 255);
-            $table->string('slug', 255)->after('title')->unique();
+            $table->string('slug', 255)->unique();
             $table->text('body')->nullable();
-            $table->string('status', 255)->defaultTo('pending');
+            $table->string('status', 255)->default('pending');
 
             $table->timestamps();
         });

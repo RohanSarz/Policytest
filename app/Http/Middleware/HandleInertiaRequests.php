@@ -37,6 +37,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $user = fn() => $request->user() ? $request->user()->only('id', 'name', 'avatar', 'email') : null;
+        $role = fn() => $request->user() ? $request->user()->getRoleNames() : null;
 
         $permissionNames = $request->user() ? $request->user()->getPermissionsViaRoles()->pluck('name')->toArray() : [];
         $permissionMap = array_fill_keys($permissionNames, true);
@@ -46,6 +47,7 @@ class HandleInertiaRequests extends Middleware
 
             'auth' => [
                 'user' => $user ?? null,
+                'role' => $role ?? null,
             ],
             'permissions' => $permissionMap,
 

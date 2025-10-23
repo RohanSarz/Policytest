@@ -4,27 +4,31 @@ import {
     Card,
     CardHeader,
     CardTitle,
-    CardDescription,
     CardContent,
     CardFooter,
 } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
+// ✅ Correct way to define props in <script setup>
 const props = defineProps({
     post: {
         type: Object,
-        required: false,
+        required: true,
     },
 });
+
+// You can also destructure if you prefer:
+// const { post } = defineProps({ post: Object })
 </script>
 
 <template>
-    <Card :class="'min-w-[280px] sm:min-w-[320px] max-w-lg w-full'">
+    <!-- Use props.post since we didn’t destructure -->
+    <Card
+        v-if="props.post"
+        class="min-w-[280px] sm:min-w-[320px] max-w-lg w-full"
+    >
         <CardHeader class="pb-3">
-            <div
-                v-if="props.post && props.post.user"
-                class="flex items-center gap-4"
-            >
+            <div v-if="props.post.user" class="flex items-center gap-4">
                 <Link :href="`/users/${props.post.user.id}`">
                     <Avatar class="ring-1">
                         <AvatarImage
@@ -38,12 +42,11 @@ const props = defineProps({
                                 $event.target.src = '/storage/avatars/def.jpg'
                             "
                         />
-                        <AvatarFallback>{{
-                            props.post.user.name?.charAt(0).toUpperCase()
-                        }}</AvatarFallback>
+                        <AvatarFallback>
+                            {{ props.post.user.name?.charAt(0).toUpperCase() }}
+                        </AvatarFallback>
                     </Avatar>
                 </Link>
-
                 <div class="min-w-0 flex-1">
                     <Link
                         :href="`/users/${props.post.user.id}`"
@@ -60,11 +63,11 @@ const props = defineProps({
                     </p>
                 </div>
             </div>
+
             <div v-else class="flex items-center gap-4">
-                <!-- Placeholder for user info -->
                 <Avatar class="ring-1">
                     <AvatarImage
-                        :src="'/storage/avatars/def.jpg'"
+                        src="/storage/avatars/def.jpg"
                         alt="Loading..."
                     />
                     <AvatarFallback>U</AvatarFallback>
@@ -76,34 +79,25 @@ const props = defineProps({
             </div>
 
             <CardTitle class="text-xl mt-2">
-                {{ props.post?.title || "Loading..." }}
+                {{ props.post.title || "Loading..." }}
             </CardTitle>
         </CardHeader>
 
         <CardContent class="pb-3">
-            <div v-if="props.post">
-                <p
-                    class="text-sm text-muted-foreground whitespace-pre-wrap break-words overflow-hidden line-clamp-6"
-                >
-                    {{ props.post.body || "Loading post content..." }}
-                </p>
-            </div>
-            <div v-else>
-                <p class="text-sm text-muted-foreground">
-                    Loading post content...
-                </p>
-            </div>
+            <p
+                class="text-sm text-muted-foreground whitespace-pre-wrap break-words overflow-hidden line-clamp-6"
+            >
+                {{ props.post.body || "Loading post content..." }}
+            </p>
         </CardContent>
 
         <CardFooter>
             <Link
-                v-if="props.post"
-                :href="`/posts/${props.post.id}`"
+                :href="`/posts/${props.post.slug}`"
                 class="text-sm font-medium hover:underline"
             >
                 Read more
             </Link>
-            <span v-else class="text-sm text-muted-foreground">Loading...</span>
         </CardFooter>
     </Card>
 </template>

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
-use App\Models\User;
 
 class Post extends Model
 {
@@ -14,47 +13,48 @@ class Post extends Model
 
     protected $fillable = ['user_id', 'category_id', 'title', 'body', 'image', 'slug', 'status'];
 
+    // Use slug for route model binding
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     protected static function boot()
     {
         parent::boot();
 
-        static::saving(function ($post) {
+        // Only set initial status and slug when creating
+        static::creating(function ($post) {
             $post->status = 'pending';
             if (empty($post->slug)) {
                 $post->slug = $post->generateUniqueSlug($post->title);
-            } elseif ($post->isDirty('title')) {
-                // If the title changes, regenerate the slug
+            }
+        });
+
+        // Regenerate slug if title changes on update
+        static::updating(function ($post) {
+            if ($post->isDirty('title')) {
                 $post->slug = $post->generateUniqueSlug($post->title);
             }
         });
     }
 
+    // Ensure slug uniqueness
     protected function generateUniqueSlug($title)
     {
         $slug = Str::slug($title);
         $originalSlug = $slug;
         $count = 1;
 
-        // For updates, exclude the current post from the check
-        $query = self::where('slug', $slug);
-        if ($this->id) {
-            $query->where('id', '!=', $this->id);
-        }
-
-        while ($query->exists()) {
-            $slug = $originalSlug . '-' . $count;
+        while (static::where('slug', $slug)->when($this->id, fn($q) => $q->where('id', '!=', $this->id))->exists()) {
+            $slug = "{$originalSlug}-{$count}";
             $count++;
-
-            // Check again with the new slug
-            $query = self::where('slug', $slug);
-            if ($this->id) {
-                $query->where('id', '!=', $this->id);
-            }
         }
 
         return $slug;
     }
 
+    // Relationships
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
