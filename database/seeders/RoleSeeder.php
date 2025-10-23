@@ -16,9 +16,10 @@ class RoleSeeder extends Seeder
     {
         $admin = Role::findOrCreate('admin');
         $moderator = Role::findOrCreate('moderator');
+        $editor = Role::findOrCreate('editor');
         $user = Role::findOrCreate('user');
 
-        $permissions = ['show-posts', 'edit-posts', 'create-posts', 'delete-posts', 'manage-users', 'manage-roles', 'manage-permissions'];
+        $permissions = ['manage-users','manage-roles', 'manage-permissions','show-posts', 'edit-posts', 'create-posts', 'delete-posts',  ];
 
         foreach ($permissions as $permission) {
             Permission::findOrCreate($permission);
