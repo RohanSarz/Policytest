@@ -48,6 +48,7 @@ class PostController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
+        dd($request->input());
         $field = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'body' => ['required', 'string'],

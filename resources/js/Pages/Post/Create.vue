@@ -26,6 +26,7 @@ import Error from "@/components/Error.vue";
 
 const page = usePage();
 const categories = page.props.categories;
+console.log(categories);
 
 // holding the url
 const previewImage = ref(null);
@@ -73,39 +74,34 @@ const handleFile = (e) => {
                     method="post"
                     #default="{ processing, errors }"
                 >
-                    <div class="space-y-4">
-                        <div>
-                            <Select>
-                                <SelectTrigger>
-                                    <SelectValue
-                                        placeholder="Select a Category"
-                                        class="w-full"
-                                    />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        <SelectLabel>Category</SelectLabel>
+                    <Select>
+                        <SelectTrigger>
+                            <SelectValue
+                                placeholder="Select a Category"
+                                class="w-full bg-gray"
+                            />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>Category</SelectLabel>
 
-                                        <div
-                                            v-for="{
-                                                category,
-                                                index,
-                                            } in categories"
-                                            :key="index"
-                                        >
-                                            <SelectItem value="category">
-                                                {{ category.name }}
-                                            </SelectItem>
-                                        </div>
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                            <div
-                                v-if="errors.category_id"
-                                class="mt-1 text-sm text-red-600"
-                            >
-                                {{ errors.category_id }}
-                            </div>
+                                <div
+                                    v-for="{ name, id } in categories"
+                                    :key="id"
+                                >
+                                    <SelectItem :value="name">
+                                        {{ name }}
+                                    </SelectItem>
+                                </div>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                    <div class="space-y-4">
+                        <div
+                            v-if="errors.category_id"
+                            class="mt-1 text-sm text-red-600"
+                        >
+                            {{ errors.category_id }}
                         </div>
 
                         <div>
