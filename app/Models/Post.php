@@ -10,10 +10,14 @@ use App\Models\User;
 class Post extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'title', 'body'];
+    protected $fillable = ['user_id', 'title', 'body', 'image', 'slug', 'category_id'];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }

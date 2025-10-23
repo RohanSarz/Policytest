@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -23,6 +24,7 @@ class PostFactory extends Factory
 
         return [
             'user_id' => 1,
+            'category_id' => Category::latest()->inRandomOrder()->id(),
             'image' => fake()->imageUrl(),
             'title' => $title,
             'slug' => $slug,
