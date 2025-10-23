@@ -13,7 +13,7 @@ class PostPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('view-posts');
+        return $user->hasPermissionTo('show-posts');
     }
 
     /**
@@ -21,7 +21,7 @@ class PostPolicy
      */
     public function view(User $user, Post $post): bool
     {
-        return isset($post->user_id) ? $user->id === $post->user_id : false;
+        return $user->id === $post->user_id || $user->hasPermissionTo('show-posts');
     }
 
     /**

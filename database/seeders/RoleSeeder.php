@@ -38,8 +38,8 @@ class RoleSeeder extends Seeder
 
         $admin->givePermissionTo($permissions);
         $moderator->givePermissionTo(['approve', 'show-posts', 'edit-posts', 'create-posts', 'delete-posts']);
-        $editor->givePermissionTo(['show-posts', 'edit-posts', 'create-posts', 'delete-posts']);
-        $user->givePermissionTo(['show-posts', 'create-posts', 'edit-posts', 'delete-posts']);
+        $editor->givePermissionTo(['show-posts', 'edit-posts', 'create-posts']);
+        $user->givePermissionTo(['show-posts', 'create-posts']);
         $suspended->givePermissionTo(['show-posts']);
     }
 }

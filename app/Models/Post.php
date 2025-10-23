@@ -12,13 +12,14 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'title', 'body', 'image', 'slug', 'category_id'];
+    protected $fillable = ['user_id', 'category_id', 'title', 'body', 'image', 'slug', 'status'];
 
     protected static function boot()
     {
         parent::boot();
 
         static::saving(function ($post) {
+            $post->status = 'pending';
             if (empty($post->slug)) {
                 $post->slug = $post->generateUniqueSlug($post->title);
             } elseif ($post->isDirty('title')) {

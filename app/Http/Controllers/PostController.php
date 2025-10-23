@@ -26,6 +26,8 @@ class PostController extends Controller implements HasMiddleware
     {
         return inertia('Home', [
             'posts' => Post::with(['user', 'category'])
+                ->where('status', 'pending')
+                ->orderBy('created_at', 'desc')
                 ->latest()
                 ->get(),
         ]);
@@ -48,15 +50,16 @@ class PostController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
-        dd($request->input());
+        //dd($request->input());
         $field = $request->validate([
+            'image' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:3000'],
             'title' => ['required', 'string', 'max:255'],
             'body' => ['required', 'string'],
             'category_id' => ['required', 'exists:categories,id'],
-            'image' => ['nullable', 'string', 'max:255'],
+            'status' => ['nullable', 'string', 'in:pending,approved,disapproved'],
         ]);
 
-        $imagePath = $field['image'] ?? 'post-images/newsDef.jpg';
+        $imagePath = $field['image'];
 
         // Handle file upload if an image file is provided
         if ($request->hasFile('image')) {
@@ -82,19 +85,14 @@ class PostController extends Controller implements HasMiddleware
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Post $post)
     {
-        // if (!Gate::allows('view', Post::findOrfail($id))) {
-        //     return back()->with([
-        //         'message' => 'You are not allowed to view this post!',
-        //         'type' => 'warning',
-        //     ]);
-        // }
-
-        $post = Post::with(['user', 'category'])->findOrFail($id);
+        $user = auth()->user();
 
         return inertia('Post/Show', [
             'post' => $post,
+            'canEdit' => $user && ($user->id === $post->user_id || $user->can('edit-posts')),
+            'canDelete' => $user && ($user->id === $post->user_id || $user->can('delete-posts')),
         ]);
     }
 

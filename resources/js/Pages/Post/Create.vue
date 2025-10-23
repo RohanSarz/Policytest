@@ -69,12 +69,14 @@ const handleFile = (e) => {
                 >
             </CardHeader>
             <CardContent>
+                <!-- Post Create Form -->
                 <Form
                     :action="route('posts.store')"
                     method="post"
                     #default="{ processing, errors }"
                 >
-                    <Select>
+                    <!-- Category Select -->
+                    <Select name="category_id">
                         <SelectTrigger>
                             <SelectValue
                                 placeholder="Select a Category"
@@ -89,7 +91,7 @@ const handleFile = (e) => {
                                     v-for="{ name, id } in categories"
                                     :key="id"
                                 >
-                                    <SelectItem :value="name">
+                                    <SelectItem :value="id">
                                         {{ name }}
                                     </SelectItem>
                                 </div>
@@ -104,6 +106,7 @@ const handleFile = (e) => {
                             {{ errors.category_id }}
                         </div>
 
+                        <!-- Title Input-->
                         <div>
                             <Label
                                 for="title"
@@ -123,6 +126,7 @@ const handleFile = (e) => {
                             </div>
                         </div>
 
+                        <!-- Image Input-->
                         <div>
                             <Label
                                 class="form-label"
@@ -135,9 +139,9 @@ const handleFile = (e) => {
                                     <Input
                                         class="hidden"
                                         id="image"
+                                        name="image"
                                         @change="handleFile"
                                         type="file"
-                                        name="image"
                                         :disabled="processing"
                                     />
                                     <img
