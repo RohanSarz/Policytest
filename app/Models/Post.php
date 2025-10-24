@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +18,14 @@ class Post extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+    public function getCreatedAtHumanAttribute()
+    {
+        return $this->created_at?->diffForHumans();
+    }
+    public function getUpdatedAtHumanAttribute()
+    {
+        return $this->updated_at?->diffForHumans();
     }
 
     protected static function boot()

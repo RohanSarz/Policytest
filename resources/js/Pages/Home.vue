@@ -2,77 +2,77 @@
 import { ref, computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import PostCard from "@/components/post/PostCard.vue";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 const { posts, categories } = usePage().props;
 
-// Track active tab
-const activeTab = ref("all");
+// Track active category filter
+const activeCategory = ref("all");
 
 // Group posts by category
 const postsByCategory = computed(() => {
     const map: Record<string, any[]> = {};
-
     categories.forEach((cat) => (map[cat.id] = []));
     posts.forEach((post) => {
         if (post.category && map[post.category.id]) {
             map[post.category.id].push(post);
         }
     });
-
     return map;
 });
 
-// Filter posts based on active tab
+// Filtered posts based on active category
 const displayedPosts = computed(() => {
-    if (activeTab.value === "all") return posts;
-    return postsByCategory.value[activeTab.value] || [];
+    if (activeCategory.value === "all") return posts;
+    return postsByCategory.value[activeCategory.value] || [];
 });
 </script>
 
 <template>
-    <div class="max-w-7xl mx-auto p-4">
-        <Tabs
-            default-value="all"
-            v-model:active-value="activeTab"
-            class="rounded-2xl border p-4"
-        >
-            <TabsList>
-                <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger
-                    v-for="category in categories"
-                    :key="category.id"
-                    :value="category.id"
-                >
-                    {{ category.name }}
-                </TabsTrigger>
-            </TabsList>
-
-            <TabsContent
-                value="all"
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4"
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <!-- Filter Buttons -->
+        <div class="flex flex-wrap gap-2 mb-6">
+            <button
+                class="px-3 py-1 rounded-md font-medium transition"
+                :class="
+                    activeCategory === 'all'
+                        ? 'bg-green-300 text-black'
+                        : 'bg-gray-200 text-gray-700'
+                "
+                @click="activeCategory = 'all'"
             >
-                <PostCard v-for="post in posts" :key="post.id" :post="post" />
-            </TabsContent>
+                All
+            </button>
 
-            <TabsContent
+            <button
                 v-for="category in categories"
                 :key="category.id"
-                :value="category.id"
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4"
+                class="px-3 py-1 rounded-md font-medium transition"
+                :class="
+                    activeCategory === category.id
+                        ? 'bg-blue-400 text-white'
+                        : 'bg-gray-200 text-gray-700'
+                "
+                @click="activeCategory = category.id"
             >
-                <PostCard
-                    v-for="post in postsByCategory[category.id]"
-                    :key="post.id"
-                    :post="post"
-                />
-                <div
-                    v-if="postsByCategory[category.id].length === 0"
-                    class="col-span-full text-center text-gray-500 mt-6"
-                >
-                    No posts in this category.
-                </div>
-            </TabsContent>
-        </Tabs>
+                {{ category.name }}
+            </button>
+        </div>
+
+        <!-- Posts Grid -->
+        <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        >
+            <PostCard
+                v-for="post in displayedPosts"
+                :key="post.id"
+                :post="post"
+            />
+            <div
+                v-if="displayedPosts.length === 0"
+                class="col-span-full text-center text-gray-500 mt-6"
+            >
+                No posts in this category.
+            </div>
+        </div>
     </div>
 </template>

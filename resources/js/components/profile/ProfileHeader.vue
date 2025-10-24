@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { usePage, Form } from "@inertiajs/vue3";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -25,6 +25,39 @@ import {
 import UserNameUpper from "../userDataComponents/UserNameUpper.vue";
 const page = usePage();
 const user = computed(() => page.props.auth.user);
+
+// holding the url
+const previewImage = ref(null);
+
+// clearing preview to avoid memory leakage
+const clearUrl = () => {
+    if (previewImage.value) {
+        URL.revokeObjectURL(previewImage.value);
+        previewImage.value = null;
+    }
+};
+
+// handle the file and create the url
+const handleFile = (e) => {
+    const file = e.target.files[0];
+    console.log(previewImage.value);
+    if (file) {
+        clearUrl();
+        previewImage.value = URL.createObjectURL(file);
+    } else {
+        clearUrl();
+        previewImage.value = `/storage/avatars/def.jpg`;
+    }
+    console.log(previewImage.value);
+};
+
+// handle the avatar form submission
+const onAvatarSubmit = (data) => {
+    // Inertia forms automatically handle the response
+    // If the avatar update is successful, the page will be reloaded with updated user data
+    // Clear the preview image after successful submission
+    clearUrl();
+};
 </script>
 
 <template>
@@ -36,20 +69,94 @@ const user = computed(() => page.props.auth.user);
                 <div class="relative">
                     <Avatar class="h-24 w-24 border">
                         <AvatarImage
-                            :src="`/storage/${user?.avatar ?? 'avatars/def.jpg'}`"
-                            alt="Profile"
+                            :src="`/storage/${
+                                user?.avatar ?? 'avatars/def.jpg'
+                            }`"
+                            :alt="user?.name"
+                            class="object-cover object-top"
                         />
                         <AvatarFallback class="text-2xl">
                             {{ user?.name ? user.name[0]?.toUpperCase() : "" }}
                         </AvatarFallback>
                     </Avatar>
-                    <Button
-                        size="icon"
-                        variant="outline"
-                        class="absolute -right-2 -bottom-2 h-8 w-8 rounded-full"
-                    >
-                        <Camera class="h-4 w-4" />
-                    </Button>
+                    <Dialog>
+                        <!-- Trigger: camera button on avatar -->
+                        <DialogTrigger asChild>
+                            <Button
+                                size="icon"
+                                variant="outline"
+                                class="absolute -right-2 -bottom-2 h-8 w-8 rounded-full"
+                            >
+                                <Camera class="h-4 w-4" />
+                            </Button>
+                        </DialogTrigger>
+
+                        <!-- Dialog Content -->
+                        <DialogContent class="sm:max-w-sm">
+                            <DialogHeader>
+                                <DialogTitle>Update Profile Image</DialogTitle>
+                                <DialogDescription>
+                                    Choose a new avatar to update your profile
+                                    image.
+                                </DialogDescription>
+                            </DialogHeader>
+
+                            <Form
+                                :action="route('profile.avatar')"
+                                method="post"
+                                enctype="multipart/form-data"
+                                #default="{ processing, wasSuccessful }"
+                                @finish="() => { if(wasSuccessful) clearUrl(); }"
+                            >
+                                <div class="flex flex-col items-center gap-4">
+                                    <!-- Avatar Preview -->
+                                    <label for="avatar" class="cursor-pointer">
+                                        <Avatar class="h-24 w-24 border-2">
+                                            <AvatarImage
+                                                v-if="previewImage"
+                                                :src="previewImage"
+                                                class="object-cover w-full h-full"
+                                            />
+                                            <AvatarImage
+                                                v-else
+                                                :src="`/storage/${
+                                                    user?.avatar ??
+                                                    'avatars/def.jpg'
+                                                }`"
+                                                class="object-cover w-full h-full"
+                                            />
+                                            <AvatarFallback>
+                                                {{
+                                                    user?.name
+                                                        ? user.name[0].toUpperCase()
+                                                        : "?"
+                                                }}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                    </label>
+
+                                    <!-- File Input -->
+                                    <Input
+                                        id="avatar"
+                                        type="file"
+                                        name="avatar"
+                                        class="hidden"
+                                        @change="handleFile"
+                                        :disabled="processing"
+                                    />
+
+                                    <!-- Submit -->
+                                    <Button
+                                        type="submit"
+                                        :disabled="processing"
+                                        class="w-full"
+                                    >
+                                        Save Changes
+                                    </Button>
+                                </div>
+                            </Form>
+                        </DialogContent>
+                    </Dialog>
                 </div>
                 <div class="flex-1 space-y-2">
                     <div

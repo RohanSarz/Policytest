@@ -17,6 +17,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [UserDataController::class, 'dashboardView'])->name('dashboard');
     Route::get('/profile', [UserDataController::class, 'profileView'])->name('profile');
     Route::post('/profile', [UserDataController::class, 'store'])->name('profile.store');
+    Route::put('/profile', [UserDataController::class, 'updateAvatar'])->name('profile.avatar');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // User profile route for viewing other users

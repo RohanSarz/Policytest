@@ -8,29 +8,46 @@ import {
     CardFooter,
 } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import Badge from "@/components/ui/badge/Badge.vue";
 
-// ✅ Correct way to define props in <script setup>
 const props = defineProps({
     post: {
         type: Object,
         required: true,
     },
 });
-
-// You can also destructure if you prefer:
-// const { post } = defineProps({ post: Object })
 </script>
 
 <template>
-    <!-- Use props.post since we didn’t destructure -->
     <Card
         v-if="props.post"
-        class="min-w-[280px] sm:min-w-[320px] max-w-lg w-full"
+        class="flex flex-col w-full max-w-sm h-auto overflow-hidden border-0 rounded-lg shadow-sm transition hover:shadow-md"
+        data-aos="zoom-in-up"
+        data-aos-duration="500"
     >
-        <CardHeader class="pb-3">
-            <div v-if="props.post.user" class="flex items-center gap-4">
+        <!-- 🖼️ Post Image -->
+        <div
+            class="relative w-full"
+            style="aspect-ratio: 16 / 9; overflow: hidden"
+        >
+            <img
+                v-if="props.post.image"
+                :src="`/storage/${props.post.image}`"
+                :alt="props.post.title"
+                class="w-full h-full object-cover"
+            />
+            <div
+                v-else
+                class="flex items-center justify-center h-full text-gray-400 text-xs"
+            >
+                No image
+            </div>
+        </div>
+
+        <CardHeader class="pb-1 pt-2 px-3">
+            <div v-if="props.post.user" class="flex items-center gap-2">
                 <Link :href="`/users/${props.post.user.id}`">
-                    <Avatar class="ring-1">
+                    <Avatar class="ring-1 w-7 h-7">
                         <AvatarImage
                             :src="
                                 props.post.user.avatar
@@ -53,47 +70,34 @@ const props = defineProps({
                             {{ props.post.user.name }}
                         </h4>
                     </Link>
-                    <p class="text-xs text-muted-foreground">
-                        {{
-                            new Date(props.post.created_at).toLocaleDateString()
-                        }}
+                    <p class="text-[10px] text-gray-500">
+                        {{ props.post.created_at_human }}
                     </p>
                 </div>
             </div>
 
-            <div v-else class="flex items-center gap-4">
-                <Avatar class="ring-1">
-                    <AvatarImage
-                        src="/storage/avatars/def.jpg"
-                        alt="Loading..."
-                    />
-                    <AvatarFallback>U</AvatarFallback>
-                </Avatar>
-                <div class="min-w-0 flex-1">
-                    <h4 class="text-sm font-semibold truncate">Loading...</h4>
-                    <p class="text-xs text-muted-foreground">Loading...</p>
-                </div>
-            </div>
-
-            <CardTitle class="text-xl mt-2">
-                {{ props.post.title || "Loading..." }}
+            <CardTitle class="text-base mt-1 line-clamp-2">
+                {{ props.post.title }}
             </CardTitle>
         </CardHeader>
 
-        <CardContent class="pb-3">
-            <p
-                class="text-sm text-muted-foreground whitespace-pre-wrap break-words overflow-hidden line-clamp-6"
-            >
-                {{ props.post.body || "Loading post content..." }}
+        <CardContent class="px-3 py-1">
+            <p class="text-xs text-gray-600 line-clamp-4">
+                {{ props.post.body || "No description." }}
             </p>
         </CardContent>
 
-        <CardFooter>
+        <CardFooter class="flex justify-between items-center px-3 py-1 text-xs">
             <Link
                 :href="`/posts/${props.post.slug}`"
-                class="text-sm font-medium hover:underline"
+                class="font-medium text-gray-500 hover:text-black"
             >
                 Read more
+            </Link>
+            <Link :href="route('posts.index', props.post.category?.id)">
+                <Badge class="font-medium px-1 py-0 text-[10px]">
+                    {{ props.post.category?.name || "Uncategorized" }}
+                </Badge>
             </Link>
         </CardFooter>
     </Card>

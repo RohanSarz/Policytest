@@ -59,7 +59,11 @@ onUnmounted(() => {
     <Head title="Register" />
 
     <div class="grid place-items-center mx-auto h-fit my-24">
-        <Form action="/register" method="post" #default="{ processing }">
+        <Form
+            :action="route('register')"
+            method="post"
+            #default="{ processing }"
+        >
             <Card
                 class="w-[350px] px-2"
                 data-aos="fade-left"

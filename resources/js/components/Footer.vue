@@ -1,9 +1,19 @@
 <template>
-  <footer class="bg-secondary-foreground text-white dark:bg-primary py-12">
+  <footer
+    class="bg-secondary-foreground text-white dark:bg-primary py-12"
+    data-aos="fade-up"
+    data-aos-delay="300"
+    data-aos-duration="600"
+  >
     <div class="max-w-7xl mx-auto px-4">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
         <!-- Brand Column -->
-        <div class="lg:col-span-2">
+        <div
+          class="lg:col-span-2"
+          data-aos="fade-right"
+          data-aos-delay="400"
+          data-aos-duration="600"
+        >
           <h3 class="font-bold text-xl mb-4">The Daily Chronicle</h3>
           <p class="text-gray-400 mb-4">
             Bringing you trusted news since 1923. Committed to truth,
@@ -72,7 +82,7 @@
         </div>
 
         <!-- News Categories -->
-        <div>
+        <div data-aos="fade-up" data-aos-delay="500" data-aos-duration="600">
           <h3 class="font-bold text-lg mb-4">News</h3>
           <ul class="space-y-2 text-gray-400">
             <li>
@@ -109,7 +119,7 @@
         </div>
 
         <!-- Lifestyle -->
-        <div>
+        <div data-aos="fade-up" data-aos-delay="600" data-aos-duration="600">
           <h3 class="font-bold text-lg mb-4">Lifestyle</h3>
           <ul class="space-y-2 text-gray-400">
             <li>
@@ -146,7 +156,7 @@
         </div>
 
         <!-- Company -->
-        <div>
+        <div data-aos="fade-up" data-aos-delay="700" data-aos-duration="600">
           <h3 class="font-bold text-lg mb-4">Company</h3>
           <ul class="space-y-2 text-gray-400">
             <li>
@@ -184,21 +194,26 @@
       </div>
 
       <!-- Divider and Additional Info -->
-      <div class="border-t border-gray-800 mt-8 pt-8">
+      <div
+        class="border-t border-gray-800 mt-8 pt-8"
+        data-aos="fade-up"
+        data-aos-delay="800"
+        data-aos-duration="600"
+      >
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div class="text-gray-400">
+          <div class="text-gray-400" data-aos="fade-up" data-aos-delay="900" data-aos-duration="600">
             <h4 class="font-bold mb-2">Contact Info</h4>
             <p class="text-sm">123 News Street, New York, NY 10001</p>
             <p class="text-sm">Phone: (555) 123-4567</p>
             <p class="text-sm">Email: info@dailychronicle.com</p>
           </div>
-          <div class="text-gray-400">
+          <div class="text-gray-400" data-aos="fade-up" data-aos-delay="1000" data-aos-duration="600">
             <h4 class="font-bold mb-2">Customer Service</h4>
             <p class="text-sm">Monday-Friday: 8am-6pm EST</p>
             <p class="text-sm">Saturday: 9am-4pm EST</p>
             <p class="text-sm">Sunday: Closed</p>
           </div>
-          <div class="text-gray-400">
+          <div class="text-gray-400" data-aos="fade-up" data-aos-delay="1100" data-aos-duration="600">
             <h4 class="font-bold mb-2">Newsletter</h4>
             <p class="text-sm mb-2">
               Subscribe to our daily newsletter
@@ -217,7 +232,10 @@
             </div>
           </div>
         </div>
-        <div class="flex flex-col md:flex-row justify-between items-center">
+        <div
+          class="flex flex-col md:flex-row justify-between items-center"
+
+        >
           <p class="text-gray-500 text-sm mb-2 md:mb-0">
             © 2025 The Daily Chronicle. All rights reserved.
           </p>
