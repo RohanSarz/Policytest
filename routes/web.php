@@ -10,7 +10,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', 'posts')->name('home');
-Route::resource('posts', PostController::class)->parameters(['posts'=>'slug']);
+Route::resource('posts', PostController::class)->parameters(['posts' => 'post']);
 
 // User routes
 Route::middleware(['auth'])->group(function () {

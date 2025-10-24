@@ -36,9 +36,7 @@ const user = computed(() => page.props.auth.user);
                 <div class="relative">
                     <Avatar class="h-24 w-24 border">
                         <AvatarImage
-                            :src="`/storage/${
-                                user?.avatar ?? 'avatars/def.jpg'
-                            }`"
+                            :src="`/storage/${user?.avatar ?? 'avatars/def.jpg'}`"
                             alt="Profile"
                         />
                         <AvatarFallback class="text-2xl">

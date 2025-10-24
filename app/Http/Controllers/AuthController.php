@@ -25,7 +25,7 @@ class AuthController extends Controller
 
         $fields['password'] = bcrypt($fields['password']);
 
-        $fields['avatar'] = $request->hasFile('avatar') ? Storage::disk('public')->put('avatars', $request->avatar) : Storage::disk('public')->put('avatars', 'def.jpg');
+        $fields['avatar'] = $request->hasFile('avatar') ? Storage::disk('public')->put('avatars', $request->avatar) : null;
         // register
 
         $user = User::create($fields);

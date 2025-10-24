@@ -14,11 +14,11 @@ return new class extends Migration {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnDelete();
-            $table->foreignId('category_id')->constrained('categories', 'id')->cascadeOnDelete();
-            $table->string('image', 255);
+            $table->foreignId('category_id')->nullable()->constrained('categories', 'id')->cascadeOnDelete();
+            $table->string('image', 255)->nullable();
             $table->string('title', 255);
             $table->string('slug', 255)->unique();
-            $table->text('body')->nullable();
+            $table->text('body');
             $table->string('status', 255)->default('pending');
 
             $table->timestamps();

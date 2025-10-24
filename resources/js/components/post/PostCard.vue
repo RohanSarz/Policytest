@@ -38,9 +38,6 @@ const props = defineProps({
                                     : '/storage/avatars/def.jpg'
                             "
                             :alt="props.post.user.name"
-                            @error="
-                                $event.target.src = '/storage/avatars/def.jpg'
-                            "
                         />
                         <AvatarFallback>
                             {{ props.post.user.name?.charAt(0).toUpperCase() }}

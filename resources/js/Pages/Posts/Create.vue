@@ -168,7 +168,6 @@ const handleFile = (e) => {
                             <Textarea
                                 name="body"
                                 placeholder="Write your post content here..."
-                                rows="6"
                                 class="w-full"
                             />
                             <div

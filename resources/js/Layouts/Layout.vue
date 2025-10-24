@@ -21,7 +21,7 @@ import Toaster from "@/components/Toaster.vue";
             <slot />
         </main>
     </div>
-    <!-- <footer>
+    <footer>
         <Footer />
-    </footer> -->
+    </footer>
 </template>

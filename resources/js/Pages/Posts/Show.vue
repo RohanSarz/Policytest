@@ -1,5 +1,6 @@
 <script setup>
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Badge from "@/components/ui/badge/Badge.vue";
 import { Card } from "@/components/ui/card";
 import UserNameUpper from "@/components/userDataComponents/UserNameUpper.vue";
 import { usePage } from "@inertiajs/vue3";
@@ -18,14 +19,32 @@ const category = computed(() => post.category || {});
                 <div
                     class="flex flex-col md:flex-row md:items-center gap-2 md:justify-between"
                 >
-                    <div>
-                        {{ post.title }}
-
-                        <p class="mt-1 text-sm text-gray-600">
-                            By
-                            <UserNameUpper v-if="user.name" :name="user.name" />
-                        </p>
+                    <div class="flex items-center space-x-4">
+                        <Avatar class="ring-1" v-if="user">
+                            <AvatarImage
+                                v-if="user.avatar"
+                                :src="`/storage/${user.avatar}`"
+                                alt="User Avatar"
+                            />
+                            <AvatarFallback>{{ user.name[0] }}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <Link :href="route('users.show', user.id)">
+                                <p
+                                    class="text-sm font-semibold hover:underline text-gray-900"
+                                >
+                                    <UserNameUpper :name="user.name" /></p
+                            ></Link>
+                            <p class="text-xs text-gray-600">
+                                Published on {{ post.created_for_human}}
+                            </p>
+                        </div>
                     </div>
+                    <h1 class="text-3xl font-bold text-gray-900">
+                        {{ post.title }}
+                    </h1>
+
+                    <div></div>
                 </div>
             </div>
         </header>
@@ -33,31 +52,29 @@ const category = computed(() => post.category || {});
         <!-- Post Content -->
         <main class="py-6">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <Card>
-                    <div class="flex items-center space-x-4">
-                        <Avatar v-if="user">
-                            <AvatarImage :src="user.avatar" alt="User Avatar" />
-                            <AvatarFallback>{{ user.name[0] }}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                            <p class="text-sm font-medium text-gray-900">
-                                {{ user.name }}
-                            </p>
-                            <p class="text-sm text-gray-500">
-                                {{ user.email }}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        {{ post.body }}
-                    </div>
-                    <div class="mt-4">
-                        <span class="text-sm font-semibold text-gray-600"
-                            >Category:</span
+                <Card class="p-6">
+                    <div class="flex justify-between items-start">
+                        <Badge
+                            v-if="category"
+                            variant="outline"
+                            class="bg-blue-100 text-blue-800"
                         >
-                        <span class="text-sm text-gray-800">{{
-                            category.name
-                        }}</span>
+                            {{ category.name || "Uncategorized" }}
+                        </Badge>
+                    </div>
+
+                    <div class="mt-6 prose prose-lg max-w-none">
+                        <p class="mb-4">{{ post.body }}</p>
+                        <Card
+                            v-if="post.image"
+                            class="w-full h-96 overflow-hidden"
+                        >
+                            <img
+                                class="w-full h-full object-cover"
+                                :src="`/storage/${post.image}`"
+                                alt=""
+                            />
+                        </Card>
                     </div>
                 </Card>
             </div>
