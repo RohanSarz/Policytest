@@ -29,19 +29,19 @@ createInertiaApp({
             .mount(el);
 
         // Initialize AOS after the Vue app is mounted
-        AOS.init({
-            duration: 400,
-            once: false,
-            easing: "ease-in-out",
-            offset: 100,
+        const items = document.querySelectorAll("[data-aos]");
+
+        items.forEach((el, index) => {
+            el.setAttribute("data-aos-delay", index * 200); // 100ms stagger
+            el.setAttribute("data-aos-duration", 800); // optional: control speed
         });
 
-        // Refresh AOS on Inertia navigation
-        document.addEventListener("inertia:navigate", () => {
-            setTimeout(() => {
-                AOS.refresh();
-            }, 100);
+        AOS.init({
+            once: false, // run the animation only once
+            easing: "ease-out-cubic", // looks smoother
         });
+
+
     },
-    progress: false,
+    progress: true,
 });

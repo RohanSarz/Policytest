@@ -18,6 +18,10 @@ import Error from "@/components/Error.vue";
 <template>
     <Head title="Login" />
     <div class="grid place-items-center mx-auto h-fit my-24">
+
+
+
+        
         <Form action="/login" method="post" #default="{ processing }">
             <Card
                 class="w-[350px] px-2"
