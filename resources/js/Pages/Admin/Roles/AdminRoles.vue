@@ -1,21 +1,16 @@
-<script setup>
-import { Head } from "@inertiajs/vue3";
-import { usePage } from "@inertiajs/vue3";
+<script setup lang="ts">
 import { computed } from "vue";
+import { usePage } from "@inertiajs/vue3";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 
-// Set the layout for this page
+// Use Admin layout
 defineOptions({
     layout: AdminLayout,
 });
 
+// Get Inertia props
 const page = usePage();
-
-// Safely access user — fallback to empty object if missing
-const user = computed(() => page.props.auth?.user || {});
-
-// Get users from props
 const users = computed(() => page.props.users || []);
 </script>
 
@@ -56,7 +51,7 @@ const users = computed(() => page.props.users || []);
             >
                 <div class="text-gray-500 text-sm font-medium">Admins</div>
                 <div class="text-3xl font-bold text-gray-900 mt-1">
-                    {{ users.filter((u) => u.role === "Admin").length }}
+                    {{ users.filter((u) => u.role === "admin").length }}
                 </div>
             </div>
             <div
@@ -69,7 +64,7 @@ const users = computed(() => page.props.users || []);
             </div>
         </div>
 
-        <!-- User Roles Table -->
+        <!-- Users Table -->
         <div class="bg-white rounded-xl shadow-md overflow-hidden">
             <div
                 class="px-6 py-4 border-b border-gray-200 flex justify-between items-center"
@@ -88,37 +83,31 @@ const users = computed(() => page.props.users || []);
                     <thead class="bg-gray-50">
                         <tr>
                             <th
-                                scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 User
                             </th>
                             <th
-                                scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Email
                             </th>
                             <th
-                                scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Role
                             </th>
                             <th
-                                scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Status
                             </th>
                             <th
-                                scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Permissions
                             </th>
                             <th
-                                scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
                                 Actions
@@ -127,70 +116,68 @@ const users = computed(() => page.props.users || []);
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr
-                            v-for="userItem in users"
-                            :key="userItem.id"
+                            v-for="user in users"
+                            :key="user.id"
                             class="hover:bg-gray-50"
                         >
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <Avatar class="h-10 w-10">
                                         <AvatarImage
-                                            :src="userItem.avatar"
-                                            :alt="userItem.name"
+                                            :src="user.avatar"
+                                            :alt="user.name"
                                         />
                                         <AvatarFallback>{{
-                                            userItem.name.charAt(0)
+                                            user.name?.charAt(0)
                                         }}</AvatarFallback>
                                     </Avatar>
                                     <div class="ml-4">
                                         <div
                                             class="text-sm font-medium text-gray-900"
                                         >
-                                            {{ userItem.name }}
+                                            {{ user.name }}
                                         </div>
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">
-                                    {{ userItem.email }}
-                                </div>
+                            <td
+                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                            >
+                                {{ user.email }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                                     :class="{
                                         'bg-red-100 text-red-800':
-                                            userItem.role === 'Admin',
+                                            user.role === 'Admin',
                                         'bg-yellow-100 text-yellow-800':
-                                            userItem.role === 'Moderator',
+                                            user.role === 'Moderator',
                                         'bg-blue-100 text-blue-800':
-                                            userItem.role === 'Editor',
+                                            user.role === 'Editor',
                                         'bg-green-100 text-green-800':
-                                            userItem.role === 'User',
+                                            user.role === 'User',
                                     }"
                                 >
-                                    {{ userItem.role }}
+                                    {{ user.role }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span
-                                    v-if="userItem.status === 'active'"
+                                    v-if="user.status === 'active'"
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                                    >Active</span
                                 >
-                                    Active
-                                </span>
                                 <span
                                     v-else
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+                                    >Inactive</span
                                 >
-                                    Inactive
-                                </span>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex flex-wrap gap-1">
                                     <span
-                                        v-for="permission in userItem.permissions"
+                                        v-for="permission in user.permissions"
                                         :key="permission"
                                         class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800"
                                     >
@@ -214,13 +201,14 @@ const users = computed(() => page.props.users || []);
                     </tbody>
                 </table>
             </div>
+
+            <!-- Pagination (optional) -->
             <div
                 class="bg-gray-50 px-6 py-3 flex items-center justify-between border-t border-gray-200"
             >
                 <div class="text-sm text-gray-700">
-                    Showing <span class="font-medium">1</span> to
-                    <span class="font-medium">{{ users.length }}</span> of
-                    <span class="font-medium">{{ users.length }}</span> results
+                    Showing 1 to {{ users.length }} of
+                    {{ users.length }} results
                 </div>
                 <div class="flex space-x-2">
                     <button
