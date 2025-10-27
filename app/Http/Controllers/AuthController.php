@@ -28,10 +28,6 @@ class AuthController extends Controller
         // register
 
         $user = User::create($fields);
-        
-
-        $user->assignRole('user');
-
         // login
 
         Auth::login($user);
