@@ -45,10 +45,11 @@ class User extends Authenticatable
         static::created(function (User $user) {
             // Only assign if no roles yet (safe for admin creation too)
             if ($user->roles->isEmpty()) {
-                $user->assignRole('user');
+                $user->syncRoles('user');
             }
         });
     }
+
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);

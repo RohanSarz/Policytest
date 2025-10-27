@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePage, Form } from "@inertiajs/vue3";
+import { usePage, useForm } from "@inertiajs/vue3";
 import { computed, ref } from "vue";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,13 +23,14 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import UserNameUpper from "../userDataComponents/UserNameUpper.vue";
+
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 
-// holding the url
-const previewImage = ref(null);
+// Holds the preview URL for the selected avatar
+const previewImage = ref<string | null>(null);
 
-// clearing preview to avoid memory leakage
+// Revoke object URL to prevent memory leaks
 const clearUrl = () => {
     if (previewImage.value) {
         URL.revokeObjectURL(previewImage.value);
@@ -37,26 +38,44 @@ const clearUrl = () => {
     }
 };
 
-// handle the file and create the url
-const handleFile = (e) => {
-    const file = e.target.files[0];
-    console.log(previewImage.value);
+// Handle file selection: generate preview or fall back to default
+const handleFile = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    const file = target.files?.[0];
+
+    clearUrl(); // Clean up any previous preview
+
     if (file) {
-        clearUrl();
+        // Create a local preview URL for the selected image
         previewImage.value = URL.createObjectURL(file);
     } else {
-        clearUrl();
+        // Fallback to default if no file (though this case rarely triggers on change)
         previewImage.value = `/storage/avatars/def.jpg`;
     }
-    console.log(previewImage.value);
 };
 
-// handle the avatar form submission
-const onAvatarSubmit = (data) => {
-    // Inertia forms automatically handle the response
-    // If the avatar update is successful, the page will be reloaded with updated user data
-    // Clear the preview image after successful submission
-    clearUrl();
+// Inertia form for avatar submission
+const avatarForm = useForm({
+    avatar: null as File | null,
+});
+
+// Submit the selected avatar
+const submitAvatar = () => {
+    if (!avatarForm.avatar) return;
+
+    avatarForm.post(route('profile.avatar.update'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            // On success, clear preview and let Inertia reload props
+            clearUrl();
+        },
+    });
+};
+
+// Trigger file input click programmatically
+const openFilePicker = () => {
+    const fileInput = document.getElementById('avatar') as HTMLInputElement;
+    fileInput?.click();
 };
 </script>
 
@@ -66,12 +85,12 @@ const onAvatarSubmit = (data) => {
             <div
                 class="flex flex-col items-start gap-6 md:flex-row md:items-center"
             >
+                <!-- Avatar Section -->
                 <div class="relative">
+                    <!-- Display current or preview avatar -->
                     <Avatar class="h-24 w-24 border">
                         <AvatarImage
-                            :src="`/storage/${
-                                user?.avatar ?? 'avatars/def.jpg'
-                            }`"
+                            :src="previewImage || `/storage/${user?.avatar ?? 'avatars/def.jpg'}`"
                             :alt="user?.name"
                             class="object-cover object-top"
                         />
@@ -79,85 +98,33 @@ const onAvatarSubmit = (data) => {
                             {{ user?.name ? user.name[0]?.toUpperCase() : "" }}
                         </AvatarFallback>
                     </Avatar>
-                    <Dialog>
-                        <!-- Trigger: camera button on avatar -->
-                        <DialogTrigger asChild>
-                            <Button
-                                size="icon"
-                                variant="outline"
-                                class="absolute -right-2 -bottom-2 h-8 w-8 rounded-full"
-                            >
-                                <Camera class="h-4 w-4" />
-                            </Button>
-                        </DialogTrigger>
 
-                        <!-- Dialog Content -->
-                        <DialogContent class="sm:max-w-sm">
-                            <DialogHeader>
-                                <DialogTitle>Update Profile Image</DialogTitle>
-                                <DialogDescription>
-                                    Choose a new avatar to update your profile
-                                    image.
-                                </DialogDescription>
-                            </DialogHeader>
+                    <!-- Camera button overlay: triggers hidden file input -->
+                    <Button
+                        size="icon"
+                        variant="outline"
+                        class="absolute -right-2 -bottom-2 h-8 w-8 rounded-full"
+                        @click="openFilePicker"
+                        :disabled="avatarForm.processing"
+                    >
+                        <Camera class="h-4 w-4" />
+                    </Button>
 
-                            <Form
-                                :action="route('profile.avatar')"
-                                method="post"
-                                enctype="multipart/form-data"
-                                #default="{ processing, wasSuccessful }"
-                                @finish="() => { if(wasSuccessful) clearUrl(); }"
-                            >
-                                <div class="flex flex-col items-center gap-4">
-                                    <!-- Avatar Preview -->
-                                    <label for="avatar" class="cursor-pointer">
-                                        <Avatar class="h-24 w-24 border-2">
-                                            <AvatarImage
-                                                v-if="previewImage"
-                                                :src="previewImage"
-                                                class="object-cover w-full h-full"
-                                            />
-                                            <AvatarImage
-                                                v-else
-                                                :src="`/storage/${
-                                                    user?.avatar ??
-                                                    'avatars/def.jpg'
-                                                }`"
-                                                class="object-cover w-full h-full"
-                                            />
-                                            <AvatarFallback>
-                                                {{
-                                                    user?.name
-                                                        ? user.name[0].toUpperCase()
-                                                        : "?"
-                                                }}
-                                            </AvatarFallback>
-                                        </Avatar>
-                                    </label>
-
-                                    <!-- File Input -->
-                                    <Input
-                                        id="avatar"
-                                        type="file"
-                                        name="avatar"
-                                        class="hidden"
-                                        @change="handleFile"
-                                        :disabled="processing"
-                                    />
-
-                                    <!-- Submit -->
-                                    <Button
-                                        type="submit"
-                                        :disabled="processing"
-                                        class="w-full"
-                                    >
-                                        Save Changes
-                                    </Button>
-                                </div>
-                            </Form>
-                        </DialogContent>
-                    </Dialog>
+                    <!-- Hidden file input: bound to form data -->
+                    <input
+                        id="avatar"
+                        ref="fileInput"
+                        type="file"
+                        name="avatar"
+                        class="hidden"
+                        accept="image/*"
+                        @change="handleFile"
+                        @input="avatarForm.avatar = ($event.target as HTMLInputElement).files?.[0] || null"
+                        :disabled="avatarForm.processing"
+                    />
                 </div>
+
+                <!-- User Info Section (unchanged) -->
                 <div class="flex-1 space-y-2">
                     <div
                         class="flex flex-col gap-2 md:flex-row md:items-center"
@@ -199,6 +166,8 @@ const onAvatarSubmit = (data) => {
                         </div>
                     </div>
                 </div>
+
+                <!-- Edit Profile Dialog (unchanged) -->
                 <Dialog>
                     <DialogTrigger
                         ><Button variant="default"

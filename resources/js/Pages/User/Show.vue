@@ -20,7 +20,7 @@ const stats = {
 </script>
 
 <template>
-    <Head :title="`${user.name || 'User'} Profile`" />
+    <Head title="Post View" />
 
     <div class="min-h-screen bg-gray-50">
         <!-- Header -->

@@ -74,6 +74,8 @@ onUnmounted(() => {
                     <CardDescription>Register a new account.</CardDescription>
                 </CardHeader>
                 <CardContent class="space-y-3">
+
+                    <!-- Avatar Input -->
                     <Label
                         class="form-label"
                         for="avatar"
@@ -110,6 +112,9 @@ onUnmounted(() => {
                             errorName="avatar"
                         />
                     </Label>
+
+
+                    <!-- Name -->
                     <Label
                         class="form-label"
                         for="name"
@@ -120,6 +125,9 @@ onUnmounted(() => {
                         <Input name="name" type="text" placeholder="name" />
                         <Error errorName="name" />
                     </Label>
+
+
+                    <!-- Email -->
                     <Label
                         class="form-label"
                         for="email"
@@ -130,6 +138,9 @@ onUnmounted(() => {
                         <Input name="email" placeholder="eg@mail.com" />
                         <Error errorName="email" />
                     </Label>
+
+
+                    <!-- Password -->
                     <Label
                         class="form-label"
                         for="password"
@@ -158,12 +169,14 @@ onUnmounted(() => {
                         />
                         <Error errorName="password_confirmation" />
                     </Label>
+
+
+                    <!-- Submit Button -->
                     <Button
                         class="w-full my-2"
                         type="submit"
                         :disabled="processing"
-                        data-aos="zoom-in-left"
-                        data-aos-duration="1000"
+
                     >
                         Register
                     </Button>

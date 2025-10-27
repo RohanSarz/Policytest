@@ -12,10 +12,9 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         // validate
-
         $fields = $request->validate(
             rules: [
-                'avatar' => ['file', 'image', 'max:2000', 'nullable'],
+                'avatar' => ['file', 'image', 'max:2000'],
                 'name' => ['required', 'max:255'],
                 'email' => ['required', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'min:6', 'max:255', 'confirmed'],
@@ -25,10 +24,11 @@ class AuthController extends Controller
 
         $fields['password'] = bcrypt($fields['password']);
 
-        $fields['avatar'] = $request->hasFile('avatar') ? Storage::disk('public')->put('avatars', $request->avatar) : null;
+        $fields['avatar'] = $request->hasFile('avatar') ? Storage::disk('public')->put('avatars', $request->avatar) : 'avatars/default.jpg';
         // register
 
         $user = User::create($fields);
+        
 
         $user->assignRole('user');
 

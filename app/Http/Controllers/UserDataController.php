@@ -15,6 +15,7 @@ class UserDataController extends Controller
         // user is passed globally in HandleInertiaRequests.php
         return inertia('User/Profile');
     }
+
     public function dashboardView()
     {
         $posts = Post::with('user')
@@ -47,5 +48,18 @@ class UserDataController extends Controller
                 'type' => 'success',
                 'message' => 'Profile updated successfully!',
             ]);
+    }
+
+    public function updateAvatar(Request $request)
+    {
+        dd($request->hasFile('avatar'));
+        $user = Auth::user();
+
+        if (!$request->hasFile('avatar')) {
+            return redirect()->route('profile')->with('message', 'Please select an image to upload.');
+        }
+        $user->avatar = Storage::disk('public')->put('avatars', $request->avatar);
+
+        $user->save();
     }
 }
