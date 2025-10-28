@@ -47,10 +47,13 @@ const handleFile = (e) => {
         previewImage.value = URL.createObjectURL(file);
     } else {
         clearUrl();
-        previewImage.value = $page.props.defUrl;
+        previewImage.value = '/storage/avatars/default.jpg';
     }
     console.log(previewImage.value);
 };
+
+// Initialize with default image
+previewImage.value = '/storage/avatars/default.jpg';
 </script>
 
 <template>
@@ -75,7 +78,7 @@ const handleFile = (e) => {
                 >
                     <div class="space-y-4">
                         <div>
-                            <Select>
+                            <Select name="category_id">
                                 <SelectTrigger>
                                     <SelectValue
                                         placeholder="Select a Category"
@@ -87,13 +90,10 @@ const handleFile = (e) => {
                                         <SelectLabel>Category</SelectLabel>
 
                                         <div
-                                            v-for="{
-                                                category,
-                                                index,
-                                            } in categories"
-                                            :key="index"
+                                            v-for="category in categories"
+                                            :key="category.id"
                                         >
-                                            <SelectItem value="category">
+                                            <SelectItem :value="category.id.toString()">
                                                 {{ category.name }}
                                             </SelectItem>
                                         </div>
@@ -135,7 +135,7 @@ const handleFile = (e) => {
                                 data-aos-duration="500"
                             >
                                 <div class="grid place-items-center gap-2">
-                                    Image
+                                    Post Image
                                     <Input
                                         class="hidden"
                                         id="image"
@@ -149,7 +149,7 @@ const handleFile = (e) => {
                                         :src="
                                             previewImage || '/storage/avatars/default.jpg'
                                         "
-                                        alt="PI"
+                                        alt="Post Image"
                                     />
                                 </div>
                                 <Error
@@ -161,22 +161,74 @@ const handleFile = (e) => {
 
                         <div>
                             <Label
-                                for="body"
+                                for="excerpt"
+                                class="block text-sm font-medium text-gray-700 mb-1"
+                                >Excerpt</Label
+                            >
+                            <Textarea
+                                name="excerpt"
+                                placeholder="Enter post excerpt..."
+                                rows="3"
+                                class="w-full"
+                            />
+                            <div
+                                v-if="errors.excerpt"
+                                class="mt-1 text-sm text-red-600"
+                            >
+                                {{ errors.excerpt }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <Label
+                                for="content"
                                 class="block text-sm font-medium text-gray-700 mb-1"
                                 >Content</Label
                             >
                             <Textarea
-                                name="body"
+                                name="content"
                                 placeholder="Write your post content here..."
                                 rows="6"
                                 class="w-full"
                             />
                             <div
-                                v-if="errors.body"
+                                v-if="errors.content"
                                 class="mt-1 text-sm text-red-600"
                             >
-                                {{ errors.body }}
+                                {{ errors.content }}
                             </div>
+                        </div>
+
+                        <div>
+                            <Label
+                                class="form-label"
+                                for="cover"
+                                data-aos="zoom-in-left"
+                                data-aos-duration="500"
+                            >
+                                <div class="grid place-items-center gap-2">
+                                    Cover Image
+                                    <Input
+                                        class="hidden"
+                                        id="cover"
+                                        @change="handleFile"
+                                        type="file"
+                                        name="cover"
+                                        :disabled="processing"
+                                    />
+                                    <img
+                                        class="border w-full h-24 rounded-lg text-center object-cover"
+                                        :src="
+                                            previewImage || '/storage/avatars/default.jpg'
+                                        "
+                                        alt="Cover Preview"
+                                    />
+                                </div>
+                                <Error
+                                    class="text-center py-2 text-xs font-mono"
+                                    errorName="cover"
+                                />
+                            </Label>
                         </div>
 
                         <Button

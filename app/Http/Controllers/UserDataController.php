@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class UserDataController extends Controller
@@ -52,14 +53,26 @@ class UserDataController extends Controller
 
     public function updateAvatar(Request $request)
     {
-        dd($request->hasFile('avatar'));
+        // 1. Validate that a file was uploaded and it's an image
+        $request->validate([
+            'avatar' => 'required|image|mimes:jpg,jpeg,png|max:2048', // max 2MB
+        ]);
+
+        // 2. Get the current user
         $user = Auth::user();
 
-        if (!$request->hasFile('avatar')) {
-            return redirect()->route('profile')->with('message', 'Please select an image to upload.');
-        }
-        $user->avatar = Storage::disk('public')->put('avatars', $request->avatar);
+        // 3. Store the file in /storage/app/public/avatars
+        //    put() returns the relative path (e.g., "avatars/xyz.jpg")
+        $path = $request->file('avatar')->store('avatars', 'public');
 
+        // 4. Save the path to the user's avatar field
+        $user->avatar = $path;
         $user->save();
+
+        // 5. Return success response (Inertia-friendly)
+        return redirect()->back()->with([
+            'type' => 'success',
+            'message' => 'Avatar updated successfully!'
+        ]);
     }
 }

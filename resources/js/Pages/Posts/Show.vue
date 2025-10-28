@@ -36,7 +36,7 @@ const category = computed(() => post.category || {});
                                     <UserNameUpper :name="user.name" /></p
                             ></Link>
                             <p class="text-xs text-gray-600">
-                                Published on {{ post.created_for_human}}
+                                Published on {{ post.created_at_human}}
                             </p>
                         </div>
                     </div>
@@ -64,13 +64,13 @@ const category = computed(() => post.category || {});
                     </div>
 
                     <div class="mt-6 prose prose-lg max-w-none">
-                        <p class="mb-4">{{ post.body }}</p>
+                        <p class="mb-4">{{ post.content }}</p>
                         <Card
                             v-if="post.image"
                             class="w-full h-96 overflow-hidden"
                         >
                             <img
-                                class="w-full h-full object-cover"
+                                class="w-full h-full object-cover object-top"
                                 :src="`/storage/${post.image}`"
                                 alt=""
                             />

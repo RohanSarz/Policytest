@@ -41,22 +41,32 @@ class PostController extends Controller implements HasMiddleware
     {
         $fields = $request->validate([
             'title' => 'required|string|max:255',
-            'body' => 'required|string',
-            'category_id' => 'nullable|exists:categories,id',
+            'excerpt' => 'required|string|max:255',
+            'content' => 'required|string',
+            'cover' => 'nullable|image|max:2048|mimes:png,jpg,jpeg',
             'image' => 'nullable|image|max:2048|mimes:png,jpg,jpeg',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
+        $coverPath = null;
         $imagePath = null;
+        
+        if ($request->hasFile('cover')) {
+            $coverPath = $request->file('cover')->store('post-covers', 'public');
+        }
+        
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('post-images', 'public');
         }
-        //dd($imagePath);
+
         Post::create([
             'title' => $fields['title'],
-            'body' => $fields['body'],
+            'excerpt' => $fields['excerpt'],
+            'content' => $fields['content'],
+            'cover' => $coverPath ?? null,
+            'image' => $imagePath ?? null,
             'category_id' => $fields['category_id'] ?? null,
             'user_id' => $request->user()->id,
-            'image' => $imagePath ?? null,
         ]);
 
         return redirect()->route('posts.index')->with('success', 'Post created!');
@@ -82,16 +92,40 @@ class PostController extends Controller implements HasMiddleware
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'body' => 'required|string',
+            'excerpt' => 'required|string|max:255',
+            'content' => 'required|string',
+            'cover' => 'nullable|image|max:2048|mimes:png,jpg,jpeg',
+            'image' => 'nullable|image|max:2048|mimes:png,jpg,jpeg',
             'category_id' => 'nullable|exists:categories,id',
-            'image' => 'nullable|image|max:2048',
         ]);
+
+        // Handle cover image upload
+        $coverPath = $post->cover; // Keep existing path if no new file
+        if ($request->hasFile('cover')) {
+            // Delete old cover if exists
+            if ($post->cover) {
+                Storage::disk('public')->delete($post->cover);
+            }
+            $coverPath = $request->file('cover')->store('post-covers', 'public');
+        }
+
+        // Handle image upload
+        $imagePath = $post->image; // Keep existing path if no new file
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($post->image) {
+                Storage::disk('public')->delete($post->image);
+            }
+            $imagePath = $request->file('image')->store('post-images', 'public');
+        }
 
         $post->update([
             'title' => $validated['title'],
-            'body' => $validated['body'],
+            'excerpt' => $validated['excerpt'],
+            'content' => $validated['content'],
+            'cover' => $coverPath,
+            'image' => $imagePath,
             'category_id' => $validated['category_id'] ?? null,
-            'image' => $request->file('image')?->store('posts') ?? $post->image,
         ]);
 
         return redirect()->route('posts.index')->with('success', 'Post updated!');

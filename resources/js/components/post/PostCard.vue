@@ -55,6 +55,7 @@ const props = defineProps({
                                     : '/storage/avatars/def.jpg'
                             "
                             :alt="props.post.user.name"
+                            class="object-cover object-top"
                         />
                         <AvatarFallback>
                             {{ props.post.user.name?.charAt(0).toUpperCase() }}

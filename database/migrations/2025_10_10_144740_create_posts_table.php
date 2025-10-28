@@ -15,12 +15,13 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnDelete();
             $table->foreignId('category_id')->nullable()->constrained('categories', 'id')->cascadeOnDelete();
+            $table->string('cover', 255)->nullable();
             $table->string('image', 255)->nullable();
             $table->string('title', 255);
+            $table->string('excerpt', 255);
             $table->string('slug', 255)->unique();
-            $table->text('body');
+            $table->text('content');
             $table->string('status', 255)->default('pending');
-
             $table->timestamps();
         });
     }

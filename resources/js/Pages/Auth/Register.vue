@@ -16,6 +16,8 @@ import Button from "@/components/ui/button/Button.vue";
 import Label from "@/components/ui/label/Label.vue";
 import { onBeforeMount, onMounted, onUnmounted, ref } from "vue";
 
+
+
 // holding the url
 const previewImage = ref(null);
 
@@ -36,7 +38,7 @@ const handleFile = (e) => {
         previewImage.value = URL.createObjectURL(file);
     } else {
         clearUrl();
-        previewImage.value = $page.props.defUrl;
+        previewImage.value = 'avatars/default.jpg';
     }
     console.log(previewImage.value);
 };

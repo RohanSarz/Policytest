@@ -33,5 +33,6 @@ class DatabaseSeeder extends Seeder
             // Create each permission if it doesn't already exist
             Category::create(['name' => $category]);
         }
+        Post::factory(10)->create();
     }
 }

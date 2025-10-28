@@ -18,7 +18,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [UserDataController::class, 'dashboardView'])->name('dashboard');
     Route::get('/profile', [UserDataController::class, 'profileView'])->name('profile');
     Route::post('/profile', [UserDataController::class, 'store'])->name('profile.store');
-    Route::put('/profile', [UserDataController::class, 'updateAvatar'])->name('profile.avatar');
+    Route::post('/profile/avatar', [UserDataController::class, 'updateAvatar'])->name('profile.avatar.update');
 
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -30,12 +30,12 @@ Route::middleware(['auth'])->group(function () {
 // Guest routes
 Route::middleware(['guest'])->group(function () {
     // Login or Register Routes
-    Route::inertia('/login', 'Auth/Login')->name('login');
+    Route::inertia('/login', 'Auth/Login');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 
     Route::inertia('/register', 'Auth/Register', [
         'defUrl' => Storage::url('avatars/def.jpg'),
-    ])->name('register');
+    ]);
     Route::post('/register', [AuthController::class, 'register'])->name('register');
 });
 
@@ -43,5 +43,5 @@ Route::middleware(['guest'])->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/admin/roles', [AdminController::class, 'getRoles'])->name('admin.roles');
-    Route::get('/admin/settings', [AdminController::class, 'settingsView'])->name('admin.roles');
+    Route::get('/admin/settings', [AdminController::class, 'settingsView'])->name('admin.settings');
 });

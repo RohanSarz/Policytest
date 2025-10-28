@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -23,12 +24,15 @@ class PostFactory extends Factory
         $slug = Str::slug($title);
 
         return [
-            'user_id' => 1,
-            'category_id' => Category::latest()->inRandomOrder()->id(),
-            'image' => fake()->imageUrl(),
+            'user_id' => User::inRandomOrder()->first()->id,
+            'category_id' => Category::inRandomOrder()->first()?->id,
+            'cover' => 'https://placehold.co/600x400',
+            'image' => 'https://placehold.co/600x400',
             'title' => $title,
+            'excerpt' => fake()->sentence(),
             'slug' => $slug,
-            'body' => fake()->paragraph(),
+            'content' => fake()->paragraphs(3, true),
+            'status' => fake()->randomElement(['pending', 'published', 'draft']),
         ];
     }
 }

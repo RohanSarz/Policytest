@@ -30,6 +30,9 @@ const user = computed(() => page.props.auth.user);
 // Holds the preview URL for the selected avatar
 const previewImage = ref<string | null>(null);
 
+// Reference to the hidden file input
+const fileInput = ref<HTMLInputElement | null>(null);
+
 // Revoke object URL to prevent memory leaks
 const clearUrl = () => {
     if (previewImage.value) {
@@ -54,6 +57,12 @@ const handleFile = (e: Event) => {
     }
 };
 
+// Inertia form for profile data submission
+const profileForm = useForm({
+    name: user.value?.name || '',
+    email: user.value?.email || '',
+});
+
 // Inertia form for avatar submission
 const avatarForm = useForm({
     avatar: null as File | null,
@@ -72,10 +81,19 @@ const submitAvatar = () => {
     });
 };
 
+// Submit the profile form
+const submitProfile = () => {
+    profileForm.post(route('profile.store'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            clearUrl();
+        },
+    });
+};
+
 // Trigger file input click programmatically
 const openFilePicker = () => {
-    const fileInput = document.getElementById('avatar') as HTMLInputElement;
-    fileInput?.click();
+    fileInput.value?.click();
 };
 </script>
 
@@ -99,17 +117,6 @@ const openFilePicker = () => {
                         </AvatarFallback>
                     </Avatar>
 
-                    <!-- Camera button overlay: triggers hidden file input -->
-                    <Button
-                        size="icon"
-                        variant="outline"
-                        class="absolute -right-2 -bottom-2 h-8 w-8 rounded-full"
-                        @click="openFilePicker"
-                        :disabled="avatarForm.processing"
-                    >
-                        <Camera class="h-4 w-4" />
-                    </Button>
-
                     <!-- Hidden file input: bound to form data -->
                     <input
                         id="avatar"
@@ -122,6 +129,65 @@ const openFilePicker = () => {
                         @input="avatarForm.avatar = ($event.target as HTMLInputElement).files?.[0] || null"
                         :disabled="avatarForm.processing"
                     />
+
+                    <!-- Avatar Update Dialog -->
+                    <Dialog>
+                        <DialogTrigger as-child>
+                            <Button
+                                size="icon"
+                                variant="outline"
+                                class="absolute -right-2 -bottom-2 h-8 w-8 rounded-full"
+                                :disabled="avatarForm.processing"
+                            >
+                                <Camera class="h-4 w-4" />
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Update your avatar</DialogTitle>
+                                <DialogDescription>
+                                    Select an image file to update your profile picture.
+                                    Image should be in JPG, JPEG, or PNG format and less than 2MB.
+                                </DialogDescription>
+                            </DialogHeader>
+                            
+                            <div class="space-y-4">
+                                <!-- Preview of selected image -->
+                                <div class="flex justify-center">
+                                    <Avatar class="h-32 w-32 border">
+                                        <AvatarImage
+                                            :src="previewImage || `/storage/${user?.avatar ?? 'avatars/def.jpg'}`"
+                                            :alt="user?.name"
+                                            class="object-cover object-top"
+                                        />
+                                        <AvatarFallback class="text-3xl">
+                                            {{ user?.name ? user.name[0]?.toUpperCase() : "" }}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                </div>
+                                
+                                <div class="space-y-2">
+                                    <Label for="avatar-input">Choose Image</Label>
+                                    <Input
+                                        id="avatar-input"
+                                        type="file"
+                                        accept="image/*"
+                                        @change="handleFile"
+                                        @input="avatarForm.avatar = ($event.target as HTMLInputElement).files?.[0] || null"
+                                        :disabled="avatarForm.processing"
+                                    />
+                                </div>
+                                
+                                <Button 
+                                    @click="submitAvatar" 
+                                    :disabled="!avatarForm.avatar || avatarForm.processing"
+                                    class="w-full"
+                                >
+                                    {{ avatarForm.processing ? 'Updating...' : 'Save Avatar' }}
+                                </Button>
+                            </div>
+                        </DialogContent>
+                    </Dialog>
                 </div>
 
                 <!-- User Info Section (unchanged) -->
@@ -133,11 +199,11 @@ const openFilePicker = () => {
                             <UserNameUpper :name="user.name" />
                         </h1>
                         <Badge variant="secondary">{{
-                            user?.role || "MemberT  "
+                            page.props.auth.role && page.props.auth.role.length > 0 ? page.props.auth.role[0] : "User"
                         }}</Badge>
                     </div>
                     <p class="text-muted-foreground">
-                        {{ user?.role || "UserT" }}
+                        {{ page.props.auth.role && page.props.auth.role.length > 0 ? page.props.auth.role[0] : "User" }}
                     </p>
                     <div
                         class="text-muted-foreground flex flex-wrap gap-4 text-sm"
@@ -182,11 +248,7 @@ const openFilePicker = () => {
                                 Currently the Email is disabled for editing.
                             </DialogDescription>
 
-                            <Form
-                                :action="route('profile.store')"
-                                method="post"
-                                #default="{ processing }"
-                            >
+                            <form @submit.prevent="submitProfile">
                                 <div
                                     class="grid grid-cols-1 gap-6 md:grid-cols-2"
                                 >
@@ -194,11 +256,8 @@ const openFilePicker = () => {
                                         <Label for="name">Name</Label>
                                         <Input
                                             id="name"
-                                            name="name"
-                                            :default-value="
-                                                user?.name?.split(' ')[0] || ''
-                                            "
-                                            :disabled="processing"
+                                            v-model="profileForm.name"
+                                            :disabled="profileForm.processing"
                                         />
                                     </div>
 
@@ -206,10 +265,9 @@ const openFilePicker = () => {
                                         <Label for="email">Email</Label>
                                         <Input
                                             id="email"
-                                            name="email"
+                                            v-model="profileForm.email"
                                             type="email"
-                                            :default-value="user?.email || ''"
-                                            :disabled="processing"
+                                            :disabled="profileForm.processing"
                                         />
                                     </div>
 
@@ -218,7 +276,7 @@ const openFilePicker = () => {
                                         <Input
                                             id="jobTitle"
                                             name="jobTitle"
-                                            default-value="Software Engineer"
+                                            value="Software Engineer"
                                             disabled
                                         />
                                     </div>
@@ -228,19 +286,17 @@ const openFilePicker = () => {
                                         <Input
                                             id="company"
                                             name="company"
-                                            default-value="Your Company"
+                                            value="Your Company"
                                             disabled
                                         />
                                     </div>
-                                    <DialogTrigger
-                                        v-show="!processing"
+                                    <Button
+                                        type="submit"
+                                        :disabled="profileForm.processing"
                                         class="place-self-start"
-                                        ><Button
-                                            >Save Changes</Button
-                                        ></DialogTrigger
-                                    >
+                                        >Save Changes</Button>
                                 </div>
-                            </Form>
+                            </form>
                         </DialogHeader>
                     </DialogContent>
                 </Dialog>
