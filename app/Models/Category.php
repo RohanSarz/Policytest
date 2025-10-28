@@ -33,7 +33,7 @@ class Category extends Model
     // Ensure slug uniqueness
     protected function generateUniqueSlug($name)
     {
-        $slug = \Illuminate\Support\Str::slug($name);
+        $slug = Str::slug($name);
         $originalSlug = $slug;
         $count = 1;
 
