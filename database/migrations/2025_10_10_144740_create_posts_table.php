@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnDelete();
             $table->foreignId('category_id')->nullable()->constrained('categories', 'id')->cascadeOnDelete();
-            $table->string('cover', 255)->nullable();
+            $table->string('cover-image', 255)->nullable();
             $table->string('image', 255)->nullable();
             $table->string('title', 255);
             $table->string('excerpt', 255);
