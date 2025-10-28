@@ -1,61 +1,60 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { usePage } from "@inertiajs/vue3";
+import { computed } from "vue";
+import { usePage, Link } from "@inertiajs/vue3";
 import PostCard from "@/components/post/PostCard.vue";
 
-const { posts, categories } = usePage().props;
+const page = usePage().props;
 
-// Track active category filter
-const activeCategory = ref("all");
+const categories = computed(() => page.categories);
+const posts = computed(() => page.posts);
 
-// Group posts by category
-const postsByCategory = computed(() => {
-    const map: Record<string, any[]> = {};
-    categories.forEach((cat) => (map[cat.id] = []));
-    posts.forEach((post) => {
-        if (post.category && map[post.category.id]) {
-            map[post.category.id].push(post);
-        }
-    });
-    return map;
-});
+const currentPath = computed(() => window.location.pathname);
 
-// Filtered posts based on active category
+function isActiveCategory(slug: string) {
+    return (
+        currentPath.value.endsWith(slug) ||
+        (slug === "all" && currentPath.value === "/posts")
+    );
+}
+
 const displayedPosts = computed(() => {
-    if (activeCategory.value === "all") return posts;
-    return postsByCategory.value[activeCategory.value] || [];
+    if (isActiveCategory("all")) return posts.value;
+
+    return posts.value.filter(
+        (post) => post.category?.slug === currentPath.value.split("/").pop(),
+    );
 });
 </script>
 
 <template>
     <div class="max-w-7xl mx-auto px-4 py-6">
-        <!-- Filter Buttons -->
+        <!-- Category Links -->
         <div class="flex flex-wrap gap-2 mb-6">
-            <button
-                class="px-3 py-1 rounded-md font-medium transition"
-                :class="
-                    activeCategory === 'all'
-                        ? 'bg-green-300 text-black'
-                        : 'bg-gray-200 text-gray-700'
-                "
-                @click="activeCategory = 'all'"
+            <Link
+                :href="route('posts.index')"
+                class="px-3 py-1 rounded-md font-medium"
+                :class="{
+                    'bg-blue-500 text-white': isActiveCategory('all'),
+                    'bg-gray-200 text-gray-700 hover:bg-gray-300':
+                        !isActiveCategory('all'),
+                }"
             >
                 All
-            </button>
+            </Link>
 
-            <button
+            <Link
                 v-for="category in categories"
-                :key="category.id"
-                class="px-3 py-1 rounded-md font-medium transition"
-                :class="
-                    activeCategory === category.id
-                        ? 'bg-blue-400 text-white'
-                        : 'bg-gray-200 text-gray-700'
-                "
-                @click="activeCategory = category.id"
+                :key="category.slug"
+                :href="route('categories.show', category.slug)"
+                class="px-3 py-1 rounded-md font-medium"
+                :class="{
+                    'bg-blue-500 text-white': isActiveCategory(category.slug),
+                    'bg-gray-200 text-gray-700 hover:bg-gray-300':
+                        !isActiveCategory(category.slug),
+                }"
             >
                 {{ category.name }}
-            </button>
+            </Link>
         </div>
 
         <!-- Posts Grid -->

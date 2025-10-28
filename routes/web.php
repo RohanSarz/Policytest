@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', 'posts')->name('home');
 Route::resource('posts', PostController::class)->parameters(['posts' => 'post']);
+Route::get('/categories/{category}', [PostController::class, 'byCategory'])->name('categories.show');
 
 // Auth routes
 Route::middleware(['auth'])->group(function () {

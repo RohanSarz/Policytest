@@ -6,10 +6,10 @@ import { ProfileHeader, ProfileContent } from "@/components/profile";
     <div class="px-10 py-10 space-y-6">
         <Head title="Profile" />
 
-        <div data-aos="fade-right" data-aos-duration="300">
+        <div data-aos="fade-right">
             <ProfileHeader />
         </div>
-        <div data-aos="fade-right" data-aos-duration="350">
+        <div data-aos="fade-right">
             <ProfileContent />
         </div>
     </div>

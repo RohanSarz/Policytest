@@ -95,7 +95,7 @@ const props = defineProps({
             >
                 Read more
             </Link>
-            <Link :href="route('posts.index', props.post.category?.id)">
+            <Link :href="route('categories.show', props.post.category?.slug)">
                 <Badge class="font-medium px-1 py-0 text-[10px]">
                     {{ props.post.category?.name || "Uncategorized" }}
                 </Badge>

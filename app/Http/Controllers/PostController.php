@@ -17,6 +17,7 @@ class PostController extends Controller implements HasMiddleware
         return ['auth', new Middleware('can:create,App\Models\Post', only: ['create', 'store']), new Middleware('can:update,post', only: ['edit', 'update']), new Middleware('can:delete,post', only: ['destroy'])];
     }
 
+    // Indext page
     public function index(Category $category = null)
     {
         $query = Post::query()->with(['user', 'category']);
@@ -27,10 +28,33 @@ class PostController extends Controller implements HasMiddleware
 
         $posts = $query->latest()->get();
 
-        $categories = Category::all(['id', 'name']);
+        $categories = Category::all(['id', 'name', 'slug']);
 
         return inertia('Home', compact('posts', 'categories'));
     }
+    // Indext page but with category
+
+    public function byCategory(string $slug)
+    {
+        // Load the category or fail if not found
+        $category = Category::where('slug', $slug)->firstOrFail();
+
+        // Get posts that belong to this category
+        $posts = Post::with(['user', 'category'])
+            ->where('category_id', $category->id)
+            ->latest()
+            ->get();
+
+        // Get all categories for sidebar or filters
+        $categories = Category::all(['id', 'name', 'slug']);
+
+        return inertia('Home', [
+            'posts' => $posts,
+            'categories' => $categories,
+            'currentCategory' => $category,
+        ]);
+    }
+
     public function create()
     {
         $categories = Category::all(['id', 'name']);
@@ -50,11 +74,11 @@ class PostController extends Controller implements HasMiddleware
 
         $coverPath = null;
         $imagePath = null;
-        
+
         if ($request->hasFile('cover')) {
             $coverPath = $request->file('cover')->store('post-covers', 'public');
         }
-        
+
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('post-images', 'public');
         }

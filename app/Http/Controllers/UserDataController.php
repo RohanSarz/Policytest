@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,13 +20,15 @@ class UserDataController extends Controller
 
     public function dashboardView()
     {
-        $posts = Post::with('user')
+        $posts = Post::with(['user', 'category'])
             ->where('user_id', Auth::user()->id)
             ->latest()
             ->get();
+
         // user is passed globally in HandleInertiaRequests.php
         return inertia('User/Dashboard', [
             'posts' => $posts,
+            'categories' => Category::all(['id', 'name', 'slug']),
         ]);
     }
 
@@ -70,9 +73,11 @@ class UserDataController extends Controller
         $user->save();
 
         // 5. Return success response (Inertia-friendly)
-        return redirect()->back()->with([
-            'type' => 'success',
-            'message' => 'Avatar updated successfully!'
-        ]);
+        return redirect()
+            ->back()
+            ->with([
+                'type' => 'success',
+                'message' => 'Avatar updated successfully!',
+            ]);
     }
 }

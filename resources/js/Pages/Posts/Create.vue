@@ -56,14 +56,10 @@ const handleFile = (e) => {
 
 <template>
     <Head title="Create Post" />
-    <div
-        class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
-    >
-        <Card class="w-full max-w-md">
-            <CardHeader class="text-center">
-                <CardTitle class="text-2xl font-bold"
-                    >Create New Post</CardTitle
-                >
+    <div class="min-h-[100vh] bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <Card class="lg:max-w-full mx-auto">
+            <CardHeader data-aos="fade-right">
+                <CardTitle>Create New Post</CardTitle>
                 <CardDescription
                     >Share your thoughts with the world</CardDescription
                 >
@@ -75,67 +71,105 @@ const handleFile = (e) => {
                     method="post"
                     #default="{ processing, errors }"
                 >
-                    <!-- Category Select -->
-                    <Select name="category_id">
-                        <SelectTrigger>
-                            <SelectValue
-                                placeholder="Select a Category"
-                                class="w-full bg-gray"
-                            />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectGroup>
-                                <SelectLabel>Category</SelectLabel>
-
-                                <div
-                                    v-for="{ name, id } in categories"
-                                    :key="id"
-                                >
-                                    <SelectItem :value="id">
-                                        {{ name }}
-                                    </SelectItem>
-                                </div>
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
-                    <div class="space-y-4">
+                    <div class="lg:flex space-x-2 space-y-4">
+                        <!-- to separate the form -->
                         <div
-                            v-if="errors.category_id"
-                            class="mt-1 text-sm text-red-600"
+                            class="lg:w-1/3 space-x-4 space-y-3"
+                            data-aos="fade-up"
                         >
-                            {{ errors.category_id }}
-                        </div>
+                            <!-- Category Select -->
+                            <Select name="category_id">
+                                <SelectTrigger>
+                                    <SelectValue
+                                        placeholder="Select a Category"
+                                    />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <div
+                                            v-for="{ name, id } in categories"
+                                            :key="id"
+                                        >
+                                            <SelectItem :value="id">
+                                                {{ name }}
+                                            </SelectItem>
+                                        </div>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
 
-                        <!-- Title Input-->
-                        <div>
-                            <Label
-                                for="title"
-                                class="block text-sm font-medium text-gray-700 mb-1"
-                                >Title</Label
+                            <div
+                                v-if="errors.category_id"
+                                class="mt-1 text-sm text-red-600"
                             >
+                                {{ errors.category_id }}
+                            </div>
+
+                            <!-- Title Input-->
+
+                            <Label for="title">Title</Label>
                             <Input
                                 name="title"
                                 placeholder="Enter post title"
                                 class="w-full"
                             />
-                            <div
-                                v-if="errors.title"
-                                class="mt-1 text-sm text-red-600"
-                            >
-                                {{ errors.title }}
-                            </div>
-                        </div>
+                            <Error
+                                class="text-center py-2 text-xs font-mono"
+                                errorName="title"
+                            />
 
-                        <!-- Image Input-->
-                        <div>
+                            <!-- Excerpt Input-->
+
+                            <Label for="excerpt">Short Description</Label>
+                            <Input
+                                name="excerpt"
+                                placeholder="Enter post title"
+                                class="w-full"
+                            />
+                            <Error
+                                class="text-center py-2 text-xs font-mono"
+                                errorName="excerpt"
+                            />
+
+                            <!-- Cover Input-->
+
+                            <Label
+                                class="form-label"
+                                for="cover-image"
+                                data-aos="fade-up"
+                            >
+                                <div>
+                                    Cover / Thumbnail
+                                    <Input
+                                        class="hidden"
+                                        id="cover-image"
+                                        name="cover-image"
+                                        @change="handleFile"
+                                        type="file"
+                                        :disabled="processing"
+                                    />
+                                    <img
+                                        class="border-4 border-dashed w-full h-24 rounded-lg text-center text-xs object-cover"
+                                        :src="previewImage"
+                                        alt="Add a cover?"
+                                    />
+                                </div>
+                                <Error
+                                    class="text-center py-2 text-xs font-mono"
+                                    errorName="cover-image"
+                                />
+                            </Label>
+
+                            <!-- Image Input-->
+
                             <Label
                                 class="form-label"
                                 for="image"
-                                data-aos="zoom-in-left"
+                                data-aos="fade-up"
                                 data-aos-duration="500"
                             >
-                                <div class="grid place-items-center gap-2">
-                                    Image
+                                <div>
+                                    Images
                                     <Input
                                         class="hidden"
                                         id="image"
@@ -145,11 +179,9 @@ const handleFile = (e) => {
                                         :disabled="processing"
                                     />
                                     <img
-                                        class="border w-full h-24 rounded-lg text-center object-cover"
-                                        :src="
-                                            previewImage || $page.props.defUrl
-                                        "
-                                        alt="PI"
+                                        class="border-4 border-dashed w-full h-24 rounded-lg text-center text-xs object-cover"
+                                        :src="previewImage"
+                                        alt="add more images?"
                                     />
                                 </div>
                                 <Error
@@ -158,34 +190,35 @@ const handleFile = (e) => {
                                 />
                             </Label>
                         </div>
-
-                        <div>
+                        <!-- Content Input -->
+                        <div class="flex-2 px-2 py-4" data-aos="fade-up">
                             <Label
-                                for="body"
-                                class="block text-sm font-medium text-gray-700 mb-1"
+                                for="content"
+                                class="block text-sm font-semibold text-gray-700 mb-1"
+                                data-aos="fade-up"
                                 >Content</Label
                             >
                             <Textarea
-                                name="body"
+                                name="content"
+                                class="h-full"
                                 placeholder="Write your post content here..."
-                                class="w-full"
+                                data-aos="fade-up"
+                                :disabled="processing"
                             />
-                            <div
-                                v-if="errors.body"
-                                class="mt-1 text-sm text-red-600"
-                            >
-                                {{ errors.body }}
-                            </div>
+                            <Error
+                                class="text-center py-2 text-xs font-mono"
+                                errorName="content"
+                            />
                         </div>
-
-                        <Button
-                            type="submit"
-                            class="w-full mt-4"
-                            :disabled="processing"
-                        >
-                            {{ processing ? "Creating..." : "Create Post" }}
-                        </Button>
                     </div>
+                    <Button
+                        type="submit"
+                        class="w-full mt-4"
+                        :disabled="processing"
+                        data-aos="zoom-out-up"
+                    >
+                        {{ processing ? "Creating..." : "Create Post" }}
+                    </Button>
                 </Form>
             </CardContent>
         </Card>
