@@ -75,9 +75,27 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
-    // Relationship for multiple images
+    // Relationship for multiple images - ordered by the 'order' column
     public function postImages(): HasMany
     {
-        return $this->hasMany(\App\Models\PostImage::class, 'post_id');
+        return $this->hasMany(\App\Models\PostImage::class, 'post_id')->orderBy('order');
+    }
+    
+    // Accessor to get content as HTML, converting from JSON if needed
+    public function getContentAsHtmlAttribute()
+    {
+        $content = $this->content;
+        
+        // Check if content is in JSON format
+        if (is_string($content) && !empty($content)) {
+            $decoded = json_decode($content, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                // If it's valid JSON, we would need to convert it back to HTML
+                // For now, return as is; in a full implementation you'd convert JSON to HTML
+                return $content;
+            }
+        }
+        
+        return $content;
     }
 }

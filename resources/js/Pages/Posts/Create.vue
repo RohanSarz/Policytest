@@ -176,7 +176,7 @@ const submitForm = () => {
                             </Label>
                         </div>
                         <!-- Content Input with Tiptap Editor -->
-                        <div class="flex-2 px-2 py-4" data-aos="fade-up">
+                        <div class="flex-1 px-2 py-4" data-aos="fade-up">
                             <Label
                                 for="content"
                                 class="block text-sm font-semibold text-gray-700 mb-1"
@@ -186,7 +186,7 @@ const submitForm = () => {
                             <Tiptap
                                 v-model="form.content"
                                 id="content"
-                                class="h-fit border-4 border"
+                                class="w-full h-[500px]"
                                 data-aos="fade-up"
                                 :disabled="form.processing"
                             />

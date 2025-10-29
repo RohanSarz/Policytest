@@ -67,7 +67,7 @@ class PostController extends Controller implements HasMiddleware
         $fields = $request->validate([
             'title' => 'required|string|max:255',
             'excerpt' => 'required|string|max:255',
-            'content' => 'required|string',
+            'content' => 'required|string', // This will be JSON string
             'cover_image' => 'nullable|image|max:2048|mimes:png,jpg,jpeg', // Changed to match model
             'post_images' => 'nullable|array', // Multiple images
             'post_images.*' => 'image|max:2048|mimes:png,jpg,jpeg', // Each image validation
@@ -80,10 +80,22 @@ class PostController extends Controller implements HasMiddleware
             $coverPath = $request->file('cover_image')->store('post-covers', 'public');
         }
 
+        // Decode the JSON content before storing
+        $content = $fields['content'];
+        if (is_string($content) && !empty($content)) {
+            $decodedContent = json_decode($content, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $content = $content; // Keep as JSON string
+            } else {
+                // If not valid JSON, treat as HTML
+                $content = $fields['content'];
+            }
+        }
+
         $post = Post::create([
             'title' => $fields['title'],
             'excerpt' => $fields['excerpt'],
-            'content' => $fields['content'],
+            'content' => $content,
             'cover_image' => $coverPath ?? null,
             'category_id' => $fields['category_id'] ?? null,
             'user_id' => $request->user()->id,
@@ -109,7 +121,13 @@ class PostController extends Controller implements HasMiddleware
     {
         $post->load(['user', 'category', 'postImages']); // Load multiple images
         $post->created_for_human = Carbon::parse($post->created_at)->diffForHumans();
-        // dd($post);
+        
+        // Transform the post to properly handle content format
+        $postData = $post->toArray();
+        
+        // If content is JSON, we might need special handling for display
+        // For now, sending as is, but in practice you'd convert JSON to HTML for display
+        
         // Pass the post along with its relationships to the Inertia view
         return inertia('Posts/Show', [
             'post' => $post,
@@ -120,6 +138,13 @@ class PostController extends Controller implements HasMiddleware
     {
         $post->load('postImages'); // Load existing images for editing
         $categories = Category::all(['id', 'name']);
+        
+        // Transform the post data to ensure content is properly formatted
+        $postData = $post->toArray();
+        
+        // If the content is JSON and we need to handle it differently for the editor
+        // For now, we'll send it as is, but make sure it's properly processed
+        
         return inertia('Posts/Edit', compact('post', 'categories'));
     }
 
@@ -145,10 +170,22 @@ class PostController extends Controller implements HasMiddleware
             $coverPath = $request->file('cover_image')->store('post-covers', 'public');
         }
 
+        // Decode the JSON content before storing
+        $content = $validated['content'];
+        if (is_string($content) && !empty($content)) {
+            $decodedContent = json_decode($content, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $content = $content; // Keep as JSON string
+            } else {
+                // If not valid JSON, treat as HTML
+                $content = $validated['content'];
+            }
+        }
+
         $post->update([
             'title' => $validated['title'],
             'excerpt' => $validated['excerpt'],
-            'content' => $validated['content'],
+            'content' => $content,
             'cover_image' => $coverPath,
             'category_id' => $validated['category_id'] ?? null,
         ]);

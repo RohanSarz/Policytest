@@ -28,7 +28,7 @@ const categories = page.props.categories;
 const form = useForm({
     title: post.title,
     excerpt: post.excerpt,
-    content: post.content,
+    content: post.content, // This should be JSON string or object
     category_id: post.category_id,
     cover_image: null
 });
@@ -254,12 +254,12 @@ if (post?.cover_image) {
                         </div>
 
                         <!-- Content Field with Tiptap Editor -->
-                        <div>
+                        <div class="h-[500px]">
                             <Label for="content" class="block text-sm font-medium text-gray-700 mb-1">Content</Label>
                             <Tiptap 
                                 v-model="form.content"
                                 id="content"
-                                class="w-full min-h-[200px]"
+                                class="w-full h-full"
                             />
                             <div v-if="form.errors.content" class="mt-1 text-sm text-red-600">
                                 {{ form.errors.content }}
