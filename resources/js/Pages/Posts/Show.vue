@@ -65,16 +65,36 @@ const category = computed(() => post.category || {});
 
                     <div class="mt-6 prose prose-lg max-w-none">
                         <p class="mb-4">{{ post.content }}</p>
+                        
+                        <!-- Display cover image -->
                         <Card
-                            v-if="post.image"
-                            class="w-full h-96 overflow-hidden"
+                            v-if="post.cover_image"
+                            class="w-full h-96 overflow-hidden my-4"
                         >
                             <img
                                 class="w-full h-full object-cover object-top"
-                                :src="`/storage/${post.image}`"
-                                alt=""
+                                :src="`/storage/${post.cover_image}`"
+                                alt="Post cover image"
                             />
                         </Card>
+                        
+                        <!-- Display multiple images -->
+                        <div 
+                            v-if="post.postImages && post.postImages.length > 0"
+                            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my-4"
+                        >
+                            <Card
+                                v-for="postImage in post.postImages"
+                                :key="postImage.id"
+                                class="overflow-hidden"
+                            >
+                                <img
+                                    class="w-full h-48 object-cover"
+                                    :src="`/storage/${postImage.url}`"
+                                    :alt="postImage.alt_text || 'Post image'"
+                                />
+                            </Card>
+                        </div>
                     </div>
                 </Card>
             </div>

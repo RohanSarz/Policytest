@@ -6,13 +6,14 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'category_id', 'cover-image', 'image', 'title', 'excerpt', 'slug', 'content', 'status'];
+    protected $fillable = ['user_id', 'category_id', 'cover_image', 'title', 'excerpt', 'slug', 'content', 'status'];
 
     // Use slug for route model binding
     public function getRouteKeyName()
@@ -72,5 +73,11 @@ class Post extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    // Relationship for multiple images
+    public function postImages(): HasMany
+    {
+        return $this->hasMany(\App\Models\PostImage::class, 'post_id');
     }
 }

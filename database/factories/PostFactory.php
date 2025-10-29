@@ -26,8 +26,7 @@ class PostFactory extends Factory
         return [
             'user_id' => User::inRandomOrder()->first()->id,
             'category_id' => Category::inRandomOrder()->first()?->id,
-            'cover-image' => 'https://placehold.co/600',
-            'image' => 'https://placehold.co/500',
+            'cover_image' => 'https://placehold.co/600', // Fixed field name
             'title' => $title,
             'excerpt' => fake()->sentence(),
             'slug' => $slug,
