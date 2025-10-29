@@ -12,7 +12,7 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'category_id', 'cover', 'image', 'title', 'excerpt', 'slug', 'content', 'status'];
+    protected $fillable = ['user_id', 'category_id', 'cover-image', 'image', 'title', 'excerpt', 'slug', 'content', 'status'];
 
     // Use slug for route model binding
     public function getRouteKeyName()

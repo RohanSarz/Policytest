@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import LoginOrRegister from "@/components/userDataComponents/LoginOrRegister.vue";
 
+
 // User Reactive Data
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -56,7 +57,9 @@ const closeMobileMenu = () => {
 
 // Check if the current path matches the link path
 const isActiveLink = (path: string) => {
-    return window.location.pathname === path;
+    // Extract just the path from the full URL if needed
+    const pathToCheck = path.startsWith('http') ? new URL(path).pathname : path;
+    return window.location.pathname === pathToCheck;
 };
 </script>
 <template>
@@ -91,16 +94,20 @@ const isActiveLink = (path: string) => {
                     <Link :href="path" class="flex items-center">
                         <component :is="icon" class="w-4 h-4 mr-2" />
                         {{ name }}
+
+
                     </Link>
                 </Button>
             </li>
 
             <!-- Login and Register -->
             <li v-if="!$page.props.auth.user" class="space-x-6">
-                <Button variant="ghost">
+                <Button variant="ghost"
+                :class="route('login.form').split('/').pop() === 'login' ? 'bg-accent text-black' : ''">
                     <Link
                         class="hover:bg-accent flex items-center"
-                        href="/login"
+
+                        :href="route('login.form')"
                     >
                         <Key class="w-4 h-4 mr-2" />
                         Login
@@ -109,7 +116,8 @@ const isActiveLink = (path: string) => {
                 <Button variant="ghost">
                     <Link
                         class="hover:bg-accent flex items-center"
-                        href="/register"
+                        :href="route('register.form')"
+                        :class="isActiveLink(route('register.form')) ? 'bg-accent text-black' : ''"
                     >
                         <UserRound class="w-4 h-4 mr-2" />
                         Register

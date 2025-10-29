@@ -31,12 +31,10 @@ Route::middleware(['auth'])->group(function () {
 // Guest routes
 Route::middleware(['guest'])->group(function () {
     // Login or Register Routes
-    Route::inertia('/login', 'Auth/Login');
+    Route::inertia('/login', 'Auth/Login')->name('login.form');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-    Route::inertia('/register', 'Auth/Register', [
-        'defUrl' => Storage::url('avatars/def.jpg'),
-    ]);
+    Route::inertia('/register', 'Auth/Register')->name('register.form');
     Route::post('/register', [AuthController::class, 'register'])->name('register');
 });
 
