@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Spatie\Permission\Traits\HasRoles;
 
 class PostPolicy
 {
@@ -13,7 +14,7 @@ class PostPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('show-posts');
+        return !$user->hasRole('suspended') || $user->hasPermissionTo('show-posts');
     }
 
     /**
@@ -21,7 +22,7 @@ class PostPolicy
      */
     public function view(User $user, Post $post): bool
     {
-        return $user->id === $post->user_id || $user->hasPermissionTo('show-posts');
+        return !$user->hasRole('suspended') || $user->id === $post->user_id || $user->hasPermissionTo('show-posts');
     }
 
     /**
@@ -29,7 +30,7 @@ class PostPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('create-posts');
+        return !$user->hasRole('suspended') || $user->hasPermissionTo('create-posts');
     }
 
     /**
@@ -37,7 +38,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post): bool
     {
-        return $user->id === $post->user_id || $user->hasPermissionTo('edit-posts');
+        return !$user->hasRole('suspended') || $user->id === $post->user_id || $user->hasPermissionTo('edit-posts');
     }
 
     /**
@@ -45,7 +46,7 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): bool
     {
-        return $user->id === $post->user_id || $user->hasPermissionTo('delete-posts');
+        return !$user->hasRole('suspended') || $user->id === $post->user_id || $user->hasPermissionTo('delete-posts');
     }
 
     /**

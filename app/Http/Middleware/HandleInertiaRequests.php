@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Post;
+use Arr;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -48,8 +49,8 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $user ?? null,
                 'role' => $role ?? null,
+                'can' => $permissionMap,
             ],
-            'permissions' => $permissionMap,
 
             'flash' => [
                 'message' => fn() => $request->session()->get('message'),

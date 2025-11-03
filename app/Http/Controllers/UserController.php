@@ -15,10 +15,7 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = User::findOrFail($id);
-        $posts = Post::with('user')
-            ->where('user_id', $user->id)
-            ->latest()
-            ->get();
+        $posts = Post::with('user')->where('user_id', $user->id)->latest()->get();
 
         return inertia('User/Show', [
             'user' => $user,
