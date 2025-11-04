@@ -6,6 +6,7 @@ use App\Models\Post;
 use Arr;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Spatie\Permission\Models\Permission;
 
 class HandleInertiaRequests extends Middleware
 {

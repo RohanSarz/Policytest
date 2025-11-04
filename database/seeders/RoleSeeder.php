@@ -21,14 +21,14 @@ class RoleSeeder extends Seeder
         $suspended = Role::findOrCreate('suspended');
         // Define all permissions that can be assigned
         $permissions = [
-            'manage-users', // Allows managing user accounts (e.g., editing roles, deactivating)
-            'manage-roles', // Allows managing roles (e.g., creating, editing, deleting roles)
-            'manage-permissions', // Allows managing permissions (e.g., assigning permissions to roles)
-            'approve-posts', // Allows approving content (e.g., posts, comments)
-            'show-posts', // Allows viewing posts
-            'edit-posts', // Allows editing existing posts
-            'create-posts', // Allows creating new posts
-            'delete-posts', // Allows deleting posts
+            'manage_users', // Allows managing user accounts (e.g., editing roles, deactivating)
+            'manage_roles', // Allows managing roles (e.g., creating, editing, deleting roles)
+            'manage_permissions', // Allows managing permissions (e.g., assigning permissions to roles)
+            'approve_posts', // Allows approving content (e.g., posts, comments)
+            'show_posts', // Allows viewing posts
+            'edit_posts', // Allows editing existing posts
+            'create_posts', // Allows creating new posts
+            'delete_posts', // Allows deleting posts
         ];
 
         foreach ($permissions as $permission) {
@@ -37,9 +37,9 @@ class RoleSeeder extends Seeder
         }
 
         $admin->givePermissionTo($permissions);
-        $moderator->givePermissionTo(['approve-posts', 'show-posts', 'edit-posts', 'create-posts', 'delete-posts']);
-        $editor->givePermissionTo(['show-posts', 'edit-posts', 'create-posts']);
-        $user->givePermissionTo(['show-posts', 'create-posts']);
-        $suspended->givePermissionTo(['show-posts']);
+        $moderator->givePermissionTo(['approve_posts', 'show_posts', 'edit_posts', 'create_posts', 'delete_posts']);
+        $editor->givePermissionTo(['show_posts', 'edit_posts', 'create_posts']);
+        $user->givePermissionTo(['show_posts', 'create_posts']);
+        $suspended->givePermissionTo(['show_posts']);
     }
 }

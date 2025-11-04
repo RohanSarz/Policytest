@@ -54,10 +54,6 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
 
-            if ($user->hasRole('admin')) {
-                return redirect()->route('admin.index');
-            }
-
             return redirect()
                 ->intended('profile')
                 ->with(['message' => 'Welcome back Commando!', 'type' => 'success']);
