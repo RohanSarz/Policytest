@@ -74,172 +74,174 @@ function deleteUser(userId: number) {
     });
   }
 }
+
+defineOptions({
+    layout: AdminLayout
+})
 </script>
 
 <template>
-  <AdminLayout>
-    <div class="p-6">
-      <h1 class="text-2xl font-bold mb-6">User Management</h1>
-      
-      <!-- Create User Card -->
-      <Card class="mb-8">
-        <CardHeader>
-          <CardTitle>Create New User</CardTitle>
-          <CardDescription>Add a new user to the system</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form @submit.prevent="submitForm" class="space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label for="name">Name</Label>
-                <Input 
-                  id="name" 
-                  v-model="form.name" 
-                  placeholder="Enter user's name" 
-                  :disabled="form.processing"
-                />
-                <div v-if="form.errors.name" class="text-red-500 text-sm mt-1">{{ form.errors.name }}</div>
-              </div>
-              
-              <div>
-                <Label for="email">Email</Label>
-                <Input 
-                  id="email" 
-                  v-model="form.email" 
-                  type="email" 
-                  placeholder="Enter user's email" 
-                  :disabled="form.processing"
-                />
-                <div v-if="form.errors.email" class="text-red-500 text-sm mt-1">{{ form.errors.email }}</div>
-              </div>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label for="password">Password</Label>
-                <Input 
-                  id="password" 
-                  v-model="form.password" 
-                  type="password" 
-                  placeholder="Enter password" 
-                  :disabled="form.processing"
-                />
-                <div v-if="form.errors.password" class="text-red-500 text-sm mt-1">{{ form.errors.password }}</div>
-              </div>
-              
-              <div>
-                <Label for="password_confirmation">Confirm Password</Label>
-                <Input 
-                  id="password_confirmation" 
-                  v-model="form.password_confirmation" 
-                  type="password" 
-                  placeholder="Confirm password" 
-                  :disabled="form.processing"
-                />
-              </div>
+  <div class="p-6">
+    <h1 class="text-2xl font-bold mb-6">User Management</h1>
+    
+    <!-- Create User Card -->
+    <Card class="mb-8">
+      <CardHeader>
+        <CardTitle>Create New User</CardTitle>
+        <CardDescription>Add a new user to the system</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form @submit.prevent="submitForm" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label for="name">Name</Label>
+              <Input 
+                id="name" 
+                v-model="form.name" 
+                placeholder="Enter user's name" 
+                :disabled="form.processing"
+              />
+              <div v-if="form.errors.name" class="text-red-500 text-sm mt-1">{{ form.errors.name }}</div>
             </div>
             
             <div>
-              <Label for="role">Role (Optional)</Label>
-              <Select v-model="form.role" :disabled="form.processing">
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem 
-                    v-for="role in props.roles" 
-                    :key="role.id" 
-                    :value="role.name"
-                  >
-                    {{ role.name }}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-              <div v-if="form.errors.role" class="text-red-500 text-sm mt-1">{{ form.errors.role }}</div>
-            </div>
-            
-            <Button 
-              type="submit" 
-              :disabled="form.processing"
-              class="w-full md:w-auto"
-            >
-              <span v-if="!form.processing">Create User</span>
-              <span v-else>Creating...</span>
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-
-      <!-- Users Table -->
-      <Card>
-        <CardHeader>
-          <CardTitle>Users List</CardTitle>
-          <CardDescription>Manage existing users in the system</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div class="overflow-x-auto">
-            <table class="w-full">
-              <thead>
-                <tr class="border-b">
-                  <th class="py-2 px-4 text-left">Name</th>
-                  <th class="py-2 px-4 text-left">Email</th>
-                  <th class="py-2 px-4 text-left">Role</th>
-                  <th class="py-2 px-4 text-left">Verified</th>
-                  <th class="py-2 px-4 text-left">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr 
-                  v-for="user in props.users" 
-                  :key="user.id"
-                  class="border-b hover:bg-gray-50"
-                >
-                  <td class="py-2 px-4">{{ user.name }}</td>
-                  <td class="py-2 px-4">{{ user.email }}</td>
-                  <td class="py-2 px-4">
-                    <span 
-                      v-for="role in user.roles" 
-                      :key="role.id"
-                      class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-1"
-                    >
-                      {{ role.name }}
-                    </span>
-                    <span 
-                      v-if="user.roles.length === 0" 
-                      class="text-gray-500 text-sm italic"
-                    >
-                      No role
-                    </span>
-                  </td>
-                  <td class="py-2 px-4">
-                    <span 
-                      :class="{
-                        'text-green-500': user.email_verified_at,
-                        'text-red-500': !user.email_verified_at
-                      }"
-                    >
-                      {{ user.email_verified_at ? 'Yes' : 'No' }}
-                    </span>
-                  </td>
-                  <td class="py-2 px-4">
-                    <Button 
-                      variant="destructive" 
-                      size="sm"
-                      @click="deleteUser(user.id)"
-                    >
-                      Delete
-                    </Button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            
-            <div v-if="props.users.length === 0" class="text-center py-4 text-gray-500">
-              No users found. Create your first user above.
+              <Label for="email">Email</Label>
+              <Input 
+                id="email" 
+                v-model="form.email" 
+                type="email" 
+                placeholder="Enter user's email" 
+                :disabled="form.processing"
+              />
+              <div v-if="form.errors.email" class="text-red-500 text-sm mt-1">{{ form.errors.email }}</div>
             </div>
           </div>
-        </CardContent>
-      </Card>
-    </div>
-  </AdminLayout>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label for="password">Password</Label>
+              <Input 
+                id="password" 
+                v-model="form.password" 
+                type="password" 
+                placeholder="Enter password" 
+                :disabled="form.processing"
+              />
+              <div v-if="form.errors.password" class="text-red-500 text-sm mt-1">{{ form.errors.password }}</div>
+            </div>
+            
+            <div>
+              <Label for="password_confirmation">Confirm Password</Label>
+              <Input 
+                id="password_confirmation" 
+                v-model="form.password_confirmation" 
+                type="password" 
+                placeholder="Confirm password" 
+                :disabled="form.processing"
+              />
+            </div>
+          </div>
+          
+          <div>
+            <Label for="role">Role (Optional)</Label>
+            <Select v-model="form.role" :disabled="form.processing">
+              <SelectTrigger>
+                <SelectValue placeholder="Select a role" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem 
+                  v-for="role in props.roles" 
+                  :key="role.id" 
+                  :value="role.name"
+                >
+                  {{ role.name }}
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            <div v-if="form.errors.role" class="text-red-500 text-sm mt-1">{{ form.errors.role }}</div>
+          </div>
+          
+          <Button 
+            type="submit" 
+            :disabled="form.processing"
+            class="w-full md:w-auto"
+          >
+            <span v-if="!form.processing">Create User</span>
+            <span v-else>Creating...</span>
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
+
+    <!-- Users Table -->
+    <Card>
+      <CardHeader>
+        <CardTitle>Users List</CardTitle>
+        <CardDescription>Manage existing users in the system</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b">
+                <th class="py-2 px-4 text-left">Name</th>
+                <th class="py-2 px-4 text-left">Email</th>
+                <th class="py-2 px-4 text-left">Role</th>
+                <th class="py-2 px-4 text-left">Verified</th>
+                <th class="py-2 px-4 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr 
+                v-for="user in props.users" 
+                :key="user.id"
+                class="border-b hover:bg-gray-50"
+              >
+                <td class="py-2 px-4">{{ user.name }}</td>
+                <td class="py-2 px-4">{{ user.email }}</td>
+                <td class="py-2 px-4">
+                  <span 
+                    v-for="role in user.roles" 
+                    :key="role.id"
+                    class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-1"
+                  >
+                    {{ role.name }}
+                  </span>
+                  <span 
+                    v-if="user.roles.length === 0" 
+                    class="text-gray-500 text-sm italic"
+                  >
+                    No role
+                  </span>
+                </td>
+                <td class="py-2 px-4">
+                  <span 
+                    :class="{
+                      'text-green-500': user.email_verified_at,
+                      'text-red-500': !user.email_verified_at
+                    }"
+                  >
+                    {{ user.email_verified_at ? 'Yes' : 'No' }}
+                  </span>
+                </td>
+                <td class="py-2 px-4">
+                  <Button 
+                    variant="destructive" 
+                    size="sm"
+                    @click="deleteUser(user.id)"
+                  >
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <div v-if="props.users.length === 0" class="text-center py-4 text-gray-500">
+            No users found. Create your first user above.
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
 </template>

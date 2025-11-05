@@ -27,7 +27,7 @@ class PostController extends Controller implements HasMiddleware
             $query->where('category_id', $category->id);
         }
 
-        $posts = $query->latest()->get();
+        $posts = $query->where('status', 'approved')->latest()->get();
 
         $categories = Category::all(['id', 'name', 'slug']);
 
@@ -40,9 +40,10 @@ class PostController extends Controller implements HasMiddleware
         // Load the category or fail if not found
         $category = Category::where('slug', $slug)->firstOrFail();
 
-        // Get posts that belong to this category
+        // Get posts that belong to this category with 'approved' status
         $posts = Post::with(['user', 'category', 'postImages'])
             ->where('category_id', $category->id)
+            ->where('status', 'approved')
             ->latest()
             ->get();
 
@@ -121,13 +122,13 @@ class PostController extends Controller implements HasMiddleware
     {
         $post->load(['user', 'category', 'postImages']); // Load multiple images
         $post->created_for_human = Carbon::parse($post->created_at)->diffForHumans();
-        
+
         // Transform the post to properly handle content format
         $postData = $post->toArray();
-        
+
         // If content is JSON, we might need special handling for display
         // For now, sending as is, but in practice you'd convert JSON to HTML for display
-        
+
         // Pass the post along with its relationships to the Inertia view
         return inertia('Posts/Show', [
             'post' => $post,
@@ -138,13 +139,13 @@ class PostController extends Controller implements HasMiddleware
     {
         $post->load('postImages'); // Load existing images for editing
         $categories = Category::all(['id', 'name']);
-        
+
         // Transform the post data to ensure content is properly formatted
         $postData = $post->toArray();
-        
+
         // If the content is JSON and we need to handle it differently for the editor
         // For now, we'll send it as is, but make sure it's properly processed
-        
+
         return inertia('Posts/Edit', compact('post', 'categories'));
     }
 

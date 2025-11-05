@@ -38,15 +38,16 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('register');
 });
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', [AdminController::class, 'index']);
-    Route::get('/roles', [RoleController::class, 'index']);
-    Route::post('/roles', [RoleController::class, 'store']);
-    Route::get('/users', [UserController::class, 'adminIndex']);
-    Route::post('/users', [UserController::class, 'adminStore']);
-    Route::delete('/users/{user}', [UserController::class, 'adminDestroy']);
+    Route::get('/roles', [AdminController::class, 'roles']);
+    Route::post('/roles', [AdminController::class, 'storeRole']);
+    Route::put('/roles/{role}', [AdminController::class, 'updateRole']);
+    Route::get('/users', [AdminController::class, 'users']);
+    Route::post('/users', [AdminController::class, 'storeUser']);
+    Route::delete('/users/{user}', [AdminController::class, 'deleteUser']);
     Route::get('/permissions', [PermissionController::class, 'index']);
     Route::post('/permissions', [PermissionController::class, 'store']);
-    Route::get('/posts', [AdminPostController::class, 'index']);
-    Route::patch('/posts/{post}/status', [AdminPostController::class, 'updateStatus']);
+    Route::get('/posts', [AdminController::class, 'posts']);
+    Route::patch('/posts/{post}/status', [AdminController::class, 'updatePostStatus']);
 });
