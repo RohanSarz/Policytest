@@ -20,8 +20,8 @@ import Toaster from "@/components/Toaster.vue";
         <main :key="$page.url" class="mx-auto pt-4 z-0">
             <slot />
         </main>
-        <footer>
+        <!-- <footer>
             <Footer />
-        </footer>
+        </footer> -->
     </div>
 </template>

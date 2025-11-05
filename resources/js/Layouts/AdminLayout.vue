@@ -61,8 +61,16 @@ const user = page.props.auth?.user || {};
                                 <SidebarMenuItem>
                                     <SidebarMenuButton as-child>
                                         <a href="/admin">
-                                            <Home class="mr-2 h-4 w-4" />
+                                            <BarChart3 class="mr-2 h-4 w-4" />
                                             <span>Dashboard</span>
+                                        </a>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                                <SidebarMenuItem>
+                                    <SidebarMenuButton as-child>
+                                        <a href="/admin/users">
+                                            <Users class="mr-2 h-4 w-4" />
+                                            <span>Users</span>
                                         </a>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
@@ -74,18 +82,19 @@ const user = page.props.auth?.user || {};
                                         </a>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
-                            </SidebarMenu>
-                        </SidebarGroupContent>
-                    </SidebarGroup>
-                    <SidebarGroup>
-                        <SidebarGroupLabel>Settings</SidebarGroupLabel>
-                        <SidebarGroupContent>
-                            <SidebarMenu>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton as-child>
-                                        <a href="/admin/settings">
-                                            <Settings class="mr-2 h-4 w-4" />
-                                            <span>System Settings</span>
+                                        <a href="/admin/permissions">
+                                            <Folder class="mr-2 h-4 w-4" />
+                                            <span>Permissions</span>
+                                        </a>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                                <SidebarMenuItem>
+                                    <SidebarMenuButton as-child>
+                                        <a href="/admin/posts">
+                                            <MessageCircle class="mr-2 h-4 w-4" />
+                                            <span>Posts</span>
                                         </a>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>

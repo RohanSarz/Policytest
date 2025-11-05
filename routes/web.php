@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
@@ -37,4 +38,15 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('register');
 });
 
-
+Route::prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'index']);
+    Route::get('/roles', [RoleController::class, 'index']);
+    Route::post('/roles', [RoleController::class, 'store']);
+    Route::get('/users', [UserController::class, 'adminIndex']);
+    Route::post('/users', [UserController::class, 'adminStore']);
+    Route::delete('/users/{user}', [UserController::class, 'adminDestroy']);
+    Route::get('/permissions', [PermissionController::class, 'index']);
+    Route::post('/permissions', [PermissionController::class, 'store']);
+    Route::get('/posts', [AdminPostController::class, 'index']);
+    Route::patch('/posts/{post}/status', [AdminPostController::class, 'updateStatus']);
+});
