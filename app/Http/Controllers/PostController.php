@@ -27,7 +27,7 @@ class PostController extends Controller implements HasMiddleware
             $query->where('category_id', $category->id);
         }
 
-        $posts = $query->where('status', 'approved')->latest()->get();
+        $posts = $query->where('status', 'pending')->latest()->get();
 
         $categories = Category::all(['id', 'name', 'slug']);
 
