@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { usePage, Link } from "@inertiajs/vue3";
 import PostCard from "@/components/post/PostCard.vue";
 import Separator from "@/components/ui/separator/Separator.vue";
+import PostTitle from "@/components/post/PostTitle.vue";
 
 const page = usePage().props;
 
@@ -12,18 +13,19 @@ const posts = computed(() => page.posts);
 const currentPath = computed(() => window.location.pathname);
 
 function isActiveCategory(slug: string) {
-    return (
-        currentPath.value.endsWith(slug) ||
-        (slug === "all" && currentPath.value === "/posts")
-    );
+    const cleanPath = currentPath.value.replace(/\/+$/, "");
+    if (slug === "all") {
+        return cleanPath === "/posts";
+    }
+    return cleanPath === `/categories/${slug}`;
 }
 
 const displayedPosts = computed(() => {
     if (isActiveCategory("all")) return posts.value;
 
-    return posts.value.filter(
-        (post) => post.category?.slug === currentPath.value.split("/").pop(),
-    );
+    const segments = currentPath.value.split("/").filter(Boolean);
+    const slug = segments[0] === "categories" && segments[1] ? segments[1] : "";
+    return posts.value.filter((post) => post.category?.slug === slug);
 });
 
 const CustomSection = "Politics";
@@ -68,7 +70,7 @@ const CustomSection = "Politics";
 
             <!-- Posts Grid -->
             <div
-                class="h-[50vh] py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                class="py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
             >
                 <PostCard
                     v-for="post in displayedPosts"
@@ -83,7 +85,7 @@ const CustomSection = "Politics";
                 </div>
             </div>
             <!-- A custom section for news set by admin -->
-            <div class="row-span-1 h-fit border px">
+            <div class="">
                 <h2 class="text-lg font-semibold text-center px-4 py-4">
                     {{ CustomSection }}
                     <sup
@@ -91,44 +93,35 @@ const CustomSection = "Politics";
                         >Hot</sup
                     >
                 </h2>
-                <div class="grid grid-cols-2 px-4 py-4">
-                    <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing
-                        elit. Tempora illum excepturi nam aspernatur minima
-                        dolores ipsa illo facilis vel labore.
-                        <span class="font-semibold text-gray-400">Rohan</span>
-                    </p>
-                    <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing
-                        elit. Tempora illum excepturi nam aspernatur minima
-                        dolores ipsa illo facilis vel labore.
-                        <span class="font-semibold text-gray-400">Rohan</span>
-                    </p>
-                    <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing
-                        elit. Tempora illum excepturi nam aspernatur minima
-                        dolores ipsa illo facilis vel labore.
-                        <span class="font-semibold text-gray-400">Rohan</span>
-                    </p>
-                    <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing
-                        elit. Tempora illum excepturi nam aspernatur minima
-                        dolores ipsa illo facilis vel labore.
-                        <span class="font-semibold text-gray-400">Rohan</span>
-                    </p>
-                    <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing
-                        elit. Tempora illum excepturi nam aspernatur minima
-                        dolores ipsa illo facilis vel labore.
-                        <span class="font-semibold text-gray-400">Rohan</span>
-                    </p>
+                <div class="grid grid-cols-2 grid-rows-3">
+                    <div
+                        v-for="post in displayedPosts"
+                        :key="post.id"
+                        class="border-b px-2 py-2"
+                    >
+                        <PostCard
+                            class="hover:underline"
+                            type="title"
+                            :post="post"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
         <!-- Live News Section-->
 
         <div class="col-span-5 row-span-6 border-l h-auto">
-            <h1 class="text-center font-semibold">Live News</h1>
+            <h1 class="text-center font-semibold py-8">Live News</h1>
+
+            <div class="flex flex-col gap-6 justify-center px-6">
+                <div
+                    v-for="post in displayedPosts"
+                    :key="post.id"
+                    class="hover:underline underline-offset-3"
+                >
+                    <PostTitle :post="post" />
+                </div>
+            </div>
         </div>
     </div>
 </template>
