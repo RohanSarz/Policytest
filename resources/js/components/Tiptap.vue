@@ -101,15 +101,15 @@ const addImage = () => {
 // Determine the content format and return appropriately
 const initialContent = () => {
     const value = props.modelValue;
-    
-    if (typeof value === 'string' && value.trim() !== '') {
+
+    if (typeof value === "string" && value.trim() !== "") {
         // Check if the string looks like JSON
-        if (value.trim().startsWith('{') || value.trim().startsWith('[')) {
+        if (value.trim().startsWith("{") || value.trim().startsWith("[")) {
             try {
                 return JSON.parse(value);
             } catch (e) {
                 // If JSON parsing fails, treat as HTML
-                console.error('Error parsing JSON content:', e);
+                console.error("Error parsing JSON content:", e);
                 return value;
             }
         } else {
@@ -117,18 +117,18 @@ const initialContent = () => {
             return value;
         }
     }
-    
+
     // For non-string values, return as is
-    return value || '';
+    return value || "";
 };
 
 // Determine content type and format it properly
 const formatContentForEditor = () => {
     const value = props.modelValue;
-    
-    if (typeof value === 'string' && value.trim() !== '') {
+
+    if (typeof value === "string" && value.trim() !== "") {
         // Check if it's JSON format
-        if (value.startsWith('{') || value.startsWith('[')) {
+        if (value.startsWith("{") || value.startsWith("[")) {
             try {
                 return JSON.parse(value);
             } catch (e) {
@@ -140,15 +140,24 @@ const formatContentForEditor = () => {
             return value;
         }
     }
-    
+
     // For objects (already parsed JSON) or other cases
-    return value || '';
+    return value || "";
 };
 
 const editor = useEditor({
     content: formatContentForEditor(),
     extensions: [
-        StarterKit,
+        StarterKit.configure({
+            heading: false, // Disable default heading to use custom one
+            listItem: false, // Disable default listItem to use custom one
+        }),
+        Heading.configure({
+            levels: [1, 2, 3, 4, 5, 6],
+        }),
+        ListItem,
+        BulletList,
+        OrderedList,
         CustomImage.configure({
             inline: true,
         }),
@@ -157,14 +166,10 @@ const editor = useEditor({
             types: ["heading", "paragraph"],
         }),
         Strike,
-        Heading,
-        ListItem,
-        BulletList,
-        OrderedList,
     ],
     editorProps: {
         attributes: {
-            class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl focus:outline-none min-h-full',
+            class: "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl focus:outline-none min-h-full",
         },
     },
     onUpdate: () => {
@@ -200,24 +205,33 @@ onMounted(() => {
 });
 
 // Watch for changes in modelValue and update editor content accordingly
-watch(() => props.modelValue, (newValue) => {
-    if (editor.value && newValue !== JSON.stringify(editor.value.getJSON())) {
-        // Format the new value appropriately
-        let contentToSet;
-        if (typeof newValue === 'string' && (newValue.startsWith('{') || newValue.startsWith('['))) {
-            try {
-                contentToSet = JSON.parse(newValue);
-            } catch {
+watch(
+    () => props.modelValue,
+    (newValue) => {
+        if (
+            editor.value &&
+            newValue !== JSON.stringify(editor.value.getJSON())
+        ) {
+            // Format the new value appropriately
+            let contentToSet;
+            if (
+                typeof newValue === "string" &&
+                (newValue.startsWith("{") || newValue.startsWith("["))
+            ) {
+                try {
+                    contentToSet = JSON.parse(newValue);
+                } catch {
+                    contentToSet = newValue;
+                }
+            } else {
                 contentToSet = newValue;
             }
-        } else {
-            contentToSet = newValue;
+
+            // Set the new content
+            editor.value.commands.setContent(contentToSet, false);
         }
-        
-        // Set the new content
-        editor.value.commands.setContent(contentToSet, false);
-    }
-});
+    },
+);
 
 // Clean up object URLs to prevent memory leaks
 onUnmounted(() => {
@@ -234,12 +248,17 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="tiptap-editor flex flex-col w-full h-full border border-gray-300 rounded-lg p-4 bg-white">
-        <div class="toolbar mb-2 flex flex-wrap gap-2 border border-gray-300 rounded p-1 bg-gray-50">
+    <div
+        v-if="editor"
+        class="tiptap-editor flex flex-col w-full h-full border border-gray-300 rounded-lg p-4 bg-white"
+    >
+        <div
+            class="toolbar mb-2 flex flex-wrap gap-2 border border-gray-300 rounded p-1 bg-gray-50"
+        >
             <!-- Text Formatting -->
             <button
-                @click="editor?.chain().focus().toggleBold().run()"
-                :class="{ 'bg-blue-500 text-white': editor?.isActive('bold') }"
+                @click="editor.chain().focus().toggleBold().run()"
+                :class="{ 'bg-blue-500 text-white': editor.isActive('bold') }"
                 class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
                 type="button"
                 title="Bold"
@@ -247,9 +266,9 @@ onUnmounted(() => {
                 <span class="font-bold">B</span>
             </button>
             <button
-                @click="editor?.chain().focus().toggleItalic().run()"
+                @click="editor.chain().focus().toggleItalic().run()"
                 :class="{
-                    'bg-blue-500 text-white': editor?.isActive('italic'),
+                    'bg-blue-500 text-white': editor.isActive('italic'),
                 }"
                 class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
                 type="button"
@@ -258,9 +277,9 @@ onUnmounted(() => {
                 <span class="italic">I</span>
             </button>
             <button
-                @click="editor?.chain().focus().toggleUnderline().run()"
+                @click="editor.chain().focus().toggleUnderline().run()"
                 :class="{
-                    'bg-blue-500 text-white': editor?.isActive('underline'),
+                    'bg-blue-500 text-white': editor.isActive('underline'),
                 }"
                 class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
                 type="button"
@@ -269,9 +288,9 @@ onUnmounted(() => {
                 <span class="underline">U</span>
             </button>
             <button
-                @click="editor?.chain().focus().toggleStrike().run()"
+                @click="editor.chain().focus().toggleStrike().run()"
                 :class="{
-                    'bg-blue-500 text-white': editor?.isActive('strike'),
+                    'bg-blue-500 text-white': editor.isActive('strike'),
                 }"
                 class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
                 type="button"
@@ -282,11 +301,9 @@ onUnmounted(() => {
 
             <!-- Headings -->
             <button
-                @click="
-                    editor?.chain().focus().toggleHeading({ level: 1 }).run()
-                "
+                @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
                 :class="{
-                    'bg-blue-500 text-white': editor?.isActive('heading', {
+                    'bg-blue-500 text-white': editor.isActive('heading', {
                         level: 1,
                     }),
                 }"
@@ -297,11 +314,9 @@ onUnmounted(() => {
                 H1
             </button>
             <button
-                @click="
-                    editor?.chain().focus().toggleHeading({ level: 2 }).run()
-                "
+                @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
                 :class="{
-                    'bg-blue-500 text-white': editor?.isActive('heading', {
+                    'bg-blue-500 text-white': editor.isActive('heading', {
                         level: 2,
                     }),
                 }"
@@ -312,11 +327,9 @@ onUnmounted(() => {
                 H2
             </button>
             <button
-                @click="
-                    editor?.chain().focus().toggleHeading({ level: 3 }).run()
-                "
+                @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
                 :class="{
-                    'bg-blue-500 text-white': editor?.isActive('heading', {
+                    'bg-blue-500 text-white': editor.isActive('heading', {
                         level: 3,
                     }),
                 }"
@@ -329,9 +342,9 @@ onUnmounted(() => {
 
             <!-- Lists -->
             <button
-                @click="editor?.chain().focus().toggleBulletList().run()"
+                @click="editor.chain().focus().toggleBulletList().run()"
                 :class="{
-                    'bg-blue-500 text-white': editor?.isActive('bulletList'),
+                    'bg-blue-500 text-white': editor.isActive('bulletList'),
                 }"
                 class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
                 type="button"
@@ -340,9 +353,9 @@ onUnmounted(() => {
                 • List
             </button>
             <button
-                @click="editor?.chain().focus().toggleOrderedList().run()"
+                @click="editor.chain().focus().toggleOrderedList().run()"
                 :class="{
-                    'bg-blue-500 text-white': editor?.isActive('orderedList'),
+                    'bg-blue-500 text-white': editor.isActive('orderedList'),
                 }"
                 class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
                 type="button"
@@ -353,9 +366,9 @@ onUnmounted(() => {
 
             <!-- Text Alignment -->
             <button
-                @click="editor?.chain().focus().setTextAlign('left').run()"
+                @click="editor.chain().focus().setTextAlign('left').run()"
                 :class="{
-                    'bg-blue-500 text-white': editor?.isActive({
+                    'bg-blue-500 text-white': editor.isActive({
                         textAlign: 'left',
                     }),
                 }"
@@ -366,9 +379,9 @@ onUnmounted(() => {
                 ←
             </button>
             <button
-                @click="editor?.chain().focus().setTextAlign('center').run()"
+                @click="editor.chain().focus().setTextAlign('center').run()"
                 :class="{
-                    'bg-blue-500 text-white': editor?.isActive({
+                    'bg-blue-500 text-white': editor.isActive({
                         textAlign: 'center',
                     }),
                 }"
@@ -379,9 +392,9 @@ onUnmounted(() => {
                 ↔
             </button>
             <button
-                @click="editor?.chain().focus().setTextAlign('right').run()"
+                @click="editor.chain().focus().setTextAlign('right').run()"
                 :class="{
-                    'bg-blue-500 text-white': editor?.isActive({
+                    'bg-blue-500 text-white': editor.isActive({
                         textAlign: 'right',
                     }),
                 }"
@@ -404,7 +417,7 @@ onUnmounted(() => {
 
             <!-- Image Alignment -->
             <button
-                @click="editor?.chain().focus().setImageAlignment('left').run()"
+                @click="editor.chain().focus().setImageAlignment('left').run()"
                 :class="{
                     'bg-blue-500 text-white': currentImageAlignment === 'left',
                 }"
@@ -417,7 +430,7 @@ onUnmounted(() => {
             </button>
             <button
                 @click="
-                    editor?.chain().focus().setImageAlignment('center').run()
+                    editor.chain().focus().setImageAlignment('center').run()
                 "
                 :class="{
                     'bg-blue-500 text-white':
@@ -432,7 +445,7 @@ onUnmounted(() => {
             </button>
             <button
                 @click="
-                    editor?.chain().focus().setImageAlignment('right').run()
+                    editor.chain().focus().setImageAlignment('right').run()
                 "
                 :class="{
                     'bg-blue-500 text-white': currentImageAlignment === 'right',
@@ -445,7 +458,10 @@ onUnmounted(() => {
                 Float Right
             </button>
         </div>
-        <editor-content :editor="editor" class="flex-1 border border-gray-300 rounded p-4 bg-white overflow-y-auto min-h-[400px]" />
+        <editor-content
+            :editor="editor"
+            class="flex-1 border border-gray-300 rounded p-4 bg-white overflow-y-auto min-h-[400px]"
+        />
         <input
             ref="imageInput"
             type="file"
@@ -469,26 +485,25 @@ onUnmounted(() => {
     float: left;
     margin-right: 1rem;
     max-width: 40%;
-    height: 200px;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
 }
 
 .tiptap :deep(.inline-image[data-align="right"]) {
     float: right;
     margin-left: 1rem;
     max-width: 40%;
-    height: 200px;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
 }
 
 .tiptap :deep(.inline-image[data-align="center"]) {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    height: 250px;
-    width: auto;
     max-width: 100%;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
 }
 
 /* Placeholder text for empty editor */
@@ -507,32 +522,6 @@ onUnmounted(() => {
     border-radius: 0.25rem;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
-    object-fit: cover; /* Ensures images maintain aspect ratio when constrained */
-}
-
-.tiptap :deep(.inline-image[data-align="left"]) {
-    float: left;
-    margin-right: 1rem;
-    max-width: 40%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.tiptap :deep(.inline-image[data-align="right"]) {
-    float: right;
-    margin-left: 1rem;
-    max-width: 40%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.tiptap :deep(.inline-image[data-align="center"]) {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    height: 250px;
-    width: auto;
-    max-width: 100%;
-    object-fit: cover;
+    object-fit: contain; /* Ensures images maintain aspect ratio when constrained */
 }
 </style>
