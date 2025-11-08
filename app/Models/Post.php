@@ -80,12 +80,12 @@ class Post extends Model
     {
         return $this->hasMany(\App\Models\PostImage::class, 'post_id')->orderBy('order');
     }
-    
+
     // Accessor to get content as HTML, converting from JSON if needed
     public function getContentAsHtmlAttribute()
     {
         $content = $this->content;
-        
+
         // Check if content is in JSON format
         if (is_string($content) && !empty($content)) {
             $decoded = json_decode($content, true);
@@ -95,7 +95,7 @@ class Post extends Model
                 return $content;
             }
         }
-        
+
         return $content;
     }
 }

@@ -9,24 +9,18 @@ const page = usePage().props;
 
 const categories = computed(() => page.categories);
 const posts = computed(() => page.posts);
-
+const allPosts = computed(() => page.allPosts);
+const livePosts = computed(() => page.livePosts);
+const featCategoryPosts = computed(() => page.featCategoryPosts);
 const currentPath = computed(() => window.location.pathname);
 
 function isActiveCategory(slug: string) {
-    const cleanPath = currentPath.value.replace(/\/+$/, "");
+    route.current()
     if (slug === "all") {
         return cleanPath === "/posts";
     }
     return cleanPath === `/categories/${slug}`;
 }
-
-const displayedPosts = computed(() => {
-    if (isActiveCategory("all")) return posts.value;
-
-    const segments = currentPath.value.split("/").filter(Boolean);
-    const slug = segments[0] === "categories" && segments[1] ? segments[1] : "";
-    return posts.value.filter((post) => post.category?.slug === slug);
-});
 
 const CustomSection = "Politics";
 </script>
@@ -73,12 +67,12 @@ const CustomSection = "Politics";
                 class="py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
             >
                 <PostCard
-                    v-for="post in displayedPosts"
-                    :key="post.id"
+                    v-for="post in allPosts"
+                    :key="post?.id"
                     :post="post"
                 />
                 <div
-                    v-if="displayedPosts.length === 0"
+                    v-if="allPosts.length === 0"
                     class="col-span-full text-center text-gray-500 mt-6"
                 >
                     No posts in this category.
@@ -95,7 +89,7 @@ const CustomSection = "Politics";
                 </h2>
                 <div class="grid grid-cols-2 grid-rows-3">
                     <div
-                        v-for="post in displayedPosts"
+                        v-for="(post, id) in featCategoryPosts"
                         :key="post.id"
                         class="border-b px-2 py-2"
                     >
@@ -115,7 +109,7 @@ const CustomSection = "Politics";
 
             <div class="flex flex-col gap-6 justify-center px-6">
                 <div
-                    v-for="post in displayedPosts"
+                    v-for="post in livePosts"
                     :key="post.id"
                     class="hover:underline underline-offset-3"
                 >
@@ -124,4 +118,5 @@ const CustomSection = "Politics";
             </div>
         </div>
     </div>
+    {{ allPosts }}
 </template>

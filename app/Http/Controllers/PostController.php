@@ -19,23 +19,23 @@ class PostController extends Controller implements HasMiddleware
     }
 
     // Index page
-    public function index(Category $category = null)
+    public function index()
     {
         $query = Post::query()->with(['user', 'category', 'postImages']);
 
-        if ($category) {
-            $query->where('category_id', $category->id);
-        }
+        $allPosts = $query->where('status', 'approved')->latest()->get();
+        $livePosts = $query->where('status', 'approved')->latest()->paginate(5);
+        $featCategoryPosts = $query->where('category_id', operator: 'politics')->latest()->paginate(5);
 
-        $posts = $query->where('status', 'pending')->latest()->get();
-
-        $categories = Category::all(['id', 'name', 'slug']);
-
-        return inertia('Home', compact('posts', 'categories'));
+        return inertia('Home', [
+            'allPosts' => $allPosts,
+            'livePosts' => $livePosts,
+            'featCategoryPosts' => $featCategoryPosts,
+        ]);
     }
     // Index page but with category
 
-    public function byCategory(string $slug)
+    public function byCategory(string $slug): Response|ResponseFactory
     {
         // Load the category or fail if not found
         $category = Category::where('slug', $slug)->firstOrFail();
