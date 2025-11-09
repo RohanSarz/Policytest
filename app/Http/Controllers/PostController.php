@@ -21,38 +21,47 @@ class PostController extends Controller implements HasMiddleware
     // Index page
     public function index()
     {
-        $query = Post::query()->with(['user', 'category', 'postImages']);
-
-        $allPosts = $query->where('status', 'approved')->latest()->get();
-        $livePosts = $query->where('status', 'approved')->latest()->paginate(5);
-        $featCategoryPosts = $query->where('category_id', operator: 'politics')->latest()->paginate(5);
-
-        return inertia('Home', [
-            'allPosts' => $allPosts,
-            'livePosts' => $livePosts,
-            'featCategoryPosts' => $featCategoryPosts,
-        ]);
-    }
-    // Index page but with category
-
-    public function byCategory(string $slug): Response|ResponseFactory
-    {
-        // Load the category or fail if not found
-        $category = Category::where('slug', $slug)->firstOrFail();
-
-        // Get posts that belong to this category with 'approved' status
-        $posts = Post::with(['user', 'category', 'postImages'])
-            ->where('category_id', $category->id)
-            ->where('status', 'approved')
+        $posts = Post::query()
+            ->approved()
+            ->with(['user', 'category', 'postImages'])
             ->latest()
             ->get();
 
-        // Get all categories for sidebar or filters
-        $categories = Category::all(['id', 'name', 'slug']);
+        $categories = Category::with('approvedPosts')->get();
+
+        $livePosts = Post::latest()->orderBy('created_at', 'desc')->get();
 
         return inertia('Home', [
             'posts' => $posts,
             'categories' => $categories,
+            'livePosts' => $livePosts,
+
+            'currentCategory' => null, // explicitly null
+        ]);
+    }
+
+    public function byCategory(string $slug)
+    {
+        $category = Category::where('slug', $slug)->firstOrFail();
+
+        $posts = Post::query()
+            ->where('category_id', $category->id)
+            ->approved()
+            ->with(['user', 'category', 'postImages'])
+            ->latest()
+            ->get();
+
+        $categories = Category::with('approvedPosts')->get();
+
+        // Reuse same extra data logic as index()
+
+        $livePosts = Post::approved()->latest()->get();
+
+        return inertia('Home', [
+            'posts' => $posts,
+            'categories' => $categories,
+            'livePosts' => $livePosts,
+
             'currentCategory' => $category,
         ]);
     }

@@ -29,7 +29,7 @@ class Category extends Model
             }
         });
     }
-    
+
     // Ensure slug uniqueness
     protected function generateUniqueSlug($name)
     {
@@ -53,5 +53,9 @@ class Category extends Model
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
+    }
+    public function approvedPosts(): HasMany
+    {
+        return $this->hasMany(Post::class)->where('status', 'approved');
     }
 }

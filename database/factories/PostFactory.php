@@ -22,6 +22,7 @@ class PostFactory extends Factory
         $title = fake()->sentence();
 
         $slug = Str::slug($title);
+        $status = fake()->randomElement(['pending', 'approved', 'draft']);
 
         return [
             'user_id' => User::inRandomOrder()->first()->id,
@@ -31,7 +32,7 @@ class PostFactory extends Factory
             'excerpt' => fake()->sentence(),
             'slug' => $slug,
             'content' => fake()->paragraphs(3, true),
-            'status' => fake()->randomElement(['pending', 'published', 'draft']),
+            'status' => $status,
         ];
     }
 }

@@ -78,7 +78,15 @@ class Post extends Model
     // Relationship for multiple images - ordered by the 'order' column
     public function postImages(): HasMany
     {
-        return $this->hasMany(\App\Models\PostImage::class, 'post_id')->orderBy('order');
+        return $this->hasMany(PostImage::class, 'post_id')->orderBy('order');
+    }
+    public function scopeApproved($query)
+    {
+        return $query->where('status', 'approved');
+    }
+    public function scopeCategory($query)
+    {
+        return $query->where('category_id', $this->category_id);
     }
 
     // Accessor to get content as HTML, converting from JSON if needed

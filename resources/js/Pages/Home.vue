@@ -1,28 +1,20 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { usePage, Link } from "@inertiajs/vue3";
+import { usePage, Link, usePoll } from "@inertiajs/vue3";
 import PostCard from "@/components/post/PostCard.vue";
 import Separator from "@/components/ui/separator/Separator.vue";
 import PostTitle from "@/components/post/PostTitle.vue";
 
 const page = usePage().props;
+const posts = page.posts;
+const categories = page.categories;
+const featContent = page.featContent;
+const livePosts = page.livePosts;
 
-const categories = computed(() => page.categories);
-const posts = computed(() => page.posts);
-const allPosts = computed(() => page.allPosts);
-const livePosts = computed(() => page.livePosts);
-const featCategoryPosts = computed(() => page.featCategoryPosts);
-const currentPath = computed(() => window.location.pathname);
+// Fix undefined variables by defining them
+const allPosts = posts || [];
 
-function isActiveCategory(slug: string) {
-    route.current()
-    if (slug === "all") {
-        return cleanPath === "/posts";
-    }
-    return cleanPath === `/categories/${slug}`;
-}
-
-const CustomSection = "Politics";
+usePoll(2000);
 </script>
 
 <template>
@@ -36,11 +28,6 @@ const CustomSection = "Politics";
                 <Link
                     :href="route('posts.index')"
                     class="px-3 py-1 rounded-md font-medium"
-                    :class="{
-                        'bg-blue-500 text-white': isActiveCategory('all'),
-                        'bg-gray-200 text-gray-700 hover:bg-gray-300':
-                            !isActiveCategory('all'),
-                    }"
                 >
                     All
                 </Link>
@@ -50,13 +37,6 @@ const CustomSection = "Politics";
                     :key="category.slug"
                     :href="route('categories.show', category.slug)"
                     class="px-3 py-1 rounded-md font-medium"
-                    :class="{
-                        'bg-blue-500 text-white': isActiveCategory(
-                            category.slug,
-                        ),
-                        'bg-gray-200 text-gray-700 hover:bg-gray-300':
-                            !isActiveCategory(category.slug),
-                    }"
                 >
                     {{ category.name }}
                 </Link>
@@ -68,7 +48,7 @@ const CustomSection = "Politics";
             >
                 <PostCard
                     v-for="post in allPosts"
-                    :key="post?.id"
+                    :key="post.slug"
                     :post="post"
                 />
                 <div
@@ -76,29 +56,6 @@ const CustomSection = "Politics";
                     class="col-span-full text-center text-gray-500 mt-6"
                 >
                     No posts in this category.
-                </div>
-            </div>
-            <!-- A custom section for news set by admin -->
-            <div class="">
-                <h2 class="text-lg font-semibold text-center px-4 py-4">
-                    {{ CustomSection }}
-                    <sup
-                        class="text-xs border rounded-2xl p-1 opacity-40 bg-red-500 text-yellow-300"
-                        >Hot</sup
-                    >
-                </h2>
-                <div class="grid grid-cols-2 grid-rows-3">
-                    <div
-                        v-for="(post, id) in featCategoryPosts"
-                        :key="post.id"
-                        class="border-b px-2 py-2"
-                    >
-                        <PostCard
-                            class="hover:underline"
-                            type="title"
-                            :post="post"
-                        />
-                    </div>
                 </div>
             </div>
         </div>
@@ -118,5 +75,4 @@ const CustomSection = "Politics";
             </div>
         </div>
     </div>
-    {{ allPosts }}
 </template>

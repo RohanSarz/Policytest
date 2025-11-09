@@ -18,6 +18,7 @@ const props = defineProps({
 <template>
     <!-- Title-only mode: displays short title + author -->
     <div v-if="type === 'title'" class="text-sm font-medium text-gray-800">
+
         {{
             `${props.post.title.split(" ").slice(0, 10).join(" ")}... | ${
                 props.post.user?.name || "Unknown"
@@ -51,6 +52,7 @@ const props = defineProps({
             class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3"
         >
             <h3 class="text-white text-sm font-semibold line-clamp-2">
+                {{ props.post.category_id }} |||
                 {{ props.post.title }}
             </h3>
         </div>
