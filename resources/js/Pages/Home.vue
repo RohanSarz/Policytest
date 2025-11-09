@@ -4,17 +4,24 @@ import { usePage, Link, usePoll } from "@inertiajs/vue3";
 import PostCard from "@/components/post/PostCard.vue";
 import Separator from "@/components/ui/separator/Separator.vue";
 import PostTitle from "@/components/post/PostTitle.vue";
+import { PageProps } from "@/types/Post"; // Import the shared types
 
-const page = usePage().props;
-const posts = page.posts;
-const categories = page.categories;
-const featContent = page.featContent;
-const livePosts = page.livePosts;
+// Get page props from Inertia
+const page = usePage<PageProps>().props; // Type the page props
+
+// Extract data from page props
+const posts = page.posts; // Array of posts
+const categories = page.categories; // Array of categories
+const currentCategory = page.currentCategory; // Current category if on a category page
+const livePosts = page.livePosts; // Live posts
 
 // Fix undefined variables by defining them
-const allPosts = posts || [];
+const allPosts = posts || []; // Fallback to empty array if posts is undefined
 
-usePoll(2000);
+usePoll(2000); // Auto-refresh data every 2 seconds
+
+// Compute active category slug for highlighting active link
+const activeCategorySlug = currentCategory?.slug || null;
 </script>
 
 <template>
@@ -27,16 +34,22 @@ usePoll(2000);
             <div class="flex flex-wrap gap-2 mb-6">
                 <Link
                     :href="route('posts.index')"
-                    class="px-3 py-1 rounded-md font-medium"
+                    :class="[
+                        'px-3 py-1 rounded-md font-medium',
+                        { 'bg-gray-200': !activeCategorySlug },
+                    ]"
                 >
                     All
                 </Link>
 
                 <Link
                     v-for="category in categories"
-                    :key="category.slug"
+                    :key="category.id"
                     :href="route('categories.show', category.slug)"
-                    class="px-3 py-1 rounded-md font-medium"
+                    :class="[
+                        'px-3 py-1 rounded-md font-medium',
+                        { 'bg-gray-200': activeCategorySlug === category.slug },
+                    ]"
                 >
                     {{ category.name }}
                 </Link>
@@ -48,7 +61,7 @@ usePoll(2000);
             >
                 <PostCard
                     v-for="post in allPosts"
-                    :key="post.slug"
+                    :key="post.id"
                     :post="post"
                 />
                 <div

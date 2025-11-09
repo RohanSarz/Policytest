@@ -38,18 +38,20 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('register');
 });
 
+// Admin routes
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
     ->group(function () {
-        Route::get('/', [AdminController::class, 'index']);
-        Route::get('/roles', [AdminController::class, 'roles']);
-        Route::post('/roles', [AdminController::class, 'storeRole']);
-        Route::put('/roles/{role}', [AdminController::class, 'updateRole']);
-        Route::get('/users', [AdminController::class, 'users']);
-        Route::post('/users', [AdminController::class, 'storeUser']);
-        Route::delete('/users/{user}', [AdminController::class, 'deleteUser']);
-        Route::get('/permissions', [AdminController::class, 'index']);
-        Route::post('/permissions', [AdminController::class, 'store']);
-        Route::get('/posts', [AdminController::class, 'posts']);
-        Route::patch('/posts/{post}/status', [AdminController::class, 'updatePostStatus']);
+        Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+        Route::get('/roles', [AdminController::class, 'roles'])->name('admin.roles.index');
+        Route::post('/roles', [AdminController::class, 'storeRole'])->name('admin.roles.store');
+        Route::put('/roles/{role}', [AdminController::class, 'updateRole'])->name('admin.roles.update');
+        Route::delete('/roles/{role}', [AdminController::class, 'deleteRole'])->name('admin.roles.destroy');
+        Route::get('/users', [AdminController::class, 'users'])->name('admin.users.index');
+        Route::post('/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
+        Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('admin.users.destroy');
+        Route::get('/permissions', [AdminController::class, 'index'])->name('admin.permissions.index');
+        Route::post('/permissions', [AdminController::class, 'store'])->name('admin.permissions.store');
+        Route::get('/posts', [AdminController::class, 'posts'])->name('admin.posts.index');
+        Route::patch('/posts/{post}/status', [AdminController::class, 'updatePostStatus'])->name('admin.posts.update-status');
     });

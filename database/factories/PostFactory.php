@@ -19,7 +19,7 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
-        $title = fake()->sentence();
+        $title = fake()->realText(50); // More human-readable title
 
         $slug = Str::slug($title);
         $status = fake()->randomElement(['pending', 'approved', 'draft']);
@@ -29,9 +29,9 @@ class PostFactory extends Factory
             'category_id' => Category::inRandomOrder()->first()?->id,
             'cover_image' => 'https://placehold.co/600', // Fixed field name
             'title' => $title,
-            'excerpt' => fake()->sentence(),
+            'excerpt' => fake()->realText(200), // More human-like excerpt
             'slug' => $slug,
-            'content' => fake()->paragraphs(3, true),
+            'content' => fake()->realText(1000), // More human-readable content
             'status' => $status,
         ];
     }

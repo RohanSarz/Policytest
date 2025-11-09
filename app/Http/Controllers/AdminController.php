@@ -15,10 +15,10 @@ class AdminController extends Controller
     {
         // Get total post count
         $totalPosts = Post::count();
-        
+
         // Get verified user count (users with email verified)
         $totalVerifiedUsers = User::whereNotNull('email_verified_at')->count();
-        
+
         // Get total user count
         $totalUsers = User::count();
 
@@ -34,7 +34,7 @@ class AdminController extends Controller
     {
         // Get all roles with their permissions
         $roles = Role::with('permissions')->get();
-        
+
         // Get all available permissions to show in the form
         $permissions = Permission::all();
 
@@ -53,7 +53,7 @@ class AdminController extends Controller
         ]);
 
         $role = Role::create(['name' => $request->name]);
-        
+
         if ($request->permissions) {
             $role->syncPermissions($request->permissions);
         }
@@ -70,12 +70,18 @@ class AdminController extends Controller
         ]);
 
         $role->update(['name' => $request->name]);
-        
+
         if ($request->has('permissions')) {
             $role->syncPermissions($request->permissions);
         }
 
         return redirect()->back()->with('success', 'Role updated successfully.');
+    }
+    
+    public function deleteRole(Role $role)
+    {
+        $role->delete();
+        return redirect()->back()->with('success', 'Role deleted successfully.');
     }
 
     // Users Management
@@ -106,7 +112,7 @@ class AdminController extends Controller
         ]);
 
         if ($request->role) {
-            $user->assignRole($request->role);
+            $user->syncRoles($request->role);
         }
 
         return redirect()->back()->with('success', 'User created successfully.');
