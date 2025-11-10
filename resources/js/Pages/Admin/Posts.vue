@@ -15,6 +15,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { updatePostStatus } from "@/actions/App/Http/Controllers/AdminController";
 
 // Define interfaces
 interface User {
@@ -52,7 +53,7 @@ import { ref, computed } from "vue";
 import { router } from "@inertiajs/vue3";
 
 // Make posts reactive
-const allPosts = ref<Post[]>([...props.posts]);
+const allPosts = ref<Post[]>(JSON.parse(JSON.stringify(props.posts)));
 
 // Filter posts by status
 const pendingPosts = computed(() =>
@@ -67,7 +68,7 @@ const archivedPosts = computed(() =>
 
 // Function to handle status update
 function updateStatus(postId: number, newStatus: string) {
-    router.patch(`/admin/posts/${postId}/status`, 
+    router.patch(updatePostStatus(postId).url, 
         { status: newStatus },
         {
             onSuccess: () => {
@@ -76,12 +77,18 @@ function updateStatus(postId: number, newStatus: string) {
                     (post) => post.id === postId,
                 );
                 if (postIndex !== -1) {
-                    allPosts.value[postIndex].status = newStatus as
-                        | "pending"
-                        | "approved"
-                        | "archived";
-                    // Force reactivity by replacing the array
-                    allPosts.value = [...allPosts.value];
+                    // Create a new post object with updated status to ensure reactivity
+                    const updatedPost = {
+                        ...allPosts.value[postIndex],
+                        status: newStatus as "pending" | "approved" | "archived"
+                    };
+                    
+                    // Create a new array with the updated post
+                    const newAllPosts = [...allPosts.value];
+                    newAllPosts[postIndex] = updatedPost;
+                    
+                    // Update the ref to trigger reactivity
+                    allPosts.value = newAllPosts;
                 }
             },
             onError: (errors) => {
@@ -125,7 +132,8 @@ defineOptions({
                 >
             </CardHeader>
             <CardContent>
-                <div class="overflow-x-auto">
+                <!-- Desktop Table View -->
+                <div class="hidden md:block overflow-x-auto">
                     <table class="w-full">
                         <thead>
                             <tr class="border-b">
@@ -188,13 +196,56 @@ defineOptions({
                             </tr>
                         </tbody>
                     </table>
+                </div>
 
-                    <div
-                        v-if="pendingPosts.length === 0"
-                        class="text-center py-4 text-gray-500"
+                <!-- Mobile Card View -->
+                <div class="md:hidden space-y-4">
+                    <div 
+                        v-for="post in pendingPosts"
+                        :key="post.id"
+                        class="border rounded-lg p-4"
                     >
-                        No pending posts.
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-medium text-sm truncate">{{ post.title }}</h3>
+                                <p class="text-xs text-gray-500 mt-1">Author: {{ post.user.name }}</p>
+                                <p class="text-xs text-gray-500">Category: {{ post.category?.name || 'Uncategorized' }}</p>
+                                <p class="text-xs text-gray-500">Created: {{ new Date(post.created_at).toLocaleDateString() }}</p>
+                            </div>
+                            <div class="ml-2">
+                                <Select
+                                    :value="post.status"
+                                    @update:model-value="
+                                        updateStatus(post.id, $event)
+                                    "
+                                >
+                                    <SelectTrigger class="w-24 h-8">
+                                        <SelectValue
+                                            :placeholder="post.status"
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="pending"
+                                            >Pending</SelectItem
+                                        >
+                                        <SelectItem value="approved"
+                                            >Approve</SelectItem
+                                        >
+                                        <SelectItem value="archived"
+                                            >Discard</SelectItem
+                                        >
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <div
+                    v-if="pendingPosts.length === 0"
+                    class="text-center py-4 text-gray-500"
+                >
+                    No pending posts.
                 </div>
             </CardContent>
         </Card>
@@ -209,7 +260,8 @@ defineOptions({
                 >
             </CardHeader>
             <CardContent>
-                <div class="overflow-x-auto">
+                <!-- Desktop Table View -->
+                <div class="hidden md:block overflow-x-auto">
                     <table class="w-full">
                         <thead>
                             <tr class="border-b">
@@ -272,13 +324,56 @@ defineOptions({
                             </tr>
                         </tbody>
                     </table>
+                </div>
 
-                    <div
-                        v-if="approvedPosts.length === 0"
-                        class="text-center py-4 text-gray-500"
+                <!-- Mobile Card View -->
+                <div class="md:hidden space-y-4">
+                    <div 
+                        v-for="post in approvedPosts"
+                        :key="post.id"
+                        class="border rounded-lg p-4"
                     >
-                        No approved posts.
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-medium text-sm truncate">{{ post.title }}</h3>
+                                <p class="text-xs text-gray-500 mt-1">Author: {{ post.user.name }}</p>
+                                <p class="text-xs text-gray-500">Category: {{ post.category?.name || 'Uncategorized' }}</p>
+                                <p class="text-xs text-gray-500">Created: {{ new Date(post.created_at).toLocaleDateString() }}</p>
+                            </div>
+                            <div class="ml-2">
+                                <Select
+                                    :value="post.status"
+                                    @update:model-value="
+                                        updateStatus(post.id, $event)
+                                    "
+                                >
+                                    <SelectTrigger class="w-24 h-8">
+                                        <SelectValue
+                                            :placeholder="post.status"
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="pending"
+                                            >Pending</SelectItem
+                                        >
+                                        <SelectItem value="approved"
+                                            >Approve</SelectItem
+                                        >
+                                        <SelectItem value="archived"
+                                            >Discard</SelectItem
+                                        >
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <div
+                    v-if="approvedPosts.length === 0"
+                    class="text-center py-4 text-gray-500"
+                >
+                    No approved posts.
                 </div>
             </CardContent>
         </Card>
@@ -292,7 +387,8 @@ defineOptions({
                 >
             </CardHeader>
             <CardContent>
-                <div class="overflow-x-auto">
+                <!-- Desktop Table View -->
+                <div class="hidden md:block overflow-x-auto">
                     <table class="w-full">
                         <thead>
                             <tr class="border-b">
@@ -355,13 +451,56 @@ defineOptions({
                             </tr>
                         </tbody>
                     </table>
+                </div>
 
-                    <div
-                        v-if="archivedPosts.length === 0"
-                        class="text-center py-4 text-gray-500"
+                <!-- Mobile Card View -->
+                <div class="md:hidden space-y-4">
+                    <div 
+                        v-for="post in archivedPosts"
+                        :key="post.id"
+                        class="border rounded-lg p-4"
                     >
-                        No discarded posts.
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-medium text-sm truncate">{{ post.title }}</h3>
+                                <p class="text-xs text-gray-500 mt-1">Author: {{ post.user.name }}</p>
+                                <p class="text-xs text-gray-500">Category: {{ post.category?.name || 'Uncategorized' }}</p>
+                                <p class="text-xs text-gray-500">Created: {{ new Date(post.created_at).toLocaleDateString() }}</p>
+                            </div>
+                            <div class="ml-2">
+                                <Select
+                                    :value="post.status"
+                                    @update:model-value="
+                                        updateStatus(post.id, $event)
+                                    "
+                                >
+                                    <SelectTrigger class="w-24 h-8">
+                                        <SelectValue
+                                            :placeholder="post.status"
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="pending"
+                                            >Pending</SelectItem
+                                        >
+                                        <SelectItem value="approved"
+                                            >Approve</SelectItem
+                                        >
+                                        <SelectItem value="archived"
+                                            >Discard</SelectItem
+                                        >
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <div
+                    v-if="archivedPosts.length === 0"
+                    class="text-center py-4 text-gray-500"
+                >
+                    No discarded posts.
                 </div>
             </CardContent>
         </Card>

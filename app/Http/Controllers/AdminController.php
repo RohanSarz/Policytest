@@ -77,7 +77,7 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'Role updated successfully.');
     }
-    
+
     public function deleteRole(Role $role)
     {
         $role->delete();
@@ -136,12 +136,13 @@ class AdminController extends Controller
         ]);
     }
 
-    public function updatePostStatus(Request $request, Post $post)
+    public function updatePostStatus(Request $request, $postId)
     {
         $request->validate([
             'status' => 'required|in:pending,approved,archived',
         ]);
-
+        
+        $post = Post::findOrFail($postId);
         $post->update(['status' => $request->status]);
 
         return redirect()->back()->with('success', 'Post status updated successfully.');

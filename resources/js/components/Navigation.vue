@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import { usePage, Form } from "@inertiajs/vue3";
+import {
+    login,
+    register,
+    logout,
+} from "@/actions/App/Http/Controllers/AuthController";
+import { profileView } from "@/actions/App/Http/Controllers/UserDataController";
+
 import { computed } from "vue";
 import {
     Home,
@@ -102,14 +109,14 @@ const isActiveLink = (path: string) => {
                 <Button
                     variant="ghost"
                     :class="
-                        route('login.form').split('/').pop() === 'login'
+                        login().url.split('/').pop() === 'login'
                             ? 'bg-accent text-black'
                             : ''
                     "
                 >
                     <Link
                         class="hover:bg-accent flex items-center"
-                        :href="route('login.form')"
+                        :href="login().url"
                     >
                         <Key class="w-4 h-4 mr-2" />
                         Login
@@ -118,9 +125,9 @@ const isActiveLink = (path: string) => {
                 <Button variant="ghost">
                     <Link
                         class="hover:bg-accent flex items-center"
-                        :href="route('register.form')"
+                        :href="register().url"
                         :class="
-                            isActiveLink(route('register.form'))
+                            isActiveLink(register().url)
                                 ? 'bg-accent text-black'
                                 : ''
                         "
@@ -133,9 +140,12 @@ const isActiveLink = (path: string) => {
             <!-- Profile and Logout -->
             <li v-else class="space-x-6">
                 <Button variant="ghost">
-                    <Link class="hover:bg-accent" href="/profile">Profile</Link>
+                    <Link class="hover:bg-accent" :href="profileView().url">
+                        <User class="w-4 h-4 mr-2" />
+                        Profile</Link
+                    >
                 </Button>
-                <Form class="inline" :action="route('logout')" method="post">
+                <Form class="inline" :action="logout().url" method="post">
                     <Button variant="ghost"> Logout </Button>
                 </Form>
             </li>
@@ -234,14 +244,14 @@ const isActiveLink = (path: string) => {
                                 class="w-full justify-start hover:bg-accent"
                             >
                                 <Link
-                                    href="/profile"
+                                    :href="profileView().url"
                                     class="flex items-center w-full"
                                 >
                                     Profile
                                 </Link>
                             </Button>
                             <Form
-                                :action="route('logout')"
+                                :action="logout().url"
                                 method="post"
                                 class="w-full"
                             >

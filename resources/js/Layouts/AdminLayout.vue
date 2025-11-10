@@ -93,7 +93,9 @@ const user = page.props.auth?.user || {};
                                 <SidebarMenuItem>
                                     <SidebarMenuButton as-child>
                                         <a href="/admin/posts">
-                                            <MessageCircle class="mr-2 h-4 w-4" />
+                                            <MessageCircle
+                                                class="mr-2 h-4 w-4"
+                                            />
                                             <span>Posts</span>
                                         </a>
                                     </SidebarMenuButton>
@@ -144,7 +146,7 @@ const user = page.props.auth?.user || {};
             <!-- Main Content Area with SidebarInset -->
             <SidebarInset>
                 <header
-                    class="flex w-screen h-16 shrink-0 items-center gap-2 border-b px-4"
+                    class="flex w-[100rem] h-16 shrink-0 items-center gap-2 border-b px-4"
                 >
                     <SidebarTrigger class="mr-2" />
                     <div class="flex items-center gap-2">

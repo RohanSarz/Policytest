@@ -5,7 +5,6 @@ import { createInertiaApp, Head, Link } from "@inertiajs/vue3";
 
 import Layout from "./Layouts/Layout.vue";
 import FlashMesg from "./Pertials/FlashMesg.vue";
-import { ZiggyVue, route } from "../../vendor/tightenco/ziggy/src/js";
 
 // Import AOS and its CSS
 import AOS from "aos";
@@ -22,7 +21,6 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         const app = createApp({ render: () => h(App, props) })
             .use(plugin)
-            .use(ZiggyVue, Ziggy)
             .component("Head", Head)
             .component("Link", Link)
             .component("FlashMesg", FlashMesg)

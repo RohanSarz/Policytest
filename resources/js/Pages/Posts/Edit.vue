@@ -1,5 +1,6 @@
 <script setup>
 import { Form, usePage } from "@inertiajs/vue3";
+import { update } from "@/actions/App/Http/Controllers/PostController";
 import Input from "@/components/ui/input/Input.vue";
 import Label from "@/components/ui/label/Label.vue";
 import Button from "@/components/ui/button/Button.vue";
@@ -16,7 +17,7 @@ import {
 } from "@/components/ui/card";
 import { ref } from "vue";
 import Error from "@/components/Error.vue";
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import { useForm } from "@inertiajs/vue3";
 
@@ -30,7 +31,7 @@ const form = useForm({
     excerpt: post.excerpt,
     content: post.content, // This should be JSON string or object
     category_id: post.category_id,
-    cover_image: null
+    cover_image: null,
 });
 
 // holding the urls for image and cover
@@ -39,10 +40,10 @@ const previewCover = ref(null);
 
 // clearing preview to avoid memory leakage
 const clearUrl = (type) => {
-    if (type === 'image' && previewImage.value) {
+    if (type === "image" && previewImage.value) {
         URL.revokeObjectURL(previewImage.value);
         previewImage.value = null;
-    } else if (type === 'cover' && previewCover.value) {
+    } else if (type === "cover" && previewCover.value) {
         URL.revokeObjectURL(previewCover.value);
         previewCover.value = null;
     }
@@ -52,11 +53,13 @@ const clearUrl = (type) => {
 const handleImageFile = (e) => {
     const file = e.target.files[0];
     if (file) {
-        clearUrl('image');
+        clearUrl("image");
         previewImage.value = URL.createObjectURL(file);
     } else {
-        clearUrl('image');
-        previewImage.value = post?.image ? `/storage/${post.image}` : '/storage/avatars/default.jpg';
+        clearUrl("image");
+        previewImage.value = post?.image
+            ? `/storage/${post.image}`
+            : "/storage/avatars/default.jpg";
     }
 };
 
@@ -64,11 +67,13 @@ const handleImageFile = (e) => {
 const handleCoverFile = (e) => {
     const file = e.target.files[0];
     if (file) {
-        clearUrl('cover');
+        clearUrl("cover");
         previewCover.value = URL.createObjectURL(file);
     } else {
-        clearUrl('cover');
-        previewCover.value = post?.cover_image ? `/storage/${post.cover_image}` : '/storage/avatars/default.jpg';
+        clearUrl("cover");
+        previewCover.value = post?.cover_image
+            ? `/storage/${post.cover_image}`
+            : "/storage/avatars/default.jpg";
     }
 };
 
@@ -88,27 +93,32 @@ if (post?.cover_image) {
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                 <div class="flex justify-between items-center">
                     <h1 class="text-2xl font-bold text-gray-900">Edit Post</h1>
-                    <Button 
-                        type="submit" 
+                    <Button
+                        type="submit"
                         form="post-form"
                         :disabled="processing"
                         variant="default"
                     >
-                        {{ processing ? 'Updating...' : 'Update Post' }}
+                        {{ processing ? "Updating..." : "Update Post" }}
                     </Button>
                 </div>
             </div>
         </header>
-        
+
         <div class="flex-1 overflow-y-auto">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <form @submit.prevent="() => form.put(route('posts.update', post.id))" class="space-y-6">
+                <form
+                    @submit.prevent="() => form.put(update(post.id).url)"
+                    class="space-y-6"
+                >
                     <div class="space-y-6">
                         <div>
-                            <Label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Category</Label>
-                            <Select 
-                                v-model="form.category_id"
+                            <Label
+                                for="category_id"
+                                class="block text-sm font-medium text-gray-700 mb-1"
+                                >Category</Label
                             >
+                            <Select v-model="form.category_id">
                                 <SelectTrigger>
                                     <SelectValue
                                         placeholder="Select a Category"
@@ -123,9 +133,13 @@ if (post?.cover_image) {
                                             v-for="category in categories"
                                             :key="category.id"
                                         >
-                                            <SelectItem 
+                                            <SelectItem
                                                 :value="category.id.toString()"
-                                                :class="{'bg-blue-500 text-white': category.id == form.category_id}"
+                                                :class="{
+                                                    'bg-blue-500 text-white':
+                                                        category.id ==
+                                                        form.category_id,
+                                                }"
                                             >
                                                 {{ category.name }}
                                             </SelectItem>
@@ -133,20 +147,30 @@ if (post?.cover_image) {
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
-                            <div v-if="form.errors.category_id" class="mt-1 text-sm text-red-600">
+                            <div
+                                v-if="form.errors.category_id"
+                                class="mt-1 text-sm text-red-600"
+                            >
                                 {{ form.errors.category_id }}
                             </div>
                         </div>
 
                         <div>
-                            <Label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title</Label>
-                            <Input 
+                            <Label
+                                for="title"
+                                class="block text-sm font-medium text-gray-700 mb-1"
+                                >Title</Label
+                            >
+                            <Input
                                 v-model="form.title"
                                 id="title"
                                 placeholder="Enter post title"
                                 class="w-full"
                             />
-                            <div v-if="form.errors.title" class="mt-1 text-sm text-red-600">
+                            <div
+                                v-if="form.errors.title"
+                                class="mt-1 text-sm text-red-600"
+                            >
                                 {{ form.errors.title }}
                             </div>
                         </div>
@@ -174,8 +198,14 @@ if (post?.cover_image) {
                                     >
                                         <AvatarImage
                                             class="object-cover w-full h-full"
-                                            v-if="previewImage || (post.image && !previewCover)"
-                                            :src="previewImage || `/storage/${post.image}`"
+                                            v-if="
+                                                previewImage ||
+                                                (post.image && !previewCover)
+                                            "
+                                            :src="
+                                                previewImage ||
+                                                `/storage/${post.image}`
+                                            "
                                             alt="Post Image preview"
                                         />
                                         <AvatarFallback
@@ -218,8 +248,13 @@ if (post?.cover_image) {
                                     >
                                         <AvatarImage
                                             class="object-cover w-full h-full"
-                                            v-if="previewCover || post.cover_image"
-                                            :src="previewCover || `/storage/${post.cover_image}`"
+                                            v-if="
+                                                previewCover || post.cover_image
+                                            "
+                                            :src="
+                                                previewCover ||
+                                                `/storage/${post.cover_image}`
+                                            "
                                             alt="Cover Image preview"
                                         />
                                         <AvatarFallback
@@ -241,27 +276,41 @@ if (post?.cover_image) {
 
                         <!-- Excerpt Field -->
                         <div>
-                            <Label for="excerpt" class="block text-sm font-medium text-gray-700 mb-1">Excerpt</Label>
-                            <Input 
+                            <Label
+                                for="excerpt"
+                                class="block text-sm font-medium text-gray-700 mb-1"
+                                >Excerpt</Label
+                            >
+                            <Input
                                 v-model="form.excerpt"
                                 id="excerpt"
                                 placeholder="Enter post excerpt..."
                                 class="w-full"
                             />
-                            <div v-if="form.errors.excerpt" class="mt-1 text-sm text-red-600">
+                            <div
+                                v-if="form.errors.excerpt"
+                                class="mt-1 text-sm text-red-600"
+                            >
                                 {{ form.errors.excerpt }}
                             </div>
                         </div>
 
                         <!-- Content Field with Tiptap Editor -->
                         <div class="h-[500px]">
-                            <Label for="content" class="block text-sm font-medium text-gray-700 mb-1">Content</Label>
-                            <Tiptap 
+                            <Label
+                                for="content"
+                                class="block text-sm font-medium text-gray-700 mb-1"
+                                >Content</Label
+                            >
+                            <Tiptap
                                 v-model="form.content"
                                 id="content"
                                 class="w-full h-full"
                             />
-                            <div v-if="form.errors.content" class="mt-1 text-sm text-red-600">
+                            <div
+                                v-if="form.errors.content"
+                                class="mt-1 text-sm text-red-600"
+                            >
                                 {{ form.errors.content }}
                             </div>
                         </div>
@@ -272,7 +321,9 @@ if (post?.cover_image) {
                             :disabled="form.processing"
                             data-aos="zoom-out-up"
                         >
-                            {{ form.processing ? "Updating..." : "Update Post" }}
+                            {{
+                                form.processing ? "Updating..." : "Update Post"
+                            }}
                         </Button>
                     </div>
                 </form>

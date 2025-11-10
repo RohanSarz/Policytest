@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { usePage, Link, usePoll } from "@inertiajs/vue3";
+import { index as postsIndex } from "@/routes/posts";
+import { show as categoryShow } from "@/routes/categories";
 import PostCard from "@/components/post/PostCard.vue";
 import Separator from "@/components/ui/separator/Separator.vue";
 import PostTitle from "@/components/post/PostTitle.vue";
@@ -33,7 +35,7 @@ const activeCategorySlug = currentCategory?.slug || null;
             <!-- Category Links -->
             <div class="flex flex-wrap gap-2 mb-6">
                 <Link
-                    :href="route('posts.index')"
+                    :href="postsIndex().url"
                     :class="[
                         'px-3 py-1 rounded-md font-medium',
                         { 'bg-gray-200': !activeCategorySlug },
@@ -45,7 +47,7 @@ const activeCategorySlug = currentCategory?.slug || null;
                 <Link
                     v-for="category in categories"
                     :key="category.id"
-                    :href="route('categories.show', category.slug)"
+                    :href="categoryShow(category.slug)"
                     :class="[
                         'px-3 py-1 rounded-md font-medium',
                         { 'bg-gray-200': activeCategorySlug === category.slug },

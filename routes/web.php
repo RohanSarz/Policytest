@@ -42,7 +42,7 @@ Route::middleware(['guest'])->group(function () {
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
     ->group(function () {
-        Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+        Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
         Route::get('/roles', [AdminController::class, 'roles'])->name('admin.roles.index');
         Route::post('/roles', [AdminController::class, 'storeRole'])->name('admin.roles.store');
         Route::put('/roles/{role}', [AdminController::class, 'updateRole'])->name('admin.roles.update');
@@ -53,5 +53,5 @@ Route::prefix('admin')
         Route::get('/permissions', [AdminController::class, 'index'])->name('admin.permissions.index');
         Route::post('/permissions', [AdminController::class, 'store'])->name('admin.permissions.store');
         Route::get('/posts', [AdminController::class, 'posts'])->name('admin.posts.index');
-        Route::patch('/posts/{post}/status', [AdminController::class, 'updatePostStatus'])->name('admin.posts.update-status');
+        Route::patch('/posts/{post}/status', [AdminController::class, 'updatePostStatus'])->name('admin.posts.status.update');
     });

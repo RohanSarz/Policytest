@@ -1,5 +1,6 @@
 <script setup>
 import { usePage } from "@inertiajs/vue3";
+import { dashboardView } from "@/actions/App/Http/Controllers/UserDataController";
 import { computed } from "vue";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PostCard from "@/components/post/PostCard.vue";
@@ -34,7 +35,7 @@ const stats = {
                     </div>
                     <div>
                         <Link
-                            :href="route('dashboard')"
+                            :href="dashboardView().url"
                             class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
                         >
                             Back to Dashboard

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { usePage, useForm } from "@inertiajs/vue3";
+import profile from "@/routes/profile";
+import avatar from "@/routes/profile/avatar";
 import { computed, ref } from "vue";
 import { Button } from "@/components/ui/button";
 import {
@@ -72,7 +74,7 @@ const avatarForm = useForm({
 const submitAvatar = () => {
     if (!avatarForm.avatar) return;
 
-    avatarForm.post(route('profile.avatar.update'), {
+    avatarForm.post(avatar.update().url, {
         preserveScroll: true,
         onSuccess: () => {
             // On success, clear preview and let Inertia reload props
@@ -83,7 +85,7 @@ const submitAvatar = () => {
 
 // Submit the profile form
 const submitProfile = () => {
-    profileForm.post(route('profile.store'), {
+    profileForm.post(profile.store().url, {
         preserveScroll: true,
         onSuccess: () => {
             clearUrl();

@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ref, reactive } from "vue";
 import { useForm } from "@inertiajs/vue3";
+import { storeRole, updateRole, deleteRole } from "@/actions/App/Http/Controllers/AdminController";
 
 // Define props interface
 interface Permission {
@@ -66,7 +67,7 @@ function submitCreateRoleForm() {
         "Submitting form with permissions:",
         createRoleForm.permissions,
     );
-    createRoleForm.post("/admin/roles", {
+    createRoleForm.post(storeRole().url, {
         onSuccess: () => {
             createRoleForm.reset();
         },
@@ -142,7 +143,7 @@ function updateRolePermissions(roleId: number) {
             permissions: rolePermissions[roleId] || [],
         });
 
-        form.put(`/admin/roles/${roleId}`, {
+        form.put(updateRole(roleId).url, {
             data: {
                 name: role.name,
                 permissions: rolePermissions[roleId] || [],
@@ -219,7 +220,7 @@ function deleteRole(roleId: number) {
     ) {
         // Submit a DELETE request to the backend
         // Since Inertia doesn't have a direct delete method, we'll use fetch
-        fetch(`/admin/roles/${roleId}`, {
+        fetch(deleteRole(roleId).url, {
             method: "DELETE",
             headers: {
                 "X-CSRF-TOKEN":

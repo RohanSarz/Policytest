@@ -1,4 +1,5 @@
 <script setup>
+import { show as userShow } from "@/routes/users";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Badge from "@/components/ui/badge/Badge.vue";
 import { Card } from "@/components/ui/card";
@@ -147,7 +148,7 @@ const convertJsonToHtml = (json) => {
                                 <AvatarFallback>{{ user.name[0] }}</AvatarFallback>
                             </Avatar>
                             <div>
-                                <Link :href="route('users.show', user.id)">
+                                <Link :href="userShow(user.id)">
                                     <p
                                         class="text-sm font-semibold hover:underline text-gray-900"
                                     >

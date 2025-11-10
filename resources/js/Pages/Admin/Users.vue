@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
+import { storeUser, deleteUser } from "@/actions/App/Http/Controllers/AdminController";
 
 // Define interfaces
 interface Role {
@@ -66,7 +67,7 @@ const form = useForm({
 
 // Function to handle form submission
 function submitForm() {
-    form.post("/admin/users", {
+    form.post(storeUser().url, {
         onSuccess: () => {
             form.reset();
         },
@@ -79,7 +80,7 @@ function deleteUser(userId: number) {
         // Using Inertia.delete to make a DELETE request
         // We'll create a temporary form just for this action
         const deleteForm = useForm({});
-        deleteForm.delete(`/admin/users/${userId}`, {
+        deleteForm.delete(deleteUser(userId).url, {
             onSuccess: () => {},
         });
     }
@@ -214,7 +215,8 @@ defineOptions({
                 >
             </CardHeader>
             <CardContent>
-                <div class="overflow-x-auto">
+                <!-- Desktop Table View -->
+                <div class="hidden md:block overflow-x-auto">
                     <table class="w-full">
                         <thead>
                             <tr class="border-b">
@@ -276,13 +278,61 @@ defineOptions({
                             </tr>
                         </tbody>
                     </table>
+                </div>
 
-                    <div
-                        v-if="props.users.length === 0"
-                        class="text-center py-4 text-gray-500"
+                <!-- Mobile Card View -->
+                <div class="md:hidden space-y-4">
+                    <div 
+                        v-for="user in props.users"
+                        :key="user.id"
+                        class="border rounded-lg p-4"
                     >
-                        No users found. Create your first user above.
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-medium text-sm">{{ user.name }}</h3>
+                                <p class="text-xs text-gray-500 truncate mt-1">{{ user.email }}</p>
+                                <div class="mt-2">
+                                    <span
+                                        v-for="role in user.roles"
+                                        :key="role.id"
+                                        class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-1"
+                                    >
+                                        {{ role.name }}
+                                    </span>
+                                    <span
+                                        v-if="user.roles.length === 0"
+                                        class="text-gray-500 text-xs italic"
+                                    >
+                                        No role
+                                    </span>
+                                </div>
+                                <p class="text-xs mt-2" 
+                                   :class="{
+                                       'text-green-500': user.email_verified_at,
+                                       'text-red-500': !user.email_verified_at,
+                                   }"
+                                >
+                                    Verified: {{ user.email_verified_at ? "Yes" : "No" }}
+                                </p>
+                            </div>
+                            <div class="ml-2">
+                                <Button
+                                    variant="destructive"
+                                    size="sm"
+                                    @click="deleteUser(user.id)"
+                                >
+                                    Delete
+                                </Button>
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <div
+                    v-if="props.users.length === 0"
+                    class="text-center py-4 text-gray-500"
+                >
+                    No users found. Create your first user above.
                 </div>
             </CardContent>
         </Card>

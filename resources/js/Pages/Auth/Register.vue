@@ -1,5 +1,7 @@
 <script setup>
 import { Form } from "@inertiajs/vue3";
+import { form as login } from "@/routes/login";
+import { register } from "@/actions/App/Http/Controllers/AuthController";
 import Error from "@/components/Error.vue";
 
 import Input from "@/components/ui/input/Input.vue";
@@ -15,8 +17,6 @@ import {
 import Button from "@/components/ui/button/Button.vue";
 import Label from "@/components/ui/label/Label.vue";
 import { onBeforeMount, onMounted, onUnmounted, ref } from "vue";
-
-
 
 // holding the url
 const previewImage = ref(null);
@@ -38,7 +38,7 @@ const handleFile = (e) => {
         previewImage.value = URL.createObjectURL(file);
     } else {
         clearUrl();
-        previewImage.value = 'avatars/default.jpg';
+        previewImage.value = "avatars/default.jpg";
     }
     console.log(previewImage.value);
 };
@@ -61,11 +61,7 @@ onUnmounted(() => {
     <Head title="Register" />
 
     <div class="grid place-items-center mx-auto h-fit my-24">
-        <Form
-            :action="route('register')"
-            method="post"
-            #default="{ processing }"
-        >
+        <Form :action="register().url" method="post" #default="{ processing }">
             <Card
                 class="w-[350px] px-2"
                 data-aos="fade-left"
@@ -76,7 +72,6 @@ onUnmounted(() => {
                     <CardDescription>Register a new account.</CardDescription>
                 </CardHeader>
                 <CardContent class="space-y-3">
-
                     <!-- Avatar Input -->
                     <Label
                         class="form-label"
@@ -115,7 +110,6 @@ onUnmounted(() => {
                         />
                     </Label>
 
-
                     <!-- Name -->
                     <Label
                         class="form-label"
@@ -128,7 +122,6 @@ onUnmounted(() => {
                         <Error errorName="name" />
                     </Label>
 
-
                     <!-- Email -->
                     <Label
                         class="form-label"
@@ -140,7 +133,6 @@ onUnmounted(() => {
                         <Input name="email" placeholder="eg@mail.com" />
                         <Error errorName="email" />
                     </Label>
-
 
                     <!-- Password -->
                     <Label
@@ -172,13 +164,11 @@ onUnmounted(() => {
                         <Error errorName="password_confirmation" />
                     </Label>
 
-
                     <!-- Submit Button -->
                     <Button
                         class="w-full my-2"
                         type="submit"
                         :disabled="processing"
-
                     >
                         Register
                     </Button>
@@ -187,7 +177,7 @@ onUnmounted(() => {
                     <div class="flex justify-start text-xs">
                         <p class="text-slate-600 mb-2">
                             Already a user?
-                            <Link :href="route('login')" class="text-link"
+                            <Link :href="login().url" class="text-link"
                                 >Login</Link
                             >
                         </p>

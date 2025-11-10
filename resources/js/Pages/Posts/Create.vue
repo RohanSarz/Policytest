@@ -1,5 +1,6 @@
 <script setup>
 import { useForm, usePage } from "@inertiajs/vue3";
+import { store } from "@/actions/App/Http/Controllers/PostController";
 import Input from "@/components/ui/input/Input.vue";
 import Label from "@/components/ui/label/Label.vue";
 import Button from "@/components/ui/button/Button.vue";
@@ -68,7 +69,7 @@ const handleCoverFile = (e) => {
 
 // Handle form submission
 const submitForm = () => {
-    form.post(route("posts.store"));
+    form.post(store().url);
 };
 </script>
 

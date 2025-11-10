@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "@inertiajs/vue3";
+import { store } from "@/actions/App/Http/Controllers/AdminController";
 
 // Define interfaces
 interface Permission {
@@ -35,7 +36,7 @@ const form = useForm({
 
 // Function to handle form submission
 function submitForm() {
-    form.post("/admin/permissions", {
+    form.post(store().url, {
         onSuccess: () => {
             form.reset();
         },
@@ -105,22 +106,24 @@ defineOptions({
 
                 <div
                     v-else
-                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                    class="grid grid-cols-1 gap-4"
                 >
+                    <!-- Mobile and Desktop Card View -->
                     <div
                         v-for="permission in props.permissions"
                         :key="permission.id"
-                        class="border p-4 rounded-lg flex justify-between items-center"
+                        class="border p-4 rounded-lg"
                     >
-                        <span class="font-medium">{{ permission.name }}</span>
-                        <span class="text-xs text-gray-500">
-                            Created:
-                            {{
-                                new Date(
-                                    permission.created_at,
-                                ).toLocaleDateString()
-                            }}
-                        </span>
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium">{{ permission.name }}</span>
+                            <span class="text-xs text-gray-500">
+                                {{
+                                    new Date(
+                                        permission.created_at,
+                                    ).toLocaleDateString()
+                                }}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </CardContent>

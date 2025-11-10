@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
+import { wayfinder } from "@laravel/vite-plugin-wayfinder";
 import { resolve } from "path";
 
 export default defineConfig({
@@ -12,6 +13,7 @@ export default defineConfig({
         }),
         tailwindcss(),
         vue(),
+        wayfinder(),
     ],
     resolve: {
         alias: {

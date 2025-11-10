@@ -1,5 +1,6 @@
 <script setup>
 import { Form } from "@inertiajs/vue3";
+import { login, register } from "@/actions/App/Http/Controllers/AuthController";
 import TextInput from "../Components/TextInput.vue";
 import Input from "@/components/ui/input/Input.vue";
 import Label from "@/components/ui/label/Label.vue";
@@ -18,11 +19,7 @@ import Error from "@/components/Error.vue";
 <template>
     <Head title="Login" />
     <div class="grid place-items-center mx-auto h-fit my-24">
-
-
-
-        
-        <Form action="/login" method="post" #default="{ processing }">
+        <Form :action="login().url" method="post" #default="{ processing }">
             <Card
                 class="w-[350px] px-2"
                 data-aos="fade-left"
@@ -89,7 +86,7 @@ import Error from "@/components/Error.vue";
                     <div class="flex justify-start text-xs">
                         <p class="text-slate-600 mb-2">
                             Already have a account?
-                            <Link :href="route('register')" class="">
+                            <Link :href="register().url" class="">
                                 Register</Link
                             >
                         </p>

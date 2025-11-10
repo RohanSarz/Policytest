@@ -1,4 +1,6 @@
 <script setup>
+import { dashboardView } from "@/actions/App/Http/Controllers/UserDataController";
+
 defineProps({
     class: {
         type: String,
@@ -9,7 +11,7 @@ defineProps({
 </script>
 
 <template>
-    <Link as="image" :href="route('dashboard')">
+    <Link as="image" :href="dashboardView().url">
         <img
             class="object-cover rounded-full"
             :class="class"
