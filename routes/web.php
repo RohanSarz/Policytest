@@ -50,8 +50,8 @@ Route::prefix('admin')
         Route::get('/users', [AdminController::class, 'users'])->name('admin.users.index');
         Route::post('/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
         Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('admin.users.destroy');
-        Route::get('/permissions', [AdminController::class, 'index'])->name('admin.permissions.index');
-        Route::post('/permissions', [AdminController::class, 'store'])->name('admin.permissions.store');
+        Route::get('/permissions', [AdminController::class, 'permissions'])->name('admin.permissions.index');
+        Route::post('/permissions', [AdminController::class, 'storePermission'])->name('admin.permissions.store');
         Route::get('/posts', [AdminController::class, 'posts'])->name('admin.posts.index');
         Route::patch('/posts/{post}/status', [AdminController::class, 'updatePostStatus'])->name('admin.posts.status.update');
     });

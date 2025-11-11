@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\AdminController::update
- * @see app/Http/Controllers/AdminController.php:139
+ * @see app/Http/Controllers/AdminController.php:159
  * @route '/admin/posts/{post}/status'
  */
 export const update = (args: { post: string | number } | [post: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -16,7 +16,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminController::update
- * @see app/Http/Controllers/AdminController.php:139
+ * @see app/Http/Controllers/AdminController.php:159
  * @route '/admin/posts/{post}/status'
  */
 update.url = (args: { post: string | number } | [post: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -44,7 +44,7 @@ update.url = (args: { post: string | number } | [post: string | number ] | strin
 
 /**
 * @see \App\Http\Controllers\AdminController::update
- * @see app/Http/Controllers/AdminController.php:139
+ * @see app/Http/Controllers/AdminController.php:159
  * @route '/admin/posts/{post}/status'
  */
 update.patch = (args: { post: string | number } | [post: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({

@@ -29,6 +29,26 @@ class AdminController extends Controller
         ]);
     }
 
+    public function permissions()
+    {
+        $permissions = Permission::all();
+
+        return Inertia::render('Admin/Permissions', [
+            'permissions' => $permissions,
+        ]);
+    }
+
+    public function storePermission(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:permissions,name',
+        ]);
+
+        Permission::create(['name' => $request->name]);
+
+        return redirect()->back()->with('success', 'Permission created successfully.');
+    }
+
     // Roles Management
     public function roles()
     {

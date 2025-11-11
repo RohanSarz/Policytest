@@ -30,7 +30,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { usePage } from "@inertiajs/vue3";
 
-const page = usePage();
+const page = usePage<{ auth: { user: any } }>();
 const user = page.props.auth?.user || {};
 </script>
 
@@ -38,16 +38,16 @@ const user = page.props.auth?.user || {};
     <Head>
         <title>Admin Dashboard</title>
     </Head>
-    <SidebarProvider>
-        <div class="flex h-screen">
+    <SidebarProvider class="w-[80vw]">
+        <div class="flex">
             <!-- Admin Sidebar -->
             <Sidebar>
                 <SidebarHeader class="p-4 border-b">
                     <div class="flex items-center gap-3">
                         <div
-                            class="bg-blue-500 w-8 h-8 rounded-md flex items-center justify-center text-white font-bold"
+                            class="bg-blue-500 w-12 h-8 rounded-md flex items-center justify-center text-white font-bold"
                         >
-                            A
+                            Vuda
                         </div>
                         <span class="text-lg font-semibold">Admin Panel</span>
                     </div>
@@ -145,15 +145,12 @@ const user = page.props.auth?.user || {};
 
             <!-- Main Content Area with SidebarInset -->
             <SidebarInset>
-                <header
-                    class="flex w-[100rem] h-16 shrink-0 items-center gap-2 border-b px-4"
-                >
-                    <SidebarTrigger class="mr-2" />
-                    <div class="flex items-center gap-2">
-                        <h1 class="text-lg font-semibold">Admin Dashboard</h1>
-                    </div>
+                <header class="flex gap-2 px-4 py-8 border-b">
+                    <SidebarTrigger class="size-8" />
+
+                    <h1 class="text-lg font-semibold">Admin Dashboard</h1>
                 </header>
-                <div>
+                <div class="w-[100vw]">
                     <slot />
                 </div>
             </SidebarInset>

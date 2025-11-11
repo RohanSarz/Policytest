@@ -29,9 +29,10 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import LoginOrRegister from "@/components/userDataComponents/LoginOrRegister.vue";
+import { dashboard, home } from "@/routes";
 
 // User Reactive Data
-const page = usePage();
+const page = usePage<{ auth: { user: any } }>();
 const user = computed(() => page.props.auth.user);
 
 const navlinks = computed(() => {
@@ -40,7 +41,7 @@ const navlinks = computed(() => {
             id: 1,
             name: "Home",
             icon: Home,
-            path: "/",
+            path: home().url,
         },
     ];
 
@@ -50,7 +51,7 @@ const navlinks = computed(() => {
             id: 2,
             name: "Dashboard",
             icon: LayoutDashboard,
-            path: "/dashboard",
+            path: dashboard().url,
         });
     }
     return baseLinks;
@@ -81,11 +82,9 @@ const isActiveLink = (path: string) => {
                 data-aos="fade-down"
             />
 
-            <li v-if="$page.props.auth.user" class="flex-1 text-gray-300">
+            <li v-if="user" class="flex-1 text-gray-300">
                 Welcome,
-                <span class="text-gray-600 uppercase">
-                    {{ $page.props.auth.user.name }} </span
-                >!
+                <span class="text-gray-600 uppercase"> {{ user.name }} </span>!
             </li>
 
             <li
@@ -105,7 +104,7 @@ const isActiveLink = (path: string) => {
             </li>
 
             <!-- Login and Register -->
-            <li v-if="!$page.props.auth.user" class="space-x-6">
+            <li v-if="!user" class="space-x-6">
                 <Button
                     variant="ghost"
                     :class="
@@ -141,7 +140,6 @@ const isActiveLink = (path: string) => {
             <li v-else class="space-x-6">
                 <Button variant="ghost">
                     <Link class="hover:bg-accent" :href="profileView().url">
-                        <User class="w-4 h-4 mr-2" />
                         Profile</Link
                     >
                 </Button>
@@ -156,7 +154,7 @@ const isActiveLink = (path: string) => {
             class="md:hidden flex justify-between items-center bg-secondary-foreground text-white dark:bg-primary px-3 py-3"
         >
             <!-- For Guest User -->
-            <div v-if="!$page.props.auth.user" class="flex-1 text-gray-400">
+            <div v-if="!user" class="flex-1 text-gray-400">
                 Please
                 <Link class="hover:underline hover:text-gray-700" href="/login"
                     >Login</Link
@@ -171,7 +169,7 @@ const isActiveLink = (path: string) => {
                 to continue.
             </div>
             <!-- For Logged User -->
-            <div v-if="$page.props.auth.user" class="flex-1 text-gray-400">
+            <div v-if="user" class="flex-1 text-gray-400">
                 Welcome,
                 <UserNameUpper :name="user.name" />!
             </div>
@@ -212,7 +210,7 @@ const isActiveLink = (path: string) => {
 
                         <div class="border-t border-gray-200 my-4"></div>
 
-                        <div v-if="!$page.props.auth.user">
+                        <div v-if="!user">
                             <Button
                                 variant="ghost"
                                 class="w-full justify-start hover:bg-accent"

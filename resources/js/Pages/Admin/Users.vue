@@ -19,7 +19,10 @@ import {
 } from "@/components/ui/select";
 import { useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
-import { storeUser, deleteUser } from "@/actions/App/Http/Controllers/AdminController";
+import {
+    storeUser,
+    deleteUser,
+} from "@/actions/App/Http/Controllers/AdminController";
 
 // Define interfaces
 interface Role {
@@ -92,8 +95,8 @@ defineOptions({
 </script>
 
 <template>
-    <div class="p-6">
-        <h1 class="text-2xl font-bold mb-6">User Management</h1>
+    <div class="mx-auto px-4">
+        <h1 class="text-2xl text-left font-bold px-2 py-4 mb-6 border-b">User Management</h1>
 
         <!-- Create User Card -->
         <Card class="mb-8">
@@ -282,15 +285,19 @@ defineOptions({
 
                 <!-- Mobile Card View -->
                 <div class="md:hidden space-y-4">
-                    <div 
+                    <div
                         v-for="user in props.users"
                         :key="user.id"
                         class="border rounded-lg p-4"
                     >
                         <div class="flex justify-between items-start">
                             <div class="flex-1 min-w-0">
-                                <h3 class="font-medium text-sm">{{ user.name }}</h3>
-                                <p class="text-xs text-gray-500 truncate mt-1">{{ user.email }}</p>
+                                <h3 class="font-medium text-sm">
+                                    {{ user.name }}
+                                </h3>
+                                <p class="text-xs text-gray-500 truncate mt-1">
+                                    {{ user.email }}
+                                </p>
                                 <div class="mt-2">
                                     <span
                                         v-for="role in user.roles"
@@ -306,13 +313,16 @@ defineOptions({
                                         No role
                                     </span>
                                 </div>
-                                <p class="text-xs mt-2" 
-                                   :class="{
-                                       'text-green-500': user.email_verified_at,
-                                       'text-red-500': !user.email_verified_at,
-                                   }"
+                                <p
+                                    class="text-xs mt-2"
+                                    :class="{
+                                        'text-green-500':
+                                            user.email_verified_at,
+                                        'text-red-500': !user.email_verified_at,
+                                    }"
                                 >
-                                    Verified: {{ user.email_verified_at ? "Yes" : "No" }}
+                                    Verified:
+                                    {{ user.email_verified_at ? "Yes" : "No" }}
                                 </p>
                             </div>
                             <div class="ml-2">

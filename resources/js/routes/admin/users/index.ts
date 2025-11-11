@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\AdminController::index
- * @see app/Http/Controllers/AdminController.php:88
+ * @see app/Http/Controllers/AdminController.php:108
  * @route '/admin/users'
  */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminController::index
- * @see app/Http/Controllers/AdminController.php:88
+ * @see app/Http/Controllers/AdminController.php:108
  * @route '/admin/users'
  */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\AdminController::index
- * @see app/Http/Controllers/AdminController.php:88
+ * @see app/Http/Controllers/AdminController.php:108
  * @route '/admin/users'
  */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -34,7 +34,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\AdminController::index
- * @see app/Http/Controllers/AdminController.php:88
+ * @see app/Http/Controllers/AdminController.php:108
  * @route '/admin/users'
  */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -44,7 +44,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\AdminController::store
- * @see app/Http/Controllers/AdminController.php:99
+ * @see app/Http/Controllers/AdminController.php:119
  * @route '/admin/users'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -59,7 +59,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminController::store
- * @see app/Http/Controllers/AdminController.php:99
+ * @see app/Http/Controllers/AdminController.php:119
  * @route '/admin/users'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -68,7 +68,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\AdminController::store
- * @see app/Http/Controllers/AdminController.php:99
+ * @see app/Http/Controllers/AdminController.php:119
  * @route '/admin/users'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -78,7 +78,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\AdminController::destroy
- * @see app/Http/Controllers/AdminController.php:121
+ * @see app/Http/Controllers/AdminController.php:141
  * @route '/admin/users/{user}'
  */
 export const destroy = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -93,7 +93,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminController::destroy
- * @see app/Http/Controllers/AdminController.php:121
+ * @see app/Http/Controllers/AdminController.php:141
  * @route '/admin/users/{user}'
  */
 destroy.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -126,7 +126,7 @@ destroy.url = (args: { user: number | { id: number } } | [user: number | { id: n
 
 /**
 * @see \App\Http\Controllers\AdminController::destroy
- * @see app/Http/Controllers/AdminController.php:121
+ * @see app/Http/Controllers/AdminController.php:141
  * @route '/admin/users/{user}'
  */
 destroy.delete = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({

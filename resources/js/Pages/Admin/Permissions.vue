@@ -7,11 +7,9 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useForm } from "@inertiajs/vue3";
 import { store } from "@/actions/App/Http/Controllers/AdminController";
+import PermissionForm from "@/Components/Admin/PermissionForm.vue";
+import PermissionItem from "@/Components/Admin/PermissionItem.vue";
 
 // Define interfaces
 interface Permission {
@@ -29,16 +27,12 @@ interface Props {
 // Define props
 const props = defineProps<Props>();
 
-// Define form for creating new permissions
-const form = useForm({
-    name: "",
-});
-
 // Function to handle form submission
-function submitForm() {
+function handleSubmit(data: { name: string }) {
+    const form = useForm(data);
     form.post(store().url, {
         onSuccess: () => {
-            form.reset();
+            // Form is reset in the PermissionForm component after submit
         },
     });
 }
@@ -61,32 +55,10 @@ defineOptions({
                 >
             </CardHeader>
             <CardContent>
-                <form @submit.prevent="submitForm" class="space-y-4">
-                    <div>
-                        <Label for="permissionName">Permission Name</Label>
-                        <Input
-                            id="permissionName"
-                            v-model="form.name"
-                            placeholder="Enter permission name (e.g., create-posts, edit-users)"
-                            :disabled="form.processing"
-                        />
-                        <div
-                            v-if="form.errors.name"
-                            class="text-red-500 text-sm mt-1"
-                        >
-                            {{ form.errors.name }}
-                        </div>
-                    </div>
-
-                    <Button
-                        type="submit"
-                        :disabled="form.processing"
-                        class="w-full md:w-auto"
-                    >
-                        <span v-if="!form.processing">Create Permission</span>
-                        <span v-else>Creating...</span>
-                    </Button>
-                </form>
+                <PermissionForm 
+                    :on-submit="handleSubmit"
+                    :processing="false"
+                />
             </CardContent>
         </Card>
 
@@ -108,23 +80,11 @@ defineOptions({
                     v-else
                     class="grid grid-cols-1 gap-4"
                 >
-                    <!-- Mobile and Desktop Card View -->
-                    <div
+                    <PermissionItem
                         v-for="permission in props.permissions"
                         :key="permission.id"
-                        class="border p-4 rounded-lg"
-                    >
-                        <div class="flex justify-between items-center">
-                            <span class="font-medium">{{ permission.name }}</span>
-                            <span class="text-xs text-gray-500">
-                                {{
-                                    new Date(
-                                        permission.created_at,
-                                    ).toLocaleDateString()
-                                }}
-                            </span>
-                        </div>
-                    </div>
+                        :permission="permission"
+                    />
                 </div>
             </CardContent>
         </Card>

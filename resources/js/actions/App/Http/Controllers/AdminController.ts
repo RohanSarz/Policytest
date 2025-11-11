@@ -92,7 +92,7 @@ export const index = {
 
 /**
 * @see \App\Http\Controllers\AdminController::roles
- * @see app/Http/Controllers/AdminController.php:33
+ * @see app/Http/Controllers/AdminController.php:53
  * @route '/admin/roles'
  */
 export const roles = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -107,7 +107,7 @@ roles.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminController::roles
- * @see app/Http/Controllers/AdminController.php:33
+ * @see app/Http/Controllers/AdminController.php:53
  * @route '/admin/roles'
  */
 roles.url = (options?: RouteQueryOptions) => {
@@ -116,7 +116,7 @@ roles.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\AdminController::roles
- * @see app/Http/Controllers/AdminController.php:33
+ * @see app/Http/Controllers/AdminController.php:53
  * @route '/admin/roles'
  */
 roles.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -125,7 +125,7 @@ roles.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\AdminController::roles
- * @see app/Http/Controllers/AdminController.php:33
+ * @see app/Http/Controllers/AdminController.php:53
  * @route '/admin/roles'
  */
 roles.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -135,7 +135,7 @@ roles.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\AdminController::storeRole
- * @see app/Http/Controllers/AdminController.php:47
+ * @see app/Http/Controllers/AdminController.php:67
  * @route '/admin/roles'
  */
 export const storeRole = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -150,7 +150,7 @@ storeRole.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminController::storeRole
- * @see app/Http/Controllers/AdminController.php:47
+ * @see app/Http/Controllers/AdminController.php:67
  * @route '/admin/roles'
  */
 storeRole.url = (options?: RouteQueryOptions) => {
@@ -159,7 +159,7 @@ storeRole.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\AdminController::storeRole
- * @see app/Http/Controllers/AdminController.php:47
+ * @see app/Http/Controllers/AdminController.php:67
  * @route '/admin/roles'
  */
 storeRole.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -169,7 +169,7 @@ storeRole.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\AdminController::updateRole
- * @see app/Http/Controllers/AdminController.php:64
+ * @see app/Http/Controllers/AdminController.php:84
  * @route '/admin/roles/{role}'
  */
 export const updateRole = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -184,7 +184,7 @@ updateRole.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminController::updateRole
- * @see app/Http/Controllers/AdminController.php:64
+ * @see app/Http/Controllers/AdminController.php:84
  * @route '/admin/roles/{role}'
  */
 updateRole.url = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -217,7 +217,7 @@ updateRole.url = (args: { role: number | { id: number } } | [role: number | { id
 
 /**
 * @see \App\Http\Controllers\AdminController::updateRole
- * @see app/Http/Controllers/AdminController.php:64
+ * @see app/Http/Controllers/AdminController.php:84
  * @route '/admin/roles/{role}'
  */
 updateRole.put = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -227,7 +227,7 @@ updateRole.put = (args: { role: number | { id: number } } | [role: number | { id
 
 /**
 * @see \App\Http\Controllers\AdminController::deleteRole
- * @see app/Http/Controllers/AdminController.php:81
+ * @see app/Http/Controllers/AdminController.php:101
  * @route '/admin/roles/{role}'
  */
 export const deleteRole = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -242,7 +242,7 @@ deleteRole.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminController::deleteRole
- * @see app/Http/Controllers/AdminController.php:81
+ * @see app/Http/Controllers/AdminController.php:101
  * @route '/admin/roles/{role}'
  */
 deleteRole.url = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -275,7 +275,7 @@ deleteRole.url = (args: { role: number | { id: number } } | [role: number | { id
 
 /**
 * @see \App\Http\Controllers\AdminController::deleteRole
- * @see app/Http/Controllers/AdminController.php:81
+ * @see app/Http/Controllers/AdminController.php:101
  * @route '/admin/roles/{role}'
  */
 deleteRole.delete = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -285,7 +285,7 @@ deleteRole.delete = (args: { role: number | { id: number } } | [role: number | {
 
 /**
 * @see \App\Http\Controllers\AdminController::users
- * @see app/Http/Controllers/AdminController.php:88
+ * @see app/Http/Controllers/AdminController.php:108
  * @route '/admin/users'
  */
 export const users = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -300,7 +300,7 @@ users.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminController::users
- * @see app/Http/Controllers/AdminController.php:88
+ * @see app/Http/Controllers/AdminController.php:108
  * @route '/admin/users'
  */
 users.url = (options?: RouteQueryOptions) => {
@@ -309,7 +309,7 @@ users.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\AdminController::users
- * @see app/Http/Controllers/AdminController.php:88
+ * @see app/Http/Controllers/AdminController.php:108
  * @route '/admin/users'
  */
 users.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -318,7 +318,7 @@ users.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\AdminController::users
- * @see app/Http/Controllers/AdminController.php:88
+ * @see app/Http/Controllers/AdminController.php:108
  * @route '/admin/users'
  */
 users.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -328,7 +328,7 @@ users.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\AdminController::storeUser
- * @see app/Http/Controllers/AdminController.php:99
+ * @see app/Http/Controllers/AdminController.php:119
  * @route '/admin/users'
  */
 export const storeUser = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -343,7 +343,7 @@ storeUser.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminController::storeUser
- * @see app/Http/Controllers/AdminController.php:99
+ * @see app/Http/Controllers/AdminController.php:119
  * @route '/admin/users'
  */
 storeUser.url = (options?: RouteQueryOptions) => {
@@ -352,7 +352,7 @@ storeUser.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\AdminController::storeUser
- * @see app/Http/Controllers/AdminController.php:99
+ * @see app/Http/Controllers/AdminController.php:119
  * @route '/admin/users'
  */
 storeUser.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -362,7 +362,7 @@ storeUser.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\AdminController::deleteUser
- * @see app/Http/Controllers/AdminController.php:121
+ * @see app/Http/Controllers/AdminController.php:141
  * @route '/admin/users/{user}'
  */
 export const deleteUser = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -377,7 +377,7 @@ deleteUser.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminController::deleteUser
- * @see app/Http/Controllers/AdminController.php:121
+ * @see app/Http/Controllers/AdminController.php:141
  * @route '/admin/users/{user}'
  */
 deleteUser.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -410,7 +410,7 @@ deleteUser.url = (args: { user: number | { id: number } } | [user: number | { id
 
 /**
 * @see \App\Http\Controllers\AdminController::deleteUser
- * @see app/Http/Controllers/AdminController.php:121
+ * @see app/Http/Controllers/AdminController.php:141
  * @route '/admin/users/{user}'
  */
 deleteUser.delete = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -454,7 +454,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\AdminController::posts
- * @see app/Http/Controllers/AdminController.php:128
+ * @see app/Http/Controllers/AdminController.php:148
  * @route '/admin/posts'
  */
 export const posts = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -469,7 +469,7 @@ posts.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminController::posts
- * @see app/Http/Controllers/AdminController.php:128
+ * @see app/Http/Controllers/AdminController.php:148
  * @route '/admin/posts'
  */
 posts.url = (options?: RouteQueryOptions) => {
@@ -478,7 +478,7 @@ posts.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\AdminController::posts
- * @see app/Http/Controllers/AdminController.php:128
+ * @see app/Http/Controllers/AdminController.php:148
  * @route '/admin/posts'
  */
 posts.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -487,7 +487,7 @@ posts.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\AdminController::posts
- * @see app/Http/Controllers/AdminController.php:128
+ * @see app/Http/Controllers/AdminController.php:148
  * @route '/admin/posts'
  */
 posts.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -497,7 +497,7 @@ posts.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\AdminController::updatePostStatus
- * @see app/Http/Controllers/AdminController.php:139
+ * @see app/Http/Controllers/AdminController.php:159
  * @route '/admin/posts/{post}/status'
  */
 export const updatePostStatus = (args: { post: string | number } | [post: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -512,7 +512,7 @@ updatePostStatus.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminController::updatePostStatus
- * @see app/Http/Controllers/AdminController.php:139
+ * @see app/Http/Controllers/AdminController.php:159
  * @route '/admin/posts/{post}/status'
  */
 updatePostStatus.url = (args: { post: string | number } | [post: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -540,7 +540,7 @@ updatePostStatus.url = (args: { post: string | number } | [post: string | number
 
 /**
 * @see \App\Http\Controllers\AdminController::updatePostStatus
- * @see app/Http/Controllers/AdminController.php:139
+ * @see app/Http/Controllers/AdminController.php:159
  * @route '/admin/posts/{post}/status'
  */
 updatePostStatus.patch = (args: { post: string | number } | [post: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({

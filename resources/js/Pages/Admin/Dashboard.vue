@@ -15,7 +15,7 @@ defineOptions({
 </script>
 
 <template>
-    <div class="p-6">
+    <div class="mx-auto">
         <h1 class="text-2xl font-bold mb-6">Admin Dashboard</h1>
 
         <!-- Stats Cards -->
@@ -30,7 +30,7 @@ defineOptions({
                     >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 text-gray-500"
+                        class="size-6 text-gray-500"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
