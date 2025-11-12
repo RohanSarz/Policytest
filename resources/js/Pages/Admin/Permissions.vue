@@ -8,8 +8,9 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { store } from "@/actions/App/Http/Controllers/AdminController";
-import PermissionForm from "@/Components/Admin/PermissionForm.vue";
-import PermissionItem from "@/Components/Admin/PermissionItem.vue";
+import PermissionForm from "@/components/Admin/PermissionForm.vue";
+import PermissionItem from "@/components/Admin/PermissionItem.vue";
+import { useForm } from "@inertiajs/vue3";
 
 // Define interfaces
 interface Permission {
@@ -43,7 +44,7 @@ defineOptions({
 </script>
 
 <template>
-    <div class="p-6">
+    <div class="mx-auto px-4">
         <h1 class="text-2xl font-bold mb-6">Permissions Management</h1>
 
         <!-- Create Permission Card -->
@@ -55,10 +56,7 @@ defineOptions({
                 >
             </CardHeader>
             <CardContent>
-                <PermissionForm 
-                    :on-submit="handleSubmit"
-                    :processing="false"
-                />
+                <PermissionForm :on-submit="handleSubmit" :processing="false" />
             </CardContent>
         </Card>
 
@@ -76,10 +74,7 @@ defineOptions({
                     No permissions found. Create your first permission above.
                 </div>
 
-                <div
-                    v-else
-                    class="grid grid-cols-1 gap-4"
-                >
+                <div v-else class="grid grid-cols-1 gap-4">
                     <PermissionItem
                         v-for="permission in props.permissions"
                         :key="permission.id"

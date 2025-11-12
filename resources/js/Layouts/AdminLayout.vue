@@ -29,6 +29,13 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { usePage } from "@inertiajs/vue3";
+import { Link } from "@inertiajs/vue3";
+import { dashboard as adminDashboard } from "@/routes/admin";
+import { index as adminRoles } from "@/routes/admin/roles/index";
+import { index as adminUsers } from "@/routes/admin/users/index";
+import { index as adminPermissions } from "@/routes/admin/permissions/index";
+import { index as adminPosts } from "@/routes/admin/posts/index";
+import { home } from "@/routes";
 
 const page = usePage<{ auth: { user: any } }>();
 const user = page.props.auth?.user || {};
@@ -38,7 +45,7 @@ const user = page.props.auth?.user || {};
     <Head>
         <title>Admin Dashboard</title>
     </Head>
-    <SidebarProvider class="w-[80vw]">
+    <SidebarProvider>
         <div class="flex">
             <!-- Admin Sidebar -->
             <Sidebar>
@@ -60,44 +67,44 @@ const user = page.props.auth?.user || {};
                             <SidebarMenu>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton as-child>
-                                        <a href="/admin">
+                                        <Link :href="adminDashboard().url">
                                             <BarChart3 class="mr-2 h-4 w-4" />
                                             <span>Dashboard</span>
-                                        </a>
+                                        </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton as-child>
-                                        <a href="/admin/users">
+                                        <Link :href="adminUsers().url">
                                             <Users class="mr-2 h-4 w-4" />
                                             <span>Users</span>
-                                        </a>
+                                        </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton as-child>
-                                        <a href="/admin/roles">
+                                        <Link :href="adminRoles().url">
                                             <Key class="mr-2 h-4 w-4" />
                                             <span>Roles</span>
-                                        </a>
+                                        </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton as-child>
-                                        <a href="/admin/permissions">
+                                        <Link :href="adminPermissions().url">
                                             <Folder class="mr-2 h-4 w-4" />
                                             <span>Permissions</span>
-                                        </a>
+                                        </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton as-child>
-                                        <a href="/admin/posts">
+                                        <Link :href="adminPosts().url">
                                             <MessageCircle
                                                 class="mr-2 h-4 w-4"
                                             />
                                             <span>Posts</span>
-                                        </a>
+                                        </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             </SidebarMenu>
@@ -109,10 +116,10 @@ const user = page.props.auth?.user || {};
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <SidebarMenuButton as-child>
-                                <a href="/">
+                                <Link :href="home().url">
                                     <LogOut class="mr-2 h-4 w-4" />
                                     <span>Back to Site</span>
-                                </a>
+                                </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>
@@ -144,13 +151,13 @@ const user = page.props.auth?.user || {};
             </Sidebar>
 
             <!-- Main Content Area with SidebarInset -->
-            <SidebarInset>
-                <header class="flex gap-2 px-4 py-8 border-b">
+            <SidebarInset class="w-[100rem] overflow-x-clip">
+                <header class="flex gap-2 px-4 py-4 border-b">
                     <SidebarTrigger class="size-8" />
 
                     <h1 class="text-lg font-semibold">Admin Dashboard</h1>
                 </header>
-                <div class="w-[100vw]">
+                <div>
                     <slot />
                 </div>
             </SidebarInset>

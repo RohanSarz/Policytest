@@ -15,7 +15,7 @@ defineOptions({
 </script>
 
 <template>
-    <div class="mx-auto">
+    <div class="mx-auto px-4">
         <h1 class="text-2xl font-bold mb-6">Admin Dashboard</h1>
 
         <!-- Stats Cards -->

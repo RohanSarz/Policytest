@@ -3,9 +3,11 @@ import { computed } from "vue";
 import { usePage, Link, usePoll } from "@inertiajs/vue3";
 import { index as postsIndex } from "@/routes/posts";
 import { show as categoryShow } from "@/routes/categories";
-import PostCard from "@/components/post/PostCard.vue";
-import Separator from "@/components/ui/separator/Separator.vue";
-import PostTitle from "@/components/post/PostTitle.vue";
+import ArticleCard from "@/components/Article/ArticleCard.vue";
+import BreakingNewsTicker from "@/components/Article/BreakingNewsTicker.vue";
+import CategoryBar from "@/components/Article/CategoryBar.vue";
+import NewsletterSubscription from "@/components/Article/NewsletterSubscription.vue";
+import TrendingSidebar from "@/components/Article/TrendingSidebar.vue";
 import { PageProps } from "@/types/Post"; // Import the shared types
 
 // Get page props from Inertia
@@ -19,6 +21,9 @@ const livePosts = page.livePosts; // Live posts
 
 // Fix undefined variables by defining them
 const allPosts = posts || []; // Fallback to empty array if posts is undefined
+const featuredPost = allPosts[0] || null; // First post as featured
+const regularPosts = allPosts.slice(1, 4); // Next 3 posts as regular news
+const sidebarPosts = allPosts.slice(4, 8); // Next 4 posts for sidebar
 
 usePoll(2000); // Auto-refresh data every 2 seconds
 
@@ -27,66 +32,64 @@ const activeCategorySlug = currentCategory?.slug || null;
 </script>
 
 <template>
-    <div
-        class="max-w-7xl h-[100vh] mx-auto px-4 py-8 sm:px-6 lg:px-8 grid grid-cols-12 grid-rows-2 gap-4"
-    >
-        <!-- Category Section-->
-        <div class="col-span-7">
-            <!-- Category Links -->
-            <div class="flex flex-wrap gap-2 mb-6">
-                <Link
-                    :href="postsIndex().url"
-                    :class="[
-                        'px-3 py-1 rounded-md font-medium',
-                        { 'bg-gray-200': !activeCategorySlug },
-                    ]"
-                >
-                    All
-                </Link>
-
-                <Link
-                    v-for="category in categories"
-                    :key="category.id"
-                    :href="categoryShow(category.slug)"
-                    :class="[
-                        'px-3 py-1 rounded-md font-medium',
-                        { 'bg-gray-200': activeCategorySlug === category.slug },
-                    ]"
-                >
-                    {{ category.name }}
-                </Link>
+    <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+        <!-- Breaking News Ticker -->
+        <BreakingNewsTicker 
+            v-if="livePosts && livePosts.length > 0" 
+            :posts="livePosts" 
+        />
+        
+        <!-- Category Navigation Bar -->
+        <CategoryBar 
+            :categories="categories || []" 
+            :active-category="activeCategorySlug"
+            class="my-4"
+        />
+        
+        <!-- Featured Article Section -->
+        <section class="mb-12" v-if="featuredPost">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Featured Story</h2>
+            <ArticleCard 
+                :post="featuredPost" 
+                type="featured"
+            />
+        </section>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Main Content Column -->
+            <div class="lg:col-span-3">
+                <!-- Regular News Section -->
+                <section class="mb-12">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">Latest News</h2>
+                        <Link 
+                            :href="postsIndex().url" 
+                            class="text-blue-700 hover:text-blue-800 text-sm font-medium"
+                        >
+                            View All
+                        </Link>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <ArticleCard 
+                            v-for="post in regularPosts" 
+                            :key="post.id" 
+                            :post="post" 
+                            type="regular"
+                        />
+                    </div>
+                </section>
             </div>
-
-            <!-- Posts Grid -->
-            <div
-                class="py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-            >
-                <PostCard
-                    v-for="post in allPosts"
-                    :key="post.id"
-                    :post="post"
+            
+            <!-- Sidebar Column -->
+            <div class="lg:col-span-1 space-y-8">
+                <!-- Newsletter Subscription -->
+                <NewsletterSubscription />
+                
+                <!-- Trending Section -->
+                <TrendingSidebar 
+                    :posts="sidebarPosts" 
                 />
-                <div
-                    v-if="allPosts.length === 0"
-                    class="col-span-full text-center text-gray-500 mt-6"
-                >
-                    No posts in this category.
-                </div>
-            </div>
-        </div>
-        <!-- Live News Section-->
-
-        <div class="col-span-5 row-span-6 border-l h-auto">
-            <h1 class="text-center font-semibold py-8">Live News</h1>
-
-            <div class="flex flex-col gap-6 justify-center px-6">
-                <div
-                    v-for="post in livePosts"
-                    :key="post.id"
-                    class="hover:underline underline-offset-3"
-                >
-                    <PostTitle :post="post" />
-                </div>
             </div>
         </div>
     </div>

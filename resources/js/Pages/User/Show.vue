@@ -3,7 +3,7 @@ import { usePage } from "@inertiajs/vue3";
 import { dashboardView } from "@/actions/App/Http/Controllers/UserDataController";
 import { computed } from "vue";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import PostCard from "@/components/post/PostCard.vue";
+import ArticleCard from "@/components/Article/ArticleCard.vue";
 
 const page = usePage();
 
@@ -78,7 +78,7 @@ const stats = {
                             >
                                 <span
                                     v-if="user.role"
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700"
                                 >
                                     {{ user.role }} Admin
                                 </span>
@@ -142,10 +142,11 @@ const stats = {
                         v-if="posts.length > 0"
                         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
                     >
-                        <PostCard
+                        <ArticleCard
                             v-for="post in posts"
                             :key="post.id"
                             :post="post"
+                            type="thumbnail"
                             class="post-item"
                             data-aos="zoom-in-up"
                             data-aos-duration="500"

@@ -96,7 +96,9 @@ defineOptions({
 
 <template>
     <div class="mx-auto px-4">
-        <h1 class="text-2xl text-left font-bold px-2 py-4 mb-6 border-b">User Management</h1>
+        <h1 class="text-2xl text-left font-bold px-2 py-4 mb-6 border-b">
+            User Management
+        </h1>
 
         <!-- Create User Card -->
         <Card class="mb-8">

@@ -140,7 +140,7 @@ class PostController extends Controller implements HasMiddleware
 
         // Pass the post along with its relationships to the Inertia view
         return inertia('Posts/Show', [
-            'post' => $post,
+            'post' => $postData,
         ]);
     }
 

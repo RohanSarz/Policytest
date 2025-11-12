@@ -7,13 +7,13 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { 
+import {
     storeRole,
     updateRole,
     deleteRole,
 } from "@/actions/App/Http/Controllers/AdminController";
-import RoleForm from "@/Components/Admin/RoleForm.vue";
-import RoleItem from "@/Components/Admin/RoleItem.vue";
+import RoleForm from "@/components/Admin/RoleForm.vue";
+import RoleItem from "@/components/Admin/RoleItem.vue";
 import { useForm } from "@inertiajs/vue3";
 
 // Define props interface
@@ -54,18 +54,16 @@ function handleCreateRole(data: { name: string; permissions: string[] }) {
 
 // Function to handle updating role permissions
 function handleUpdateRole(roleId: number, permissions: string[]) {
-    const role = props.roles.find(r => r.id === roleId);
+    const role = props.roles.find((r) => r.id === roleId);
     if (role) {
         const form = useForm({
             name: role.name,
             permissions: permissions,
         });
-        
+
         form.put(updateRole(roleId).url, {
-            data: {
-                name: role.name,
-                permissions: permissions,
-            },
+            name: <any>role.name,
+            permissions: permissions,
         });
     }
 }
@@ -111,7 +109,7 @@ defineOptions({
 </script>
 
 <template>
-    <div>
+    <div class="mx-auto px-4">
         <h1 class="text-2xl font-bold mb-6">Roles Management</h1>
 
         <!-- Create Role Card -->
@@ -123,7 +121,7 @@ defineOptions({
                 >
             </CardHeader>
             <CardContent>
-                <RoleForm 
+                <RoleForm
                     :permissions="props.permissions"
                     :on-submit="handleCreateRole"
                     :processing="false"
