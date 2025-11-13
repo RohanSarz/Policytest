@@ -4,12 +4,12 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefa
  * @see app/Http/Controllers/AdminController.php:14
  * @route '/admin'
  */
-const index35f58437d9250c39f332f5e8e70440b7 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: index35f58437d9250c39f332f5e8e70440b7.url(options),
+export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: index.url(options),
     method: 'get',
 })
 
-index35f58437d9250c39f332f5e8e70440b7.definition = {
+index.definition = {
     methods: ["get","head"],
     url: '/admin',
 } satisfies RouteDefinition<["get","head"]>
@@ -19,8 +19,8 @@ index35f58437d9250c39f332f5e8e70440b7.definition = {
  * @see app/Http/Controllers/AdminController.php:14
  * @route '/admin'
  */
-index35f58437d9250c39f332f5e8e70440b7.url = (options?: RouteQueryOptions) => {
-    return index35f58437d9250c39f332f5e8e70440b7.definition.url + queryParams(options)
+index.url = (options?: RouteQueryOptions) => {
+    return index.definition.url + queryParams(options)
 }
 
 /**
@@ -28,8 +28,8 @@ index35f58437d9250c39f332f5e8e70440b7.url = (options?: RouteQueryOptions) => {
  * @see app/Http/Controllers/AdminController.php:14
  * @route '/admin'
  */
-index35f58437d9250c39f332f5e8e70440b7.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: index35f58437d9250c39f332f5e8e70440b7.url(options),
+index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: index.url(options),
     method: 'get',
 })
 /**
@@ -37,58 +37,10 @@ index35f58437d9250c39f332f5e8e70440b7.get = (options?: RouteQueryOptions): Route
  * @see app/Http/Controllers/AdminController.php:14
  * @route '/admin'
  */
-index35f58437d9250c39f332f5e8e70440b7.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: index35f58437d9250c39f332f5e8e70440b7.url(options),
+index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: index.url(options),
     method: 'head',
 })
-
-    /**
-* @see \App\Http\Controllers\AdminController::index
- * @see app/Http/Controllers/AdminController.php:14
- * @route '/admin/permissions'
- */
-const index63302c134889cd8f9adcf6db0cc165a9 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: index63302c134889cd8f9adcf6db0cc165a9.url(options),
-    method: 'get',
-})
-
-index63302c134889cd8f9adcf6db0cc165a9.definition = {
-    methods: ["get","head"],
-    url: '/admin/permissions',
-} satisfies RouteDefinition<["get","head"]>
-
-/**
-* @see \App\Http\Controllers\AdminController::index
- * @see app/Http/Controllers/AdminController.php:14
- * @route '/admin/permissions'
- */
-index63302c134889cd8f9adcf6db0cc165a9.url = (options?: RouteQueryOptions) => {
-    return index63302c134889cd8f9adcf6db0cc165a9.definition.url + queryParams(options)
-}
-
-/**
-* @see \App\Http\Controllers\AdminController::index
- * @see app/Http/Controllers/AdminController.php:14
- * @route '/admin/permissions'
- */
-index63302c134889cd8f9adcf6db0cc165a9.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: index63302c134889cd8f9adcf6db0cc165a9.url(options),
-    method: 'get',
-})
-/**
-* @see \App\Http\Controllers\AdminController::index
- * @see app/Http/Controllers/AdminController.php:14
- * @route '/admin/permissions'
- */
-index63302c134889cd8f9adcf6db0cc165a9.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: index63302c134889cd8f9adcf6db0cc165a9.url(options),
-    method: 'head',
-})
-
-export const index = {
-    '/admin': index35f58437d9250c39f332f5e8e70440b7,
-    '/admin/permissions': index63302c134889cd8f9adcf6db0cc165a9,
-}
 
 /**
 * @see \App\Http\Controllers\AdminController::roles
@@ -419,36 +371,79 @@ deleteUser.delete = (args: { user: number | { id: number } } | [user: number | {
 })
 
 /**
-* @see \App\Http\Controllers\AdminController::store
- * @see app/Http/Controllers/AdminController.php:0
+* @see \App\Http\Controllers\AdminController::permissions
+ * @see app/Http/Controllers/AdminController.php:32
  * @route '/admin/permissions'
  */
-export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: store.url(options),
+export const permissions = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: permissions.url(options),
+    method: 'get',
+})
+
+permissions.definition = {
+    methods: ["get","head"],
+    url: '/admin/permissions',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\AdminController::permissions
+ * @see app/Http/Controllers/AdminController.php:32
+ * @route '/admin/permissions'
+ */
+permissions.url = (options?: RouteQueryOptions) => {
+    return permissions.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\AdminController::permissions
+ * @see app/Http/Controllers/AdminController.php:32
+ * @route '/admin/permissions'
+ */
+permissions.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: permissions.url(options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\AdminController::permissions
+ * @see app/Http/Controllers/AdminController.php:32
+ * @route '/admin/permissions'
+ */
+permissions.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: permissions.url(options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\AdminController::storePermission
+ * @see app/Http/Controllers/AdminController.php:41
+ * @route '/admin/permissions'
+ */
+export const storePermission = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: storePermission.url(options),
     method: 'post',
 })
 
-store.definition = {
+storePermission.definition = {
     methods: ["post"],
     url: '/admin/permissions',
 } satisfies RouteDefinition<["post"]>
 
 /**
-* @see \App\Http\Controllers\AdminController::store
- * @see app/Http/Controllers/AdminController.php:0
+* @see \App\Http\Controllers\AdminController::storePermission
+ * @see app/Http/Controllers/AdminController.php:41
  * @route '/admin/permissions'
  */
-store.url = (options?: RouteQueryOptions) => {
-    return store.definition.url + queryParams(options)
+storePermission.url = (options?: RouteQueryOptions) => {
+    return storePermission.definition.url + queryParams(options)
 }
 
 /**
-* @see \App\Http\Controllers\AdminController::store
- * @see app/Http/Controllers/AdminController.php:0
+* @see \App\Http\Controllers\AdminController::storePermission
+ * @see app/Http/Controllers/AdminController.php:41
  * @route '/admin/permissions'
  */
-store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: store.url(options),
+storePermission.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: storePermission.url(options),
     method: 'post',
 })
 
@@ -547,6 +542,6 @@ updatePostStatus.patch = (args: { post: string | number } | [post: string | numb
     url: updatePostStatus.url(args, options),
     method: 'patch',
 })
-const AdminController = { index, roles, storeRole, updateRole, deleteRole, users, storeUser, deleteUser, store, posts, updatePostStatus }
+const AdminController = { index, roles, storeRole, updateRole, deleteRole, users, storeUser, deleteUser, permissions, storePermission, posts, updatePostStatus }
 
 export default AdminController

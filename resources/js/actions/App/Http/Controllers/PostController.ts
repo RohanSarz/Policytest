@@ -44,7 +44,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\PostController::create
- * @see app/Http/Controllers/PostController.php:69
+ * @see app/Http/Controllers/PostController.php:87
  * @route '/posts/create'
  */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -59,7 +59,7 @@ create.definition = {
 
 /**
 * @see \App\Http\Controllers\PostController::create
- * @see app/Http/Controllers/PostController.php:69
+ * @see app/Http/Controllers/PostController.php:87
  * @route '/posts/create'
  */
 create.url = (options?: RouteQueryOptions) => {
@@ -68,7 +68,7 @@ create.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PostController::create
- * @see app/Http/Controllers/PostController.php:69
+ * @see app/Http/Controllers/PostController.php:87
  * @route '/posts/create'
  */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -77,7 +77,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\PostController::create
- * @see app/Http/Controllers/PostController.php:69
+ * @see app/Http/Controllers/PostController.php:87
  * @route '/posts/create'
  */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -87,7 +87,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\PostController::store
- * @see app/Http/Controllers/PostController.php:75
+ * @see app/Http/Controllers/PostController.php:93
  * @route '/posts'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -102,7 +102,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\PostController::store
- * @see app/Http/Controllers/PostController.php:75
+ * @see app/Http/Controllers/PostController.php:93
  * @route '/posts'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -111,7 +111,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PostController::store
- * @see app/Http/Controllers/PostController.php:75
+ * @see app/Http/Controllers/PostController.php:93
  * @route '/posts'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -121,7 +121,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\PostController::show
- * @see app/Http/Controllers/PostController.php:130
+ * @see app/Http/Controllers/PostController.php:148
  * @route '/posts/{post}'
  */
 export const show = (args: { post: string | { slug: string } } | [post: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -136,7 +136,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\PostController::show
- * @see app/Http/Controllers/PostController.php:130
+ * @see app/Http/Controllers/PostController.php:148
  * @route '/posts/{post}'
  */
 show.url = (args: { post: string | { slug: string } } | [post: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions) => {
@@ -169,7 +169,7 @@ show.url = (args: { post: string | { slug: string } } | [post: string | { slug: 
 
 /**
 * @see \App\Http\Controllers\PostController::show
- * @see app/Http/Controllers/PostController.php:130
+ * @see app/Http/Controllers/PostController.php:148
  * @route '/posts/{post}'
  */
 show.get = (args: { post: string | { slug: string } } | [post: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -178,7 +178,7 @@ show.get = (args: { post: string | { slug: string } } | [post: string | { slug: 
 })
 /**
 * @see \App\Http\Controllers\PostController::show
- * @see app/Http/Controllers/PostController.php:130
+ * @see app/Http/Controllers/PostController.php:148
  * @route '/posts/{post}'
  */
 show.head = (args: { post: string | { slug: string } } | [post: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -188,7 +188,7 @@ show.head = (args: { post: string | { slug: string } } | [post: string | { slug:
 
 /**
 * @see \App\Http\Controllers\PostController::edit
- * @see app/Http/Controllers/PostController.php:147
+ * @see app/Http/Controllers/PostController.php:165
  * @route '/posts/{post}/edit'
  */
 export const edit = (args: { post: string | { slug: string } } | [post: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -203,7 +203,7 @@ edit.definition = {
 
 /**
 * @see \App\Http\Controllers\PostController::edit
- * @see app/Http/Controllers/PostController.php:147
+ * @see app/Http/Controllers/PostController.php:165
  * @route '/posts/{post}/edit'
  */
 edit.url = (args: { post: string | { slug: string } } | [post: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions) => {
@@ -236,7 +236,7 @@ edit.url = (args: { post: string | { slug: string } } | [post: string | { slug: 
 
 /**
 * @see \App\Http\Controllers\PostController::edit
- * @see app/Http/Controllers/PostController.php:147
+ * @see app/Http/Controllers/PostController.php:165
  * @route '/posts/{post}/edit'
  */
 edit.get = (args: { post: string | { slug: string } } | [post: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -245,7 +245,7 @@ edit.get = (args: { post: string | { slug: string } } | [post: string | { slug: 
 })
 /**
 * @see \App\Http\Controllers\PostController::edit
- * @see app/Http/Controllers/PostController.php:147
+ * @see app/Http/Controllers/PostController.php:165
  * @route '/posts/{post}/edit'
  */
 edit.head = (args: { post: string | { slug: string } } | [post: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -255,7 +255,7 @@ edit.head = (args: { post: string | { slug: string } } | [post: string | { slug:
 
 /**
 * @see \App\Http\Controllers\PostController::update
- * @see app/Http/Controllers/PostController.php:161
+ * @see app/Http/Controllers/PostController.php:179
  * @route '/posts/{post}'
  */
 export const update = (args: { post: string | { slug: string } } | [post: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -270,7 +270,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\PostController::update
- * @see app/Http/Controllers/PostController.php:161
+ * @see app/Http/Controllers/PostController.php:179
  * @route '/posts/{post}'
  */
 update.url = (args: { post: string | { slug: string } } | [post: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions) => {
@@ -303,7 +303,7 @@ update.url = (args: { post: string | { slug: string } } | [post: string | { slug
 
 /**
 * @see \App\Http\Controllers\PostController::update
- * @see app/Http/Controllers/PostController.php:161
+ * @see app/Http/Controllers/PostController.php:179
  * @route '/posts/{post}'
  */
 update.put = (args: { post: string | { slug: string } } | [post: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -312,7 +312,7 @@ update.put = (args: { post: string | { slug: string } } | [post: string | { slug
 })
 /**
 * @see \App\Http\Controllers\PostController::update
- * @see app/Http/Controllers/PostController.php:161
+ * @see app/Http/Controllers/PostController.php:179
  * @route '/posts/{post}'
  */
 update.patch = (args: { post: string | { slug: string } } | [post: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -322,7 +322,7 @@ update.patch = (args: { post: string | { slug: string } } | [post: string | { sl
 
 /**
 * @see \App\Http\Controllers\PostController::destroy
- * @see app/Http/Controllers/PostController.php:219
+ * @see app/Http/Controllers/PostController.php:237
  * @route '/posts/{post}'
  */
 export const destroy = (args: { post: string | { slug: string } } | [post: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -337,7 +337,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\PostController::destroy
- * @see app/Http/Controllers/PostController.php:219
+ * @see app/Http/Controllers/PostController.php:237
  * @route '/posts/{post}'
  */
 destroy.url = (args: { post: string | { slug: string } } | [post: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions) => {
@@ -370,7 +370,7 @@ destroy.url = (args: { post: string | { slug: string } } | [post: string | { slu
 
 /**
 * @see \App\Http\Controllers\PostController::destroy
- * @see app/Http/Controllers/PostController.php:219
+ * @see app/Http/Controllers/PostController.php:237
  * @route '/posts/{post}'
  */
 destroy.delete = (args: { post: string | { slug: string } } | [post: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -380,7 +380,7 @@ destroy.delete = (args: { post: string | { slug: string } } | [post: string | { 
 
 /**
 * @see \App\Http\Controllers\PostController::byCategory
- * @see app/Http/Controllers/PostController.php:43
+ * @see app/Http/Controllers/PostController.php:52
  * @route '/categories/{category}'
  */
 export const byCategory = (args: { category: string | number } | [category: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -395,7 +395,7 @@ byCategory.definition = {
 
 /**
 * @see \App\Http\Controllers\PostController::byCategory
- * @see app/Http/Controllers/PostController.php:43
+ * @see app/Http/Controllers/PostController.php:52
  * @route '/categories/{category}'
  */
 byCategory.url = (args: { category: string | number } | [category: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -423,7 +423,7 @@ byCategory.url = (args: { category: string | number } | [category: string | numb
 
 /**
 * @see \App\Http\Controllers\PostController::byCategory
- * @see app/Http/Controllers/PostController.php:43
+ * @see app/Http/Controllers/PostController.php:52
  * @route '/categories/{category}'
  */
 byCategory.get = (args: { category: string | number } | [category: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -432,7 +432,7 @@ byCategory.get = (args: { category: string | number } | [category: string | numb
 })
 /**
 * @see \App\Http\Controllers\PostController::byCategory
- * @see app/Http/Controllers/PostController.php:43
+ * @see app/Http/Controllers/PostController.php:52
  * @route '/categories/{category}'
  */
 byCategory.head = (args: { category: string | number } | [category: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({

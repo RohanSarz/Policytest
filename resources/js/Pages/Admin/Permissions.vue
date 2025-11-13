@@ -7,7 +7,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { store } from "@/actions/App/Http/Controllers/AdminController";
+import { storePermission } from "@/actions/App/Http/Controllers/AdminController";
 import PermissionForm from "@/components/Admin/PermissionForm.vue";
 import PermissionItem from "@/components/Admin/PermissionItem.vue";
 import { useForm } from "@inertiajs/vue3";
@@ -31,7 +31,7 @@ const props = defineProps<Props>();
 // Function to handle form submission
 function handleSubmit(data: { name: string }) {
     const form = useForm(data);
-    form.post(store().url, {
+    form.post(storePermission().url, {
         onSuccess: () => {
             // Form is reset in the PermissionForm component after submit
         },

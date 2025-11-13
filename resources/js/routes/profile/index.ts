@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../
 import avatar from './avatar'
 /**
 * @see \App\Http\Controllers\UserDataController::store
- * @see app/Http/Controllers/UserDataController.php:36
+ * @see app/Http/Controllers/UserDataController.php:49
  * @route '/profile'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -17,7 +17,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\UserDataController::store
- * @see app/Http/Controllers/UserDataController.php:36
+ * @see app/Http/Controllers/UserDataController.php:49
  * @route '/profile'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -26,7 +26,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\UserDataController::store
- * @see app/Http/Controllers/UserDataController.php:36
+ * @see app/Http/Controllers/UserDataController.php:49
  * @route '/profile'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({

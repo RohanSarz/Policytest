@@ -4,18 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
-use App\Models\User;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
 
 class UserDataController extends Controller
 {
     public function profileView()
     {
-        // user is passed globally in HandleInertiaRequests.php
-        return inertia('User/Profile');
+        $user = Auth::user();
+        $posts = Post::with(['user', 'category'])
+            ->where('user_id', $user->id)
+            ->latest()
+            ->get();
+
+        $trendingPosts = Post::with(['user', 'category'])
+            ->where('status', 'approved')
+            ->latest()
+            ->limit(5)
+            ->get();
+
+        return inertia('User/Profile', [
+            'user' => $user,
+            'posts' => $posts,
+            'trendingPosts' => $trendingPosts,
+        ]);
     }
 
     public function dashboardView()

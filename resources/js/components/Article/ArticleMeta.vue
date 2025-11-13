@@ -32,8 +32,6 @@ const formatDate = (dateString: string) => {
 
 <template>
     <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
-         
-
         <div v-if="showAuthor" class="flex items-center">
             <Link href="">
                 <Label>By {{ post.user.name }}</Label>

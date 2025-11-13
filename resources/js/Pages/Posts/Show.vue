@@ -154,12 +154,6 @@ const convertJsonToHtml = (json: any) => {
             <!-- Article Header -->
             <ArticleHeader :post="post" />
 
-            <!-- Article Navigation -->
-            <ArticleNavigation
-                :previous-post="props.previousPost"
-                :next-post="props.nextPost"
-            />
-
             <!-- Article Content -->
             <article class="bg-white rounded-xl shadow-sm p-6 mb-8">
                 <!-- Cover image -->

@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\AdminController::index
- * @see app/Http/Controllers/AdminController.php:14
+ * @see app/Http/Controllers/AdminController.php:32
  * @route '/admin/permissions'
  */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminController::index
- * @see app/Http/Controllers/AdminController.php:14
+ * @see app/Http/Controllers/AdminController.php:32
  * @route '/admin/permissions'
  */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\AdminController::index
- * @see app/Http/Controllers/AdminController.php:14
+ * @see app/Http/Controllers/AdminController.php:32
  * @route '/admin/permissions'
  */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -34,7 +34,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\AdminController::index
- * @see app/Http/Controllers/AdminController.php:14
+ * @see app/Http/Controllers/AdminController.php:32
  * @route '/admin/permissions'
  */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -44,7 +44,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\AdminController::store
- * @see app/Http/Controllers/AdminController.php:0
+ * @see app/Http/Controllers/AdminController.php:41
  * @route '/admin/permissions'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -59,7 +59,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminController::store
- * @see app/Http/Controllers/AdminController.php:0
+ * @see app/Http/Controllers/AdminController.php:41
  * @route '/admin/permissions'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -68,7 +68,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\AdminController::store
- * @see app/Http/Controllers/AdminController.php:0
+ * @see app/Http/Controllers/AdminController.php:41
  * @route '/admin/permissions'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({

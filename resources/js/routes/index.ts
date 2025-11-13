@@ -89,7 +89,7 @@ home.options = (options?: RouteQueryOptions): RouteDefinition<'options'> => ({
 
 /**
 * @see \App\Http\Controllers\UserDataController::dashboard
- * @see app/Http/Controllers/UserDataController.php:21
+ * @see app/Http/Controllers/UserDataController.php:34
  * @route '/dashboard'
  */
 export const dashboard = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -104,7 +104,7 @@ dashboard.definition = {
 
 /**
 * @see \App\Http\Controllers\UserDataController::dashboard
- * @see app/Http/Controllers/UserDataController.php:21
+ * @see app/Http/Controllers/UserDataController.php:34
  * @route '/dashboard'
  */
 dashboard.url = (options?: RouteQueryOptions) => {
@@ -113,7 +113,7 @@ dashboard.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\UserDataController::dashboard
- * @see app/Http/Controllers/UserDataController.php:21
+ * @see app/Http/Controllers/UserDataController.php:34
  * @route '/dashboard'
  */
 dashboard.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -122,7 +122,7 @@ dashboard.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\UserDataController::dashboard
- * @see app/Http/Controllers/UserDataController.php:21
+ * @see app/Http/Controllers/UserDataController.php:34
  * @route '/dashboard'
  */
 dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -132,7 +132,7 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\UserDataController::profile
- * @see app/Http/Controllers/UserDataController.php:15
+ * @see app/Http/Controllers/UserDataController.php:13
  * @route '/profile'
  */
 export const profile = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -147,7 +147,7 @@ profile.definition = {
 
 /**
 * @see \App\Http\Controllers\UserDataController::profile
- * @see app/Http/Controllers/UserDataController.php:15
+ * @see app/Http/Controllers/UserDataController.php:13
  * @route '/profile'
  */
 profile.url = (options?: RouteQueryOptions) => {
@@ -156,7 +156,7 @@ profile.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\UserDataController::profile
- * @see app/Http/Controllers/UserDataController.php:15
+ * @see app/Http/Controllers/UserDataController.php:13
  * @route '/profile'
  */
 profile.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -165,7 +165,7 @@ profile.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\UserDataController::profile
- * @see app/Http/Controllers/UserDataController.php:15
+ * @see app/Http/Controllers/UserDataController.php:13
  * @route '/profile'
  */
 profile.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
