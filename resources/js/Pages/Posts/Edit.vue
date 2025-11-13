@@ -5,7 +5,7 @@ import Input from "@/components/ui/input/Input.vue";
 import Label from "@/components/ui/label/Label.vue";
 import Button from "@/components/ui/button/Button.vue";
 import Textarea from "@/components/ui/textarea/Textarea.vue";
-import Tiptap from "@/components/Tiptap.vue";
+import TinyMCEEditor from "@/components/TinyMCEEditor.vue";
 import Select from "@/components/ui/select/Select.vue";
 import {
     Card,
@@ -25,11 +25,11 @@ const page = usePage();
 const post = page.props.post;
 const categories = page.props.categories;
 
-// Use useForm for manual form handling (for content field with Tiptap)
+// Use useForm for manual form handling (for content field with TinyMCE)
 const form = useForm({
     title: post.title,
     excerpt: post.excerpt,
-    content: post.content, // Pass the content as-is (string or object) to the new Tiptap
+    content: post.content || '', // Pass the content as-is (HTML string) to TinyMCE, defaulting to empty string if null
     category_id: post.category_id,
     cover_image: null,
 });
@@ -109,11 +109,32 @@ if (post?.cover_image) {
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <form
                     @submit.prevent="() => {
-                        const formData = {
-                            ...form.data(),
-                            content: JSON.stringify(form.content)
-                        };
-                        form.transform(() => formData).put(update(post.id).url);
+                        // Create FormData for proper file handling
+                        const formData = new FormData();
+                        
+                        // Add all form fields to FormData
+                        Object.entries(form.data()).forEach(([key, value]) => {
+                            if (value !== null && value !== undefined) {
+                                // For file inputs, we need to add the File object directly
+                                if (key === 'cover_image' && value instanceof File) {
+                                    formData.append(key, value, value.name);
+                                } else if (key !== 'cover_image' && typeof value !== 'object') {
+                                    // For non-file fields including content, add normally, but skip complex objects
+                                    formData.append(key, value);
+                                }
+                            }
+                        });
+
+                        // Explicitly add content field from the TinyMCE editor
+                        formData.append('content', form.content || '');
+
+                        // Submit using FormData
+                        form
+                            .transform(() => formData)
+                            .put(update(post.id).url, {
+                                forceFormData: true,
+                                preserveScroll: true
+                            });
                     }"
                     class="space-y-6"
                 >
@@ -237,17 +258,16 @@ if (post?.cover_image) {
                             </div>
                         </div>
 
-                        <!-- Content Field with Tiptap Editor -->
+                        <!-- Content Field with TinyMCE Editor -->
                         <div class="lg:col-span-3">
                             <div class="h-[600px]">
                                 <Label
                                     for="content"
                                     class="block text-sm font-medium text-gray-700 mb-2"
                                 >Article Content</Label>
-                                <Tiptap
+                                <TinyMCEEditor
                                     v-model="form.content"
                                     id="content"
-                                    class="w-full h-[500px]"
                                 />
                                 <div
                                     v-if="form.errors.content"

@@ -1,0 +1,29 @@
+                    @submit.prevent="() => {
+                        // Create FormData for proper file handling
+                        const formData = new FormData();
+                        
+                        // Add all form fields to FormData
+                        Object.entries(form.data()).forEach(([key, value]) => {
+                            if (value !== null && value !== undefined) {
+                                // For file inputs, we need to add the File object directly
+                                if (key === 'cover_image' && value instanceof File) {
+                                    formData.append(key, value, value.name);
+                                } else if (key !== 'cover_image' && typeof value !== 'object') {
+                                    // For non-file fields including content, add normally, but skip complex objects
+                                    formData.append(key, value);
+                                }
+                            }
+                        });
+
+                        // Explicitly add content field from the TinyMCE editor
+                        formData.append('content', form.content || '');
+
+                        // Submit using FormData
+                        form
+                            .transform(() => formData)
+                            .put(update(post.id).url, {
+                                forceFormData: true,
+                                preserveScroll: true
+                            });
+                    }"
+                    class="space-y-6"

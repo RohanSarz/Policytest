@@ -21,130 +21,31 @@ interface Props {
 const props = defineProps<Props>();
 const { post } = usePage().props;
 
-// Function to render JSON content as HTML
+// Function to render HTML content from TinyMCE
 const renderContent = (content: string) => {
-    try {
-        // Check if content is a JSON string
-        if (
-            typeof content === "string" &&
-            (content.startsWith("{") || content.startsWith("["))
-        ) {
-            const parsedContent = JSON.parse(content);
-            return convertJsonToHtml(parsedContent);
-        }
-        // If it's already HTML, return as is
-        return content || "";
-    } catch (e) {
-        console.error("Error parsing content:", e);
-        return content || "";
-    }
-};
-
-// Function to convert Tiptap JSON to HTML
-const convertJsonToHtml = (json: any) => {
-    if (!json || !json.content) {
+    if (!content) {
         return "";
     }
-
-    let html = "";
-
-    const processContent = (content: any[]) => {
-        if (!content || !Array.isArray(content)) return "";
-
-        return content
-            .map((node) => {
-                switch (node.type) {
-                    case "paragraph":
-                        const paragraphContent = node.content
-                            ? processContent(node.content)
-                            : "";
-                        return `<p class="mb-4">${paragraphContent}</p>`;
-
-                    case "heading":
-                        const level = node.attrs?.level || 1;
-                        const headingContent = node.content
-                            ? processContent(node.content)
-                            : "";
-                        return `<h${level} class="text-2xl font-bold mt-6 mb-4">${headingContent}</h${level}>`;
-
-                    case "text":
-                        let text = node.text || "";
-
-                        // Apply marks (bold, italic, etc.)
-                        if (node.marks && Array.isArray(node.marks)) {
-                            node.marks.forEach((mark) => {
-                                switch (mark.type) {
-                                    case "bold":
-                                        text = `<strong>${text}</strong>`;
-                                        break;
-                                    case "italic":
-                                        text = `<em>${text}</em>`;
-                                        break;
-                                    case "underline":
-                                        text = `<u>${text}</u>`;
-                                        break;
-                                    case "strike":
-                                        text = `<s>${text}</s>`;
-                                        break;
-                                }
-                            });
-                        }
-
-                        return text;
-
-                    case "image":
-                        const src = node.attrs?.src || "";
-                        const alt = node.attrs?.alt || "";
-                        const align = node.attrs?.align || "center";
-
-                        let imgClass = "mx-auto block"; // default center
-                        if (align === "left") imgClass = "float-left mr-4";
-                        if (align === "right") imgClass = "float-right ml-4";
-
-                        return `<div class="my-4"><img src="${src}" alt="${alt}" class="${imgClass}" style="max-width: 100%; height: auto;"/></div>`;
-
-                    case "bulletList":
-                        const listItems = node.content
-                            ? processContent(node.content)
-                            : "";
-                        return `<ul class="list-disc pl-5 my-2">${listItems}</ul>`;
-
-                    case "orderedList":
-                        const orderedListItems = node.content
-                            ? processContent(node.content)
-                            : "";
-                        return `<ol class="list-decimal pl-5 my-2">${orderedListItems}</ol>`;
-
-                    case "listItem":
-                        const listItemContent = node.content
-                            ? processContent(node.content)
-                            : "";
-                        return `<li class="mb-1">${listItemContent}</li>`;
-
-                    case "blockquote":
-                        const blockquoteContent = node.content
-                            ? processContent(node.content)
-                            : "";
-                        return `<blockquote class="border-l-4 border-blue-500 pl-4 italic my-4 py-2 bg-gray-50">${blockquoteContent}</blockquote>`;
-
-                    case "codeBlock":
-                        const codeContent = node.content
-                            ? node.content[0]?.text || ""
-                            : "";
-                        return `<pre class="bg-gray-100 p-4 rounded my-2 overflow-x-auto"><code class="text-sm">${codeContent}</code></pre>`;
-
-                    case "horizontalRule":
-                        return '<hr class="my-6 border-t border-gray-200" />';
-
-                    default:
-                        // For any other nodes that have content
-                        return node.content ? processContent(node.content) : "";
-                }
-            })
-            .join("");
-    };
-
-    return processContent(json.content);
+    
+    // If content is a JSON string, it might be from the old TipTap implementation
+    if (
+        typeof content === "string" &&
+        (content.startsWith("{") || content.startsWith("["))
+    ) {
+        try {
+            const parsedContent = JSON.parse(content);
+            // If it's a valid JSON object, it could be TipTap content
+            // For now, we'll return a message indicating this needs conversion
+            console.warn("TipTap JSON content detected - needs conversion");
+            return `<p class="text-red-500">Content format needs update - please edit and save this post to convert to TinyMCE format.</p>`;
+        } catch (e) {
+            // If it's not valid JSON, return as HTML
+            return content;
+        }
+    }
+    
+    // Otherwise, return the content as HTML
+    return content;
 };
 </script>
 

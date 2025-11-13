@@ -5,7 +5,7 @@ import Input from "@/components/ui/input/Input.vue";
 import Label from "@/components/ui/label/Label.vue";
 import Button from "@/components/ui/button/Button.vue";
 import Textarea from "@/components/ui/textarea/Textarea.vue";
-import Tiptap from "@/components/Tiptap.vue";
+import TinyMCEEditor from "@/components/TinyMCEEditor.vue";
 import {
     Select,
     SelectContent,
@@ -34,7 +34,7 @@ console.log(categories);
 const form = useForm({
     title: "",
     excerpt: "",
-    content: "", // Initialize as empty string for the new Tiptap
+    content: "", // Initialize as empty string for TinyMCE
     category_id: "",
     cover_image: null,
 });
@@ -69,13 +69,32 @@ const handleCoverFile = (e) => {
 
 // Handle form submission
 const submitForm = () => {
-    // Convert JSON content to string before submitting
-    const formData = {
-        ...form.data(),
-        content: JSON.stringify(form.content)
-    };
+    // Create FormData for proper file handling
+    const formData = new FormData();
     
-    form.transform(() => formData).post(store().url);
+    // Add each field individually to avoid object serialization
+    const title = form.title && typeof form.title === 'string' ? form.title : '';
+    const excerpt = form.excerpt && typeof form.excerpt === 'string' ? form.excerpt : '';
+    const categoryId = form.category_id ? form.category_id : '';
+    const content = form.content && typeof form.content === 'string' ? form.content : '';
+    
+    formData.append('title', title);
+    formData.append('excerpt', excerpt);
+    formData.append('category_id', categoryId);
+    formData.append('content', content);
+    
+    // Add cover image if it exists
+    if (form.cover_image && form.cover_image instanceof File) {
+        formData.append('cover_image', form.cover_image, form.cover_image.name);
+    }
+
+    // Submit using FormData
+    form
+        .transform(() => formData)
+        .post(store().url, {
+            forceFormData: true,
+            preserveScroll: true
+        });
 };
 </script>
 
@@ -200,10 +219,9 @@ const submitForm = () => {
                                 data-aos="fade-up"
                                 >Article Content</Label
                             >
-                            <Tiptap
+                            <TinyMCEEditor
                                 v-model="form.content"
                                 id="content"
-                                class="w-full h-[500px]"
                                 data-aos="fade-up"
                                 :disabled="form.processing"
                             />

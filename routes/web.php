@@ -5,11 +5,16 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDataController;
+use App\Http\Controllers\ImageUploadController;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', 'posts')->name('home');
+
+// Image upload route for TinyMCE
+Route::post('/upload-image', [ImageUploadController::class, 'upload'])->name('image.upload');
+
 Route::resource('posts', PostController::class)->parameters(['posts' => 'post']);
 Route::get('/categories/{category}', [PostController::class, 'byCategory'])->name('categories.show');
 

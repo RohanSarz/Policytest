@@ -10,6 +10,10 @@ import FlashMesg from "./Pertials/FlashMesg.vue";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
+// Import TinyMCE CSS
+import 'tinymce/skins/ui/oxide/skin.min.css';
+import 'tinymce/skins/content/default/content.min.css';
+
 createInertiaApp({
     title: (title) => `Teachlabs > ${title} `,
     resolve: (name) => {
