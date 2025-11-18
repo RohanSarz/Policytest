@@ -30,7 +30,7 @@ class PostController extends Controller implements HasMiddleware
         $categories = Category::with('approvedPosts')->get();
 
         $livePosts = Post::latest()->orderBy('created_at', 'desc')->get();
-        
+
         // Get trending posts (approved posts from the last 7 days, ordered by recency)
         $trendingPosts = Post::where('status', 'approved')
             ->where('created_at', '>=', now()->subDays(7))
@@ -65,7 +65,7 @@ class PostController extends Controller implements HasMiddleware
         // Reuse same extra data logic as index()
 
         $livePosts = Post::approved()->latest()->get();
-        
+
         // Get trending posts (approved posts from the last 7 days, ordered by recency)
         $trendingPosts = Post::where('status', 'approved')
             ->where('created_at', '>=', now()->subDays(7))

@@ -23,7 +23,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { ref } from "vue";
+import { ref, nextTick } from "vue";
 import Error from "@/components/Error.vue";
 
 const page = usePage();
@@ -41,6 +41,7 @@ const form = useForm({
 
 // holding the urls for cover preview
 const coverPreview = ref(null);
+const tinyMceEditorRef = ref(null); // Add ref for TinyMCE editor
 
 // clearing preview to avoid memory leakage
 const clearPreview = (previewRef) => {
@@ -68,33 +69,84 @@ const handleCoverFile = (e) => {
 };
 
 // Handle form submission
-const submitForm = () => {
+const submitForm = async () => {
+    console.log("Content before submission (v-model):", form.content);
+
+    // Force content synchronization before getting the content
+    await new Promise((resolve) => setTimeout(resolve, 100)); // Small delay to ensure content sync
+
+    // Method 1: Try to get content directly from the TinyMCE editor instance
+    let content = "";
+    if (
+        tinyMceEditorRef.value &&
+        typeof tinyMceEditorRef.value.getContent === "function"
+    ) {
+        content = tinyMceEditorRef.value.getContent() || "";
+        console.log("Content from TinyMCE editor (method 1):", content);
+    }
+
+    // If content is still empty or null, try to access via TinyMCE global instance by targeting specific editor
+    if (!content && window.tinymce) {
+        // Method 2: Try to get content by targeting editor with specific ID
+        const editorElement = document.querySelector(
+            ".tinymce-editor-container",
+        );
+        if (editorElement) {
+            // Look for an associated editor ID in the container
+            const editors = window.tinymce.get();
+            for (let i = 0; i < editors.length; i++) {
+                const editor = editors[i];
+                if (editor && typeof editor.getContent === "function") {
+                    const editorContent = editor.getContent();
+                    if (editorContent) {
+                        content = editorContent;
+                        console.log(
+                            "Content from TinyMCE editor (method 2 - specific editor):",
+                            content,
+                        );
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    // If still no content, use the form content as fallback
+    if (!content) {
+        content =
+            form.content && typeof form.content === "string"
+                ? form.content
+                : "";
+        console.log("Content from form data (fallback):", content);
+    }
+
+    console.log("Final content being submitted:", content);
+
     // Create FormData for proper file handling
     const formData = new FormData();
-    
+
     // Add each field individually to avoid object serialization
-    const title = form.title && typeof form.title === 'string' ? form.title : '';
-    const excerpt = form.excerpt && typeof form.excerpt === 'string' ? form.excerpt : '';
-    const categoryId = form.category_id ? form.category_id : '';
-    const content = form.content && typeof form.content === 'string' ? form.content : '';
-    
-    formData.append('title', title);
-    formData.append('excerpt', excerpt);
-    formData.append('category_id', categoryId);
-    formData.append('content', content);
-    
+    const title =
+        form.title && typeof form.title === "string" ? form.title : "";
+    const excerpt =
+        form.excerpt && typeof form.excerpt === "string" ? form.excerpt : "";
+    const categoryId = form.category_id ? form.category_id : "";
+
+    formData.append("title", title);
+    formData.append("excerpt", excerpt);
+    formData.append("category_id", categoryId);
+    formData.append("content", content);
+
     // Add cover image if it exists
     if (form.cover_image && form.cover_image instanceof File) {
-        formData.append('cover_image', form.cover_image, form.cover_image.name);
+        formData.append("cover_image", form.cover_image, form.cover_image.name);
     }
 
     // Submit using FormData
-    form
-        .transform(() => formData)
-        .post(store().url, {
-            forceFormData: true,
-            preserveScroll: true
-        });
+    form.transform(() => formData).post(store().url, {
+        forceFormData: true,
+        preserveScroll: true,
+    });
 };
 </script>
 
@@ -119,7 +171,9 @@ const submitForm = () => {
                         >
                             <!-- Category Select -->
                             <div class="mb-4">
-                                <Label for="category_id" class="mb-2">Category</Label>
+                                <Label for="category_id" class="mb-2"
+                                    >Category</Label
+                                >
                                 <Select v-model="form.category_id">
                                     <SelectTrigger>
                                         <SelectValue
@@ -129,7 +183,10 @@ const submitForm = () => {
                                     <SelectContent>
                                         <SelectGroup>
                                             <div
-                                                v-for="{ name, id } in categories"
+                                                v-for="{
+                                                    name,
+                                                    id,
+                                                } in categories"
                                                 :key="id"
                                             >
                                                 <SelectItem :value="id">
@@ -165,7 +222,9 @@ const submitForm = () => {
 
                             <!-- Excerpt Input-->
                             <div class="mb-4">
-                                <Label for="excerpt" class="mb-2">Summary</Label>
+                                <Label for="excerpt" class="mb-2"
+                                    >Summary</Label
+                                >
                                 <textarea
                                     v-model="form.excerpt"
                                     id="excerpt"
@@ -193,7 +252,9 @@ const submitForm = () => {
                                         type="file"
                                         :disabled="form.processing"
                                     />
-                                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                                    <div
+                                        class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center"
+                                    >
                                         <img
                                             v-if="coverPreview"
                                             class="w-full h-32 object-cover rounded-md mx-auto"
@@ -220,6 +281,7 @@ const submitForm = () => {
                                 >Article Content</Label
                             >
                             <TinyMCEEditor
+                                ref="tinyMceEditorRef"
                                 v-model="form.content"
                                 id="content"
                                 data-aos="fade-up"
@@ -237,7 +299,9 @@ const submitForm = () => {
                         :disabled="form.processing"
                         data-aos="zoom-out-up"
                     >
-                        {{ form.processing ? "Creating..." : "Publish Article" }}
+                        {{
+                            form.processing ? "Creating..." : "Publish Article"
+                        }}
                     </Button>
                 </form>
             </CardContent>

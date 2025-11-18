@@ -15,11 +15,13 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { ref } from "vue";
+import { ref, nextTick } from "vue";
 import Error from "@/components/Error.vue";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import { useForm } from "@inertiajs/vue3";
+
+const tinyMceEditorRef = ref(null); // Add ref for TinyMCE editor
 
 const page = usePage();
 const post = page.props.post;
@@ -29,7 +31,7 @@ const categories = page.props.categories;
 const form = useForm({
     title: post.title,
     excerpt: post.excerpt,
-    content: post.content || '', // Pass the content as-is (HTML string) to TinyMCE, defaulting to empty string if null
+    content: post.content || "", // Pass the content as-is (HTML string) to TinyMCE, defaulting to empty string if null
     category_id: post.category_id,
     cover_image: null,
 });
@@ -84,6 +86,48 @@ if (post?.image) {
 if (post?.cover_image) {
     previewCover.value = `/storage/${post.cover_image}`;
 }
+
+// Handle form submission
+// Handle form submission
+const submitForm = async () => {
+    console.log('Content before submission (v-model):', form.content);
+    
+    // Get the latest content directly from the TinyMCE editor
+    let content = '';
+    if (tinyMceEditorRef.value && typeof tinyMceEditorRef.value.getContent === 'function') {
+        content = tinyMceEditorRef.value.getContent() || '';
+        console.log('Content from TinyMCE editor (edit):', content);
+    } else {
+        // Fallback to form content if editor ref is not available
+        content = form.content && typeof form.content === "string" ? form.content : "";
+    }
+    
+    console.log('Final content being submitted:', content);
+
+    // Create FormData for proper file handling
+    const formData = new FormData();
+
+    // Add each field individually to avoid object serialization
+    const title = form.title && typeof form.title === "string" ? form.title : "";
+    const excerpt = form.excerpt && typeof form.excerpt === "string" ? form.excerpt : "";
+    const categoryId = form.category_id ? form.category_id : "";
+
+    formData.append("title", title);
+    formData.append("excerpt", excerpt);
+    formData.append("category_id", categoryId);
+    formData.append("content", content);
+
+    // Add cover image if it exists
+    if (form.cover_image && form.cover_image instanceof File) {
+        formData.append("cover_image", form.cover_image, form.cover_image.name);
+    }
+
+    // Submit using FormData
+    form.transform(() => formData).put(update(post.id).url, {
+        forceFormData: true,
+        preserveScroll: true
+    });
+};
 </script>
 
 <template>
@@ -92,7 +136,9 @@ if (post?.cover_image) {
         <header class="bg-white shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                 <div class="flex justify-between items-center">
-                    <h1 class="text-2xl font-bold text-gray-900">Edit Article</h1>
+                    <h1 class="text-2xl font-bold text-gray-900">
+                        Edit Article
+                    </h1>
                     <Button
                         type="submit"
                         form="post-form"
@@ -108,36 +154,35 @@ if (post?.cover_image) {
         <div class="flex-1 overflow-y-auto py-6">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <form
-                    @submit.prevent="() => {
-                        // Create FormData for proper file handling
-                        const formData = new FormData();
-                        
-                        // Add all form fields to FormData
-                        Object.entries(form.data()).forEach(([key, value]) => {
-                            if (value !== null && value !== undefined) {
-                                // For file inputs, we need to add the File object directly
-                                if (key === 'cover_image' && value instanceof File) {
-                                    formData.append(key, value, value.name);
-                                } else if (key !== 'cover_image' && typeof value !== 'object') {
-                                    // For non-file fields including content, add normally, but skip complex objects
-                                    formData.append(key, value);
-                                }
-                            }
-                        });
-
-                        // Explicitly add content field from the TinyMCE editor
-                        formData.append('content', form.content || '');
-
-                        // Submit using FormData
-                        form
-                            .transform(() => formData)
-                            .put(update(post.id).url, {
-                                forceFormData: true,
-                                preserveScroll: true
-                            });
-                    }"
-                    class="space-y-6"
+                    @submit.prevent="submitForm"
+                    const
+                    formData="new"
+                    FormData();
+                    Object.entries(form.data()).forEach(([key,
+                    value])=""
                 >
+                    { if (value !== null && value !== undefined) { // For file
+                    inputs, we need to add the File object directly if (key ===
+                    'cover_image' && value instanceof File) {
+                    formData.append(key, value, value.name); } else if (key !==
+                    'cover_image' && typeof value !== 'object') { // For
+                    non-file fields, add normally, but skip complex objects //
+                    For content field, we'll add it separately after getting
+                    from editor if (key !== 'content') { formData.append(key,
+                    value); } } } }); // Get the latest content directly from
+                    the TinyMCE editor let content = ''; if
+                    (tinyMceEditorRef.value && typeof
+                    tinyMceEditorRef.value.getContent === 'function') { content
+                    = tinyMceEditorRef.value.getContent() || '';
+                    console.log('Content from TinyMCE editor (edit):', content);
+                    } else { // Fallback to form content if editor ref is not
+                    available content = form.content && typeof form.content ===
+                    'string' ? form.content : ''; } // For content field, use
+                    the value we just retrieved from editor
+                    formData.append('content', content); // Submit using
+                    FormData form .transform(() => formData)
+                    .put(update(post.id).url, { forceFormData: true,
+                    preserveScroll: true }); }" class="space-y-6" >
                     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
                         <div class="lg:col-span-1 space-y-6">
                             <!-- Category Select -->
@@ -145,7 +190,8 @@ if (post?.cover_image) {
                                 <Label
                                     for="category_id"
                                     class="block text-sm font-medium text-gray-700 mb-2"
-                                >Category</Label>
+                                    >Category</Label
+                                >
                                 <Select v-model="form.category_id">
                                     <SelectTrigger>
                                         <SelectValue
@@ -162,7 +208,9 @@ if (post?.cover_image) {
                                                 :key="category.id"
                                             >
                                                 <SelectItem
-                                                    :value="category.id.toString()"
+                                                    :value="
+                                                        category.id.toString()
+                                                    "
                                                     :class="{
                                                         'bg-blue-500 text-white':
                                                             category.id ==
@@ -188,7 +236,8 @@ if (post?.cover_image) {
                                 <Label
                                     for="title"
                                     class="block text-sm font-medium text-gray-700 mb-2"
-                                >Title</Label>
+                                    >Title</Label
+                                >
                                 <Input
                                     v-model="form.title"
                                     id="title"
@@ -219,11 +268,16 @@ if (post?.cover_image) {
                                     name="cover_image"
                                     :disabled="form.processing"
                                 />
-                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                                <div
+                                    class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center"
+                                >
                                     <img
                                         v-if="previewCover || post.cover_image"
                                         class="w-full h-32 object-cover rounded-md mx-auto"
-                                        :src="previewCover || `/storage/${post.cover_image}`"
+                                        :src="
+                                            previewCover ||
+                                            `/storage/${post.cover_image}`
+                                        "
                                         alt="Cover preview"
                                     />
                                     <div v-else class="text-gray-500 py-6">
@@ -241,7 +295,8 @@ if (post?.cover_image) {
                                 <Label
                                     for="excerpt"
                                     class="block text-sm font-medium text-gray-700 mb-2"
-                                >Summary</Label>
+                                    >Summary</Label
+                                >
                                 <textarea
                                     v-model="form.excerpt"
                                     id="excerpt"
@@ -264,8 +319,10 @@ if (post?.cover_image) {
                                 <Label
                                     for="content"
                                     class="block text-sm font-medium text-gray-700 mb-2"
-                                >Article Content</Label>
+                                    >Article Content</Label
+                                >
                                 <TinyMCEEditor
+                                    ref="tinyMceEditorRef"
                                     v-model="form.content"
                                     id="content"
                                 />
@@ -276,7 +333,7 @@ if (post?.cover_image) {
                                     {{ form.errors.content }}
                                 </div>
                             </div>
-                            
+
                             <Button
                                 type="submit"
                                 class="w-full mt-6 bg-blue-600 hover:bg-blue-700"
@@ -284,7 +341,9 @@ if (post?.cover_image) {
                                 data-aos="zoom-out-up"
                             >
                                 {{
-                                    form.processing ? "Updating..." : "Update Article"
+                                    form.processing
+                                        ? "Updating..."
+                                        : "Update Article"
                                 }}
                             </Button>
                         </div>
