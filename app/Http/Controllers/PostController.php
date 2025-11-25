@@ -10,14 +10,14 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
-        return [new Middleware(['can:create', Post], only: ['create', 'store']), new Middleware('can:update,post', only: ['edit', 'update']), new Middleware('can:delete,post', only: ['destroy'])];
+        return [new Middleware('auth', except: ['Index', 'Show'])];
     }
-
     // Index page
     public function index()
     {
@@ -75,10 +75,10 @@ class PostController extends Controller implements HasMiddleware
             ->get();
 
         return inertia('Home', [
-            'posts' => $posts,
-            'categories' => $categories,
-            'livePosts' => $livePosts,
-            'trendingPosts' => $trendingPosts,
+            'posts' => $posts->toArray(),
+            'categories' => $categories->toArray(),
+            'livePosts' => $livePosts->toArray(),
+            'trendingPosts' => $trendingPosts->toArray(),
 
             'currentCategory' => $category,
         ]);
@@ -86,12 +86,16 @@ class PostController extends Controller implements HasMiddleware
 
     public function create()
     {
+        Gate::authorize('create', Post::class);
+
         $categories = Category::all(['id', 'name']);
         return inertia('Posts/Create', compact('categories'));
     }
 
     public function store(Request $request)
     {
+        Gate::authorize('create', Post::class);
+
         $fields = $request->validate([
             'title' => 'required|string|max:255',
             'excerpt' => 'required|string|max:255',
@@ -155,6 +159,8 @@ class PostController extends Controller implements HasMiddleware
 
     public function edit(Post $post)
     {
+        Gate::authorize('update', $post);
+
         $post->load('postImages'); // Load existing images for editing
         $categories = Category::all(['id', 'name']);
 
@@ -169,6 +175,8 @@ class PostController extends Controller implements HasMiddleware
 
     public function update(Request $request, Post $post)
     {
+        Gate::authorize('update', $post);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'excerpt' => 'required|string|max:255',
@@ -218,6 +226,8 @@ class PostController extends Controller implements HasMiddleware
 
     public function destroy(Post $post)
     {
+        Gate::authorize('delete', $post);
+
         // Delete all related images first
         foreach ($post->postImages as $image) {
             if (Storage::disk('public')->exists($image->url)) {

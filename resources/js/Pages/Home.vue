@@ -8,12 +8,12 @@ import BreakingNewsTicker from "@/components/Article/BreakingNewsTicker.vue";
 import CategoryBar from "@/components/Article/CategoryBar.vue";
 import NewsletterSubscription from "@/components/Article/NewsletterSubscription.vue";
 import TrendingSidebar from "@/components/Article/TrendingSidebar.vue";
-import { PageProps } from "@/types/Post"; // Import the shared types
+import { PageProps, Post } from "@/types/Post"; // Import the shared types
 
 // Get page props from Inertia
 const page = usePage<PageProps>().props; // Type the page props
 
-// Extract data from page props
+// Extract data from page props and ensure correct typing
 const posts = page.posts; // Array of posts
 const categories = page.categories; // Array of categories
 const currentCategory = page.currentCategory; // Current category if on a category page
@@ -25,7 +25,14 @@ const allPosts = posts || []; // Fallback to empty array if posts is undefined
 const featuredPost = allPosts[0] || null; // First post as featured
 const regularPosts = allPosts.slice(1, 4); // Next 3 posts as regular news
 
-usePoll(2000); // Auto-refresh data every 2 seconds
+usePoll(2000, {
+    onStart() {
+        console.log("Polling request started");
+    },
+    onFinish() {
+        console.log("Polling request finished");
+    },
+}); // Auto-refresh data every 2 seconds
 
 // Compute active category slug for highlighting active link
 const activeCategorySlug = currentCategory?.slug || null;

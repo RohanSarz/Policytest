@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import LoginOrRegister from "@/components/userDataComponents/LoginOrRegister.vue";
 import { dashboard, home } from "@/routes";
+import admin from "@/routes/admin";
 
 // User Reactive Data
 const page = usePage<{ auth: { user: any } }>();
@@ -100,6 +101,18 @@ const isActiveLink = (path: string) => {
                         <component :is="icon" class="w-4 h-4 mr-2" />
                         {{ name }}
                     </Link>
+                </Button>
+            </li>
+            <li>
+                <Button
+                    variant="ghost"
+                    :class="
+                        isActiveLink(admin.dashboard().url)
+                            ? 'bg-accent text-black'
+                            : ''
+                    "
+                >
+                    <Link :href="admin.dashboard().url">Admin</Link>
                 </Button>
             </li>
 
