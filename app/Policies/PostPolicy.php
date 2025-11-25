@@ -14,7 +14,7 @@ class PostPolicy
      */
     public function viewAny(User $user): bool
     {
-        return !$user->hasRole('suspended') || $user->hasPermissionTo('show-posts');
+        return !$user->hasRole('suspended') && $user->hasPermissionTo('show_posts');
     }
 
     /**
@@ -22,8 +22,7 @@ class PostPolicy
      */
     public function view(User $user, Post $post): bool
     {
-        
-        return !$user->hasRole('suspended') || $user->id === $post->user_id || $user->hasPermissionTo('show-posts');
+        return !$user->hasRole('suspended') && ($user->id === $post->user_id || $user->hasPermissionTo('show_posts'));
     }
 
     /**
@@ -31,7 +30,7 @@ class PostPolicy
      */
     public function create(User $user): bool
     {
-        return !$user->hasRole('suspended') || $user->hasPermissionTo('create-posts');
+        return !$user->hasRole('suspended') && $user->hasPermissionTo('create_posts');
     }
 
     /**
@@ -39,7 +38,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post): bool
     {
-        return !$user->hasRole('suspended') || $user->id === $post->user_id || $user->hasPermissionTo('edit-posts');
+        return !$user->hasRole('suspended') && ($user->id === $post->user_id || $user->hasPermissionTo('edit_posts'));
     }
 
     /**
@@ -47,7 +46,7 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): bool
     {
-        return !$user->hasRole('suspended') || $user->id === $post->user_id || $user->hasPermissionTo('delete-posts');
+        return !$user->hasRole('suspended') && ($user->id === $post->user_id || $user->hasPermissionTo('delete_posts'));
     }
 
     /**

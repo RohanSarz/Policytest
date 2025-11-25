@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\UserDataController::dashboardView
- * @see app/Http/Controllers/UserDataController.php:34
+ * @see app/Http/Controllers/UserDataController.php:33
  * @route '/dashboard'
  */
 export const dashboardView = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ dashboardView.definition = {
 
 /**
 * @see \App\Http\Controllers\UserDataController::dashboardView
- * @see app/Http/Controllers/UserDataController.php:34
+ * @see app/Http/Controllers/UserDataController.php:33
  * @route '/dashboard'
  */
 dashboardView.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ dashboardView.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\UserDataController::dashboardView
- * @see app/Http/Controllers/UserDataController.php:34
+ * @see app/Http/Controllers/UserDataController.php:33
  * @route '/dashboard'
  */
 dashboardView.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -34,7 +34,7 @@ dashboardView.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\UserDataController::dashboardView
- * @see app/Http/Controllers/UserDataController.php:34
+ * @see app/Http/Controllers/UserDataController.php:33
  * @route '/dashboard'
  */
 dashboardView.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -87,7 +87,7 @@ profileView.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\UserDataController::store
- * @see app/Http/Controllers/UserDataController.php:49
+ * @see app/Http/Controllers/UserDataController.php:48
  * @route '/profile'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -102,7 +102,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\UserDataController::store
- * @see app/Http/Controllers/UserDataController.php:49
+ * @see app/Http/Controllers/UserDataController.php:48
  * @route '/profile'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -111,7 +111,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\UserDataController::store
- * @see app/Http/Controllers/UserDataController.php:49
+ * @see app/Http/Controllers/UserDataController.php:48
  * @route '/profile'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -121,7 +121,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\UserDataController::updateAvatar
- * @see app/Http/Controllers/UserDataController.php:70
+ * @see app/Http/Controllers/UserDataController.php:69
  * @route '/profile/avatar'
  */
 export const updateAvatar = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -136,7 +136,7 @@ updateAvatar.definition = {
 
 /**
 * @see \App\Http\Controllers\UserDataController::updateAvatar
- * @see app/Http/Controllers/UserDataController.php:70
+ * @see app/Http/Controllers/UserDataController.php:69
  * @route '/profile/avatar'
  */
 updateAvatar.url = (options?: RouteQueryOptions) => {
@@ -145,7 +145,7 @@ updateAvatar.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\UserDataController::updateAvatar
- * @see app/Http/Controllers/UserDataController.php:70
+ * @see app/Http/Controllers/UserDataController.php:69
  * @route '/profile/avatar'
  */
 updateAvatar.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({

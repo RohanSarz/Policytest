@@ -54,7 +54,7 @@ const user = page.props.auth?.user || {};
                         <div
                             class="bg-blue-500 w-12 h-8 rounded-md flex items-center justify-center text-white font-bold"
                         >
-                            Vuda
+                        Daily Star
                         </div>
                         <span class="text-lg font-semibold">Admin Panel</span>
                     </div>

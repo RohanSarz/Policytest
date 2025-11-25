@@ -25,7 +25,6 @@ class UserDataController extends Controller
             ->get();
 
         return inertia('User/Profile', [
-            'user' => $user,
             'posts' => $posts,
             'trendingPosts' => $trendingPosts,
         ]);

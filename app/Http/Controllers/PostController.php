@@ -15,7 +15,7 @@ class PostController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
-        return ['auth', new Middleware('can:create,App\Models\Post', only: ['create', 'store']), new Middleware('can:update,post', only: ['edit', 'update']), new Middleware('can:delete,post', only: ['destroy'])];
+        return [new Middleware(['can:create', Post], only: ['create', 'store']), new Middleware('can:update,post', only: ['edit', 'update']), new Middleware('can:delete,post', only: ['destroy'])];
     }
 
     // Index page

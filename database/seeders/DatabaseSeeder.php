@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $categories = ['Technology', 'Sports', 'Politics', 'Lifestyle', 'Travel'];
+
         foreach ($categories as $category) {
             // Create each permission if it doesn't already exist
             Category::create(['name' => $category]);
