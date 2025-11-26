@@ -34,8 +34,8 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     method: 'post',
 })
 const profile = {
-    store,
-avatar,
+    store: Object.assign(store, store),
+avatar: Object.assign(avatar, avatar),
 }
 
 export default profile

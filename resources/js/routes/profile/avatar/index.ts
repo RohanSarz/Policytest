@@ -33,7 +33,7 @@ update.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     method: 'post',
 })
 const avatar = {
-    update,
+    update: Object.assign(update, update),
 }
 
 export default avatar

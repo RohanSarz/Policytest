@@ -87,7 +87,7 @@ const activeCategorySlug = currentCategory?.slug || null;
                             v-for="post in regularPosts"
                             :key="post.id"
                             :post="post"
-                            type="regular"
+                            type="thumbnail"
                         />
                     </div>
                 </section>

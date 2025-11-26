@@ -76,8 +76,8 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     method: 'post',
 })
 const permissions = {
-    index,
-store,
+    index: Object.assign(index, index),
+store: Object.assign(store, store),
 }
 
 export default permissions

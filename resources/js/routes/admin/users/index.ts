@@ -134,9 +134,9 @@ destroy.delete = (args: { user: number | { id: number } } | [user: number | { id
     method: 'delete',
 })
 const users = {
-    index,
-store,
-destroy,
+    index: Object.assign(index, index),
+store: Object.assign(store, store),
+destroy: Object.assign(destroy, destroy),
 }
 
 export default users

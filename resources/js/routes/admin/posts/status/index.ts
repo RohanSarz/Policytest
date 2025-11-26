@@ -52,7 +52,7 @@ update.patch = (args: { post: string | number } | [post: string | number ] | str
     method: 'patch',
 })
 const status = {
-    update,
+    update: Object.assign(update, update),
 }
 
 export default status

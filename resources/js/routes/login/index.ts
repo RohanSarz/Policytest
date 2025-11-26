@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../wayfinder'
 /**
 * @see \Inertia\Controller::__invoke
- * @see vendor/inertiajs/inertia-laravel/src/Controller.php:9
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
  * @route '/login'
  */
 export const form = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ form.definition = {
 
 /**
 * @see \Inertia\Controller::__invoke
- * @see vendor/inertiajs/inertia-laravel/src/Controller.php:9
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
  * @route '/login'
  */
 form.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ form.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \Inertia\Controller::__invoke
- * @see vendor/inertiajs/inertia-laravel/src/Controller.php:9
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
  * @route '/login'
  */
 form.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -34,7 +34,7 @@ form.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \Inertia\Controller::__invoke
- * @see vendor/inertiajs/inertia-laravel/src/Controller.php:9
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
  * @route '/login'
  */
 form.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({

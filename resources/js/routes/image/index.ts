@@ -33,7 +33,7 @@ upload.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     method: 'post',
 })
 const image = {
-    upload,
+    upload: Object.assign(upload, upload),
 }
 
 export default image

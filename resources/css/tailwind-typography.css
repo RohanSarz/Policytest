@@ -1,0 +1,207 @@
+/* Tailwind Typography Styles for Content Display */
+
+/* Base styles for content rendered with v-html */
+.content-display {
+    @apply font-sans text-base text-gray-700 leading-relaxed;
+    line-height: 1.6;
+    color: #374151;
+}
+
+.content-display h1 {
+    @apply text-4xl font-bold mt-6 mb-4 text-gray-900;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.content-display h2 {
+    @apply text-3xl font-bold mt-6 mb-4 text-gray-900;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.content-display h3 {
+    @apply text-2xl font-bold mt-5 mb-3 text-gray-900;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.content-display h4 {
+    @apply text-xl font-bold mt-4 mb-2 text-gray-900;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.content-display h5 {
+    @apply text-lg font-bold mt-3 mb-2 text-gray-900;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.content-display h6 {
+    @apply text-base font-bold mt-2 mb-1 text-gray-900;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.content-display p {
+    @apply my-4 leading-relaxed;
+}
+
+.content-display a {
+    @apply text-blue-600 hover:text-blue-800 underline;
+    text-decoration: underline;
+    color: #2563eb;
+}
+
+.content-display a:hover {
+    @apply text-blue-800;
+    color: #1d4ed8;
+}
+
+.content-display ul,
+.content-display ol {
+    @apply my-4 pl-6;
+}
+
+.content-display ul {
+    @apply list-disc;
+}
+
+.content-display ol {
+    @apply list-decimal;
+}
+
+.content-display li {
+    @apply my-1;
+    margin-bottom: 0.25rem;
+}
+
+.content-display ul ul,
+.content-display ol ol,
+.content-display ul ol,
+.content-display ol ul {
+    @apply my-1;
+}
+
+.content-display blockquote {
+    @apply border-l-4 border-gray-300 pl-4 py-2 my-4 text-gray-600 italic;
+    border-left-width: 4px;
+    color: #4b5563;
+    font-style: italic;
+}
+
+.content-display pre {
+    @apply bg-gray-100 p-4 rounded my-4 text-gray-800 font-mono overflow-x-auto;
+    font-family:
+        ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+}
+
+.content-display code {
+    @apply bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono text-gray-800;
+    font-family:
+        ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+}
+
+.content-display pre code {
+    @apply bg-transparent p-0 rounded-none text-gray-800;
+    background-color: transparent !important;
+}
+
+.content-display hr {
+    @apply border-t border-gray-300 my-6;
+}
+
+.content-display table {
+    @apply min-w-full divide-y divide-gray-200 my-4;
+}
+
+.content-display thead {
+    @apply bg-gray-50;
+}
+
+.content-display th {
+    @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+}
+
+.content-display td {
+    @apply px-6 py-4 whitespace-nowrap text-sm text-gray-500;
+}
+
+.content-display th,
+.content-display td {
+    @apply border-r border-gray-200 last:border-r-0;
+}
+
+.content-display tr:last-child td {
+    @apply border-b border-gray-200;
+}
+
+.content-display img {
+    @apply my-4;
+}
+
+.content-display figure {
+    @apply my-4;
+    display: table;
+    margin: 1em 0;
+}
+
+.content-display figcaption {
+    @apply text-gray-500 text-sm text-center mt-2;
+    display: table-caption;
+    caption-side: bottom;
+    color: #6b7280;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+/* Alignment */
+.content-display .align-left {
+    @apply float-left mr-4;
+}
+
+.content-display .align-center {
+    @apply block mx-auto;
+}
+
+.content-display .align-right {
+    @apply float-right ml-4;
+}
+
+/* Clear floats */
+.content-display .align-none {
+    @apply float-none;
+}
+
+/* Strong/Bold */
+.content-display strong,
+.content-display b {
+    @apply font-bold;
+    font-weight: 700;
+}
+
+/* Emphasis/Italic */
+.content-display em,
+.content-display i {
+    @apply italic;
+}
+
+/* Underline */
+.content-display u {
+    @apply underline;
+}
+
+/* Strikethrough */
+.content-display s,
+.content-display strike {
+    @apply line-through;
+}
+
+/* Highlight */
+.content-display mark {
+    @apply bg-yellow-200 text-gray-900;
+    background-color: #fef9c3;
+    color: #1f2937;
+}

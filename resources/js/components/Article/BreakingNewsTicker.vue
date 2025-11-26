@@ -11,6 +11,7 @@ const currentIndex = ref(0);
 let intervalId: number | null = null;
 
 const startTicker = () => {
+  if (props.posts.length <= 1) return; // No need to cycle if there's only one post
   intervalId = window.setInterval(() => {
     currentIndex.value = (currentIndex.value + 1) % props.posts.length;
   }, 5000); // Change every 5 seconds
@@ -33,31 +34,38 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div 
-    class="bg-red-600 text-white py-2 px-4 flex items-center overflow-hidden"
+  <div
+    class="bg-red-600 text-white py-3 px-4 flex items-center overflow-hidden"
     @mouseenter="stopTicker"
     @mouseleave="startTicker"
   >
-    <span class="font-bold mr-4 uppercase">Breaking News</span>
-    <div class="overflow-hidden whitespace-nowrap flex-1">
-      <div 
-        class="animate-marquee whitespace-nowrap inline-block"
-        :key="currentIndex"
+    <span class="font-bold mr-4 uppercase flex-shrink-0">Breaking News</span>
+
+    <div class="flex-1 overflow-hidden">
+      <transition
+        name="fade"
+        mode="out-in"
+        appear
       >
-        <span>{{ props.posts[currentIndex]?.title || '' }}</span>
-      </div>
+        <div
+          :key="currentIndex"
+          class="h-6 flex items-center"
+        >
+          <span class="truncate">{{ props.posts[currentIndex]?.title || '' }}</span>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
 
 <style scoped>
-@keyframes marquee {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
 }
 
-.animate-marquee {
-  animation: marquee 15s linear infinite;
-  display: inline-block;
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
