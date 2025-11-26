@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../wayfinder'
 /**
 * @see \Inertia\Controller::__invoke
- * @see vendor/inertiajs/inertia-laravel/src/Controller.php:9
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
  * @route '/login'
  */
 const Controllerb6041c76e8e1cd791f8f89d035d48611 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ Controllerb6041c76e8e1cd791f8f89d035d48611.definition = {
 
 /**
 * @see \Inertia\Controller::__invoke
- * @see vendor/inertiajs/inertia-laravel/src/Controller.php:9
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
  * @route '/login'
  */
 Controllerb6041c76e8e1cd791f8f89d035d48611.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ Controllerb6041c76e8e1cd791f8f89d035d48611.url = (options?: RouteQueryOptions) =
 
 /**
 * @see \Inertia\Controller::__invoke
- * @see vendor/inertiajs/inertia-laravel/src/Controller.php:9
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
  * @route '/login'
  */
 Controllerb6041c76e8e1cd791f8f89d035d48611.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -34,7 +34,7 @@ Controllerb6041c76e8e1cd791f8f89d035d48611.get = (options?: RouteQueryOptions): 
 })
 /**
 * @see \Inertia\Controller::__invoke
- * @see vendor/inertiajs/inertia-laravel/src/Controller.php:9
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
  * @route '/login'
  */
 Controllerb6041c76e8e1cd791f8f89d035d48611.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -44,7 +44,7 @@ Controllerb6041c76e8e1cd791f8f89d035d48611.head = (options?: RouteQueryOptions):
 
     /**
 * @see \Inertia\Controller::__invoke
- * @see vendor/inertiajs/inertia-laravel/src/Controller.php:9
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
  * @route '/register'
  */
 const Controllere9819db9819a1d19b38dd89a0c4218c4 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -59,7 +59,7 @@ Controllere9819db9819a1d19b38dd89a0c4218c4.definition = {
 
 /**
 * @see \Inertia\Controller::__invoke
- * @see vendor/inertiajs/inertia-laravel/src/Controller.php:9
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
  * @route '/register'
  */
 Controllere9819db9819a1d19b38dd89a0c4218c4.url = (options?: RouteQueryOptions) => {
@@ -68,7 +68,7 @@ Controllere9819db9819a1d19b38dd89a0c4218c4.url = (options?: RouteQueryOptions) =
 
 /**
 * @see \Inertia\Controller::__invoke
- * @see vendor/inertiajs/inertia-laravel/src/Controller.php:9
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
  * @route '/register'
  */
 Controllere9819db9819a1d19b38dd89a0c4218c4.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -77,7 +77,7 @@ Controllere9819db9819a1d19b38dd89a0c4218c4.get = (options?: RouteQueryOptions): 
 })
 /**
 * @see \Inertia\Controller::__invoke
- * @see vendor/inertiajs/inertia-laravel/src/Controller.php:9
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
  * @route '/register'
  */
 Controllere9819db9819a1d19b38dd89a0c4218c4.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({

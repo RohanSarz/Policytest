@@ -46,11 +46,11 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     method: 'head',
 })
 const admin = {
-    dashboard,
-roles,
-users,
-permissions,
-posts,
+    dashboard: Object.assign(dashboard, dashboard),
+roles: Object.assign(roles, roles),
+users: Object.assign(users, users),
+permissions: Object.assign(permissions, permissions),
+posts: Object.assign(posts, posts),
 }
 
 export default admin

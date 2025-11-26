@@ -1,6 +1,6 @@
 import Controller from './Controller'
 const Inertia = {
-    Controller,
+    Controller: Object.assign(Controller, Controller),
 }
 
 export default Inertia

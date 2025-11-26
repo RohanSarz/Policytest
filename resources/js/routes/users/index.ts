@@ -61,7 +61,7 @@ show.head = (args: { user: string | number } | [user: string | number ] | string
     method: 'head',
 })
 const users = {
-    show,
+    show: Object.assign(show, show),
 }
 
 export default users

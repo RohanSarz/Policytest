@@ -15,6 +15,7 @@ import {
     User,
     UserRound,
     Key,
+    Proportions,
 } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
 import UserNameUpper from "@/components/userDataComponents/UserNameUpper.vue";
@@ -33,8 +34,10 @@ import { dashboard, home } from "@/routes";
 import admin from "@/routes/admin";
 
 // User Reactive Data
-const page = usePage<{ auth: { user: any } }>();
+const page = usePage<{ auth: { user: any; role: string; can: object } }>();
 const user = computed(() => page.props.auth.user);
+
+const adminRole = computed(() => page.props.auth.role == "admin");
 
 const navlinks = computed(() => {
     const baseLinks = [
@@ -105,6 +108,7 @@ const isActiveLink = (path: string) => {
             </li>
             <li>
                 <Button
+                    v-if="adminRole"
                     variant="ghost"
                     :class="
                         isActiveLink(admin.dashboard().url)

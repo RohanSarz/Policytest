@@ -5,12 +5,12 @@ import AuthController from './AuthController'
 import UserController from './UserController'
 import AdminController from './AdminController'
 const Controllers = {
-    ImageUploadController,
-PostController,
-UserDataController,
-AuthController,
-UserController,
-AdminController,
+    ImageUploadController: Object.assign(ImageUploadController, ImageUploadController),
+PostController: Object.assign(PostController, PostController),
+UserDataController: Object.assign(UserDataController, UserDataController),
+AuthController: Object.assign(AuthController, AuthController),
+UserController: Object.assign(UserController, UserController),
+AdminController: Object.assign(AdminController, AdminController),
 }
 
 export default Controllers

@@ -43,8 +43,8 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     method: 'head',
 })
 const posts = {
-    index,
-status,
+    index: Object.assign(index, index),
+status: Object.assign(status, status),
 }
 
 export default posts

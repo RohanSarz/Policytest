@@ -23,6 +23,7 @@ class PostController extends Controller implements HasMiddleware
     {
         $posts = Post::query()
             ->approved()
+
             ->with(['user', 'category', 'postImages'])
             ->latest()
             ->get();
