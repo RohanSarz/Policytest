@@ -16,6 +16,11 @@ import {
     UserRound,
     Key,
     Proportions,
+    UserLock,
+    UserLockIcon,
+    UserPen,
+    ArrowRightFromLine,
+    ArrowRightToLine,
 } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
 import UserNameUpper from "@/components/userDataComponents/UserNameUpper.vue";
@@ -116,6 +121,7 @@ const isActiveLink = (path: string) => {
                             : ''
                     "
                 >
+                    <UserLockIcon class="w-4 h-4 mr-2" />
                     <Link :href="admin.dashboard().url">Admin</Link>
                 </Button>
             </li>
@@ -156,12 +162,19 @@ const isActiveLink = (path: string) => {
             <!-- Profile and Logout -->
             <li v-else class="space-x-6">
                 <Button variant="ghost">
-                    <Link class="hover:bg-accent" :href="profileView().url">
+                    <Link
+                        class="hover:bg-accent flex items-center"
+                        :href="profileView().url"
+                    >
+                        <UserPen class="w-4 h-4 mr-2" />
                         Profile</Link
                     >
                 </Button>
                 <Form class="inline" :action="logout().url" method="post">
-                    <Button variant="ghost"> Logout </Button>
+                    <Button variant="ghost">
+                        Logout
+                        <ArrowRightToLine class="w-4 h-4 mr-2" />
+                    </Button>
                 </Form>
             </li>
         </ul>
