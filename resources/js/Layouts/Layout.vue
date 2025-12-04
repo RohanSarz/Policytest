@@ -2,15 +2,13 @@
 import Footer from "@/components/Footer.vue";
 import Navigation from "@/components/Navigation.vue";
 import Toaster from "@/components/Toaster.vue";
+import Separator from "@/components/ui/separator/Separator.vue";
 </script>
 
 <template>
-    <div class="space-x-12">
-        <div class="pb-9">
-            <header
-                id="header"
-                class="fixed w-full flex flex-col top-0 left-0 z-10"
-            >
+    <div class=" space-x-4">
+        <div class="h-[4rem]">
+            <header id="header" class="fixed w-full top-0 left-0 z-10">
                 <Navigation />
             </header>
             <div class="fixed top-20 right-10 z-20">
@@ -20,8 +18,8 @@ import Toaster from "@/components/Toaster.vue";
         <main :key="$page.url" class="mx-auto z-0">
             <slot />
         </main>
-        <!-- <footer>
+        <footer>
             <Footer />
-        </footer> -->
+        </footer>
     </div>
 </template>

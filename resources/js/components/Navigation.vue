@@ -81,6 +81,11 @@ const isActiveLink = (path: string) => {
 <template>
     <nav class="relative">
         <!-- Desktop Nav Menu (hidden on mobile) -->
+        <div class="flex gap-4 font-mono text-xs px-2 py-2 bg-gray-300/50 backdrop-blur-2xl">
+            <label>Friday, December 4, 2025</label>
+            |
+            <label>Dhaka 26<sup class="text-[8px]">o</sup></label>
+        </div>
 
         <ul
             class="hidden md:flex justify-end items-center bg-secondary-foreground text-white dark:bg-primary space-x-6 px-3 py-3"
